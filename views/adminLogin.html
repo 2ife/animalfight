@@ -1,0 +1,41 @@
+{% extends 'layout.html' %}
+
+{% block styleSheet %}
+<link rel="stylesheet" type="text/css" href="/stylesheet/login.css?version=0.0.1">
+{% endblock %}
+
+{% block content %}
+<header>
+</header>
+<main>
+  <div id="loginForm">
+    <div class="loginInputContainer">
+      <label for="login_id">ID</label>
+      <input type="text" id="login_id" name="id">
+    </div>
+    <div class="loginInputContainer">
+      <label for="login_password">비밀번호</label>
+      <input type="password" id="login_password" name="password">
+    </div>
+    <div class="form_footerBtnContainer">
+      <button id="loginBtn">로그인</button>
+    </div>
+  </div>
+</main>
+<div style="display: none;" class="alertModal"></div>
+<div style="display: none;" class="OutOfAlertModal"></div>
+<div style="display: none;" class="loadingShower">로딩 중</div>
+<div style="display: none;" class="outOfLoadingShower"></div>
+{% endblock %}
+
+{% block script %}
+<script>
+  window.onload = () => {
+    const loginCode = localStorage.getItem('LOGIN_CODE')
+    if (loginCode) {
+      localStorage.removeItem('LOGIN_CODE')
+    }
+  }
+</script>
+<script src="/scripts/adminLogin.js?version=0.0.1"></script>
+{% endblock %}

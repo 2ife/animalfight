@@ -1,0 +1,133 @@
+{% extends 'layout.html' %}
+
+{% block styleSheet %}
+<link rel="stylesheet" type="text/css" href="/stylesheet/admin.css?version=0.0.1">
+{% endblock %}
+
+{% block content %}
+<div id="header">
+  <button id="partChangeBtn">유저</button>
+  <div id="userSearchConditionList">
+    <div class="userSearchConditionContainer">
+      <input type="checkbox" name="" id="userLockCheckbox" class="userSearchConditionContainer_checkbox">
+      <div class="userSearchConditionContainer_label">정지</div>
+    </div>
+    <div class="userSearchConditionContainer">
+      <input type="checkbox" name="" id="userChargeCheckbox" class="userSearchConditionContainer_checkbox">
+      <div class="userSearchConditionContainer_label">충전</div>
+    </div>
+    <div class="userSearchConditionContainer">
+      <input type="checkbox" name="" id="userErrorCheckbox" class="userSearchConditionContainer_checkbox">
+      <div class="userSearchConditionContainer_label">에러</div>
+    </div>
+  </div>
+  <button id="userSearchTargetBtn">닉네임</button>
+  <input type="text" name="" id="searchTextInput">
+  <button id="searchBtn">🔍</button>
+  <a href="/admin/login" id="logoutLink">
+    <button id="logoutBtn">로그아웃</button>
+  </a>
+</div>
+<div id="executer">
+  <div id="simpleDeleteBtnContainer">
+    <button id="errorDeleteBtn">에러 제거</button>
+    <button id="cashCodeDeleteBtn">캐시코드 제거</button>
+  </div>
+  <div id="checkNeededUpdateBtnContainer">
+    <input type="text" name="" id="updateChecker" placeholder="변경 전 확인">
+    <button id="nickChangeBtn">닉네임 변경</button>
+    <button id="passwordChangeBtn">비밀번호 변경</button>
+    <button id="userLockOrUnlockBtn">계정 정지 (해제)</button>
+    <button id="userDeleteBtn">계정 삭제</button>
+  </div>
+  <div id="mailSender">
+    <input type="text" name="" id="mailContentInput" placeholder="내용">
+    <input type="date" name="" id="mailExpireInput">
+    <input type="text" name="" id="mailGoldInput" placeholder="골드">
+    <input type="text" name="" id="mailJadeInput" placeholder="옥">
+    <input type="text" name="" id="mailScrollInput" placeholder="두루마리">
+    <input type="text" name="" id="mailSpiritInput" placeholder="영혼">
+    <div id="mailAllTargetCheckboxContainer">
+      <div id="mailAllTargetCheckboxLabel">모두 대상&nbsp;</div>
+      <input type="checkbox" name="" id="mailAllTargetCheckbox">
+    </div>
+    <button id="mailSendBtn">메일 발송</button>
+  </div>
+</div>
+<table id="dataTable">
+  <thead  id="userTableHead" class="dataTableHead">
+    <tr class="dataTableHeadRow">
+      {% for cellIndex in range(0,8) %}
+      <td
+        class="dataTableHeadCell {{['userTableCheckboxCell','userLoginIdCell','userNickCell','userLockMemoCell','userCashCodeCell','userChargeCashCell','userChargeTimeCell','userErrorCell'][cellIndex]}}">
+        {% if cellIndex === 0 %}
+        <input type="checkbox" name="" id="userTableHeadCheckbox">
+        {% else %}
+        {{['ID','닉네임','정지메모','캐시코드','충전 금액','충전 시간','에러'][cellIndex-1]}}
+        {% endif %}
+      </td>
+      {% endfor %}
+    </tr>
+  </thead>
+  <tbody  id="userTableBody" class="dataTableBody">
+    {% for rowIndex in range(0,10) %}
+    <tr class="dataTableBodyRow">
+      {% for cellIndex in range(0,8) %}
+      <td
+        class="dataTableBodyCell {{['userTableCheckboxCell','userLoginIdCell','userNickCell','userLockMemoCell','userCashCodeCell','userChargeCashCell','userChargeTimeCell','userErrorCell'][cellIndex]}}">
+        {% if cellIndex===0 %}
+        <input type="checkbox" name="" class="userTableBodyCheckbox">
+        {% endif %}
+      </td>
+      {% endfor %}
+    </tr>
+    {% endfor %}
+  </tbody>
+  <thead style="display: none;" id="errorTableHead" class="dataTableHead"> 
+    <tr class="dataTableHeadRow">
+      {% for cellIndex in range(0,5) %}
+      <td class="dataTableHeadCell {{['errorTableCheckboxCell','userIdCell','errorIdCell','errorPlaceCell','errorContentCell'][cellIndex]}}">
+        {% if cellIndex === 0 %}
+        <input type="checkbox" name="" id="errorTableHeadCheckbox">
+        {% else %}
+        {{['유저','ID(DB)','위치','내용'][cellIndex-1]}}
+        {% endif %}
+      </td>
+      {% endfor %}
+    </tr>
+  </thead>
+  <tbody style="display: none;" id="errorTableBody" class="dataTableBody">
+    {% for rowIndex in range(0,10) %}
+    <tr class="dataTableBodyRow">
+      {% for cellIndex in range(0,5) %}
+      <td
+        class="dataTableBodyCell {{['errorTableCheckboxCell','userIdCell','errorIdCell','errorPlaceCell','errorContentCell'][cellIndex]}}">
+        {% if cellIndex===0 %}
+        <input type="checkbox" name="" class="errorTableBodyCheckbox">
+        {% endif %}
+      </td>
+      {% endfor %}
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<div id="pageController">
+  <button id="leftEndBtn" class="pageControlBtn">◀</button>
+  <button id="leftBtn" class="pageControlBtn">◁</button>
+  <div id="pageShowerContainer">
+    <div id="currentPageShower">1</div>
+    <div id="pageShowerDivider">/</div>
+    <div id="lastPageShower">3</div>
+  </div>
+  <button id="rightBtn" class="pageControlBtn">▷</button>
+  <button id="rightEndBtn" class="pageControlBtn">▶</button>
+</div>
+<div style="display: none;" class="alertModal"></div>
+<div style="display: none;" class="OutOfAlertModal"></div>
+<div style="display: none;" class="loadingShower">로딩 중</div>
+<div style="display: none;" class="outOfLoadingShower"></div>
+{% endblock %}
+
+{% block script %}
+<script src="/scripts/admin.js?version=0.0.1"></script>
+{% endblock %}

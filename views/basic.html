@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="initial-scale=1.0,user-scalable=no,maximum-scale=1,width=device-width" />
+  <title>animalfight</title>
+  <!-- <link rel="apple-touch-icon" href="/images/mainImgIOS.png" />
+  <link rel="shortcut icon" href="/images/mainImgAndroid.png" /> -->
+</head>
+
+<body>
+  <a id="loginLink" style="display: none;" href="/login"></a>
+  <a id="homeLink" style="display: none;" href="/home"></a>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script>
+    const loginLink = document.querySelector('#loginLink')
+    const homeLink = document.querySelector('#homeLink')
+    const checkLoginCode = async () => {
+      try {
+        const loginCode = localStorage.getItem('LOGIN_CODE')
+        if (!loginCode) {
+          loginLink.click()
+          return
+        }
+        const res = await axios.post('/auth/checkLoginCode', { path:'basic',loginCode })
+        const { data } = res
+        const { error, answer } = data;
+        if (error) {
+          throw new Error();
+        }
+        if (answer === 'no user') {
+          localStorage.removeItem("loginCode");
+          loginLink.click()
+        }
+        if(answer==='login success'){
+          homeLink.click()
+        }
+      } catch (err) {
+        console.log(err)
+      }
+    }
+    window.onload = checkLoginCode
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="initial-scale=1.0,user-scalable=no,maximum-scale=1,width=device-width" />
+  <title>animalfight</title>
+  <link rel="stylesheet" type="text/css" href="/stylesheet/common.css?version=0.0.1">
+  {% block styleSheet %}
+  {% endblock %}
+  <!-- <link rel="apple-touch-icon" href="/images/mainImgIOS.png" />
+  <link rel="shortcut icon" href="/images/mainImgAndroid.png" /> -->
+</head>
+
+<body>
+  <div class="gameZone">
+    {% block content %}
+    {% endblock %}
+  </div>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  {% block script %}
+  {% endblock %}
+</body>
+
+</html>

@@ -1,0 +1,902 @@
+{% extends 'layout.html' %}
+
+{% set animalsTypeList = [
+"rat",
+"cow",
+"tiger",
+"rabbit",
+"snake",
+"horse",
+"goat",
+"monkey",
+"chicken",
+"dog",
+"pig"
+] %}
+{% set animalNameList = [
+[
+"babyRat",
+"calf",
+"babyTiger",
+"babyRabbit",
+"babySnake",
+"foal",
+"kid",
+"babyMonkey",
+"chick",
+"pup",
+"piglet"
+],
+animalsTypeList,
+[
+"trick",
+"madCow",
+"sahobum",
+"sinmyo",
+"bigSnake",
+"redClayHorse",
+"choa",
+"sahonab",
+"fightChicken",
+"wolf",
+"boar"
+],
+[
+"brain",
+"unDead",
+"bigTiger",
+"doky",
+"imoogi",
+"skyHorse",
+"suho",
+"sahonabHead",
+"phoenix",
+"wolfHead",
+"boarHead"
+],
+[
+"blackDragon",
+"first",
+"whiteTiger",
+"moonRabbit",
+"hyeonmu",
+"blueDragon",
+"blackTiger",
+"wukong",
+"jujak",
+"corruption",
+"greed"
+]
+]%}
+{% set animalKorNameList = [
+['새끼 쥐',
+'송아지',
+'새끼 호랑이',
+'새끼 토끼',
+'새끼 뱀',
+'망아지',
+'새끼 염소',
+'새끼 원숭이',
+'병아리',
+'강아지',
+'새끼 돼지'],[
+'쥐',
+'소',
+'호랑이',
+'토끼',
+'뱀',
+'말',
+'염소',
+'원숭이',
+'닭',
+'개',
+'돼지'
+],[
+'꾀',
+'광우',
+'사호범',
+'신묘',
+'구렁이',
+'적마',
+'초아',
+'사호납',
+'투계',
+'늑대',
+'멧돼지'
+],[
+'꾼',
+'불사',
+'대호',
+'도끼',
+'이무기',
+'천마',
+'수호',
+'대장 사호납',
+'봉황',
+'대장 늑대',
+'대장 멧돼지'
+],[
+'흑룡',
+'처손',
+'백호',
+'달토끼',
+'현무',
+'청룡',
+'흑호',
+'제천대성',
+'주작',
+'타락',
+'탐욕'
+]
+] %}
+{% set animalGradeNameList = ['baby','small','beast','mysteriousCreature','monarch'] %}
+{% set animalGradeKorNameList = ['새끼','미물','야수','영물','군주'] %}
+{% set dailyAchivementKorNameList = ['전투 승리 3회','동물 4회 소환'] %}
+{% set dailyAchivementRewardInfoList = [{
+reward: 'spirit',
+amounts: 1
+},{
+reward: 'jade',
+amounts: 50
+}] %}
+{% set weeklyAchivementKorNameList = ['전투 승리 15회','동물 20회 소환'] %}
+{% set weeklyAchivementRewardInfoList = [{
+reward: 'spirit',
+amounts: 6
+},{
+reward: 'jade',
+amounts: 300
+}] %}
+{% set permanentUpgradeAchivementKorNameList = ['새끼 등급 육성 +20 달성',
+'미물 등급 육성 +40 달성',
+'야수 등급 육성 +80 달성',
+'영물 등급 육성 +160 달성',
+'군주 등급 육성 +320 달성',
+'꾼 육성 +25 달성',
+'불사 육성 +25 달성',
+'대호 육성 +25 달성',
+'도끼 육성 +25 달성',
+'이무기 육성 +25 달성',
+'천마 육성 +25 달성',
+'수호 육성 +25 달성',
+'대장 사호납 육성 +25 달성',
+'봉황 육성 +25 달성',
+'대장 늑대 육성 +25 달성',
+'대장 멧돼지 육성 +25 달성',
+'흑룡 육성 +50 달성',
+'처손 육성 +50 달성',
+'백호 육성 +50 달성',
+'달토끼 육성 +50 달성',
+'현무 육성 +50 달성',
+'청룡 육성 +50 달성',
+'흑호 육성 +50 달성',
+'제천대성 육성 +50 달성',
+'주작 육성 +50 달성',
+'타락 육성 +50 달성',
+'탐욕 육성 +50 달성'
+] %}
+{% set permanentUpgradeAchivementRewardInfoList = [{
+reward:'gold',
+amounts:'400'
+},{
+reward:'gold',
+amounts:'16.0k'
+},{
+reward:'gold',
+amounts:'640.0k'
+},{
+reward:'gold',
+amounts:'25.6m'
+},{
+reward:'gold',
+amounts:'1.0b'
+},{
+reward:'gold',
+amounts:'600.0k'
+},
+{
+reward:'gold',
+amounts:'600.0k'
+},
+{
+reward:'gold',
+amounts:'600.0k'
+},
+{
+reward:'gold',
+amounts:'600.0k'
+},
+{
+reward:'gold',
+amounts:'600.0k'
+},
+{
+reward:'gold',
+amounts:'600.0k'
+},
+{
+reward:'gold',
+amounts:'600.0k'
+},
+{
+reward:'gold',
+amounts:'600.0k'
+},
+{
+reward:'gold',
+amounts:'600.0k'
+},
+{
+reward:'gold',
+amounts:'600.0k'
+},
+{
+reward:'gold',
+amounts:'600.0k'
+},{
+reward:'gold',
+amounts:'20.0m'
+},{
+reward:'gold',
+amounts:'20.0m'
+},{
+reward:'gold',
+amounts:'20.0m'
+},{
+reward:'gold',
+amounts:'20.0m'
+},{
+reward:'gold',
+amounts:'20.0m'
+},{
+reward:'gold',
+amounts:'20.0m'
+},{
+reward:'gold',
+amounts:'20.0m'
+},{
+reward:'gold',
+amounts:'20.0m'
+},{
+reward:'gold',
+amounts:'20.0m'
+},{
+reward:'gold',
+amounts:'20.0m'
+},{
+reward:'gold',
+amounts:'20.0m'
+}] %}
+{% set permanentCollectAchivementKorNameList = ['모든 새끼 등급 동물 수집',
+'모든 미물 등급 동물 수집',
+'모든 야수 등급 동물 수집',
+'모든 영물 등급 동물 수집',
+'모든 군주 등급 동물 수집'
+] %}
+{% set permanentCollectAchivementRewardInfoList = [{
+reward:'spirit',
+amounts:'2'
+},{
+reward:'spirit',
+amounts:'10'
+},{
+reward:'spirit',
+amounts:'50'
+},{
+reward:'spirit',
+amounts:'250'
+},{
+reward:'spirit',
+amounts:'1,250'
+}] %}
+{% set passInfoList = [{
+name: 'beast pass',
+korName: '야수 패스',
+price: '400',
+dailySpiritAmounts:'1',
+dailyScrollAmounts:'30%',
+shopDetail:'매일 출석 시 영혼 1, 두루마리 30% 획득!'
+},{
+name: 'mysteriousCreature pass',
+korName: '영물 패스',
+price: '1200',
+dailySpiritAmounts:'2',
+dailyScrollAmounts:'60%',
+shopDetail:'매일 출석 시 영혼 2, 두루마리 60% 획득!'
+},{
+name: 'monarch pass',
+korName: '군주 패스',
+price: '3600',
+dailySpiritAmounts:'3',
+dailyScrollAmounts:'90%',
+shopDetail:'매일 출석 시 영혼 3, 두루마리 90% 획득!'
+}]%}
+
+{% block styleSheet %}
+<link rel="stylesheet" type="text/css" href="/stylesheet/home.css?version=0.0.1">
+{% endblock %}
+
+{% block content %}
+<main>
+  <div class="battleZone">
+    {% for i in range(0,36)%}
+    {% set horizontalPadding = '' %}
+    {% set verticalPadding = '' %}
+    {% if i%2===0 %}
+    {% set horizontalPadding = 'leftPadding' %}
+    {% elif (i+1)%6===0 %}
+    {% set horizontalPadding = 'rightPadding' %}
+    {% endif %}
+    {% if [0,1,2,3,4,5,12,13,14,15,16,17,24,25,26,27,28,29].includes(i)%}
+    {% set verticalPadding = 'topPadding' %}
+    {% elif [30,31,32,33,34,35,36].includes(i) %}
+    {% set verticalPadding = 'bottomPadding' %}
+    {% endif %}
+    <div class="battleZone_animalImgContainer {{horizontalPadding}} {{verticalPadding}}">
+      <img src="/images/noImg.png" alt="" class="battleZone_animalImg">
+    </div>
+    {% endfor %}
+  </div>
+  <div class="battleZoneWrapper">
+  </div>
+  <div id="homePart" class="mainPart">
+    <div class="profileContainer">
+      <img src="/images/noImg.png" alt="" class="profileContainer_profileImg">
+      <div class="profileContainer_userNameContainer"></div>
+      <button class="profileContainer_profileManageBtn">프로필 관리</button>
+    </div>
+    <div class="levelInfoContainer">
+      <div class="levelContainer"></div>
+      <div class="expContainer">
+        <div class="expContainer_expBar"></div>
+        <div class="expContainer_expInfoContainer"></div>
+      </div>
+    </div>
+    <div class="battleInfoContainer">
+      <div class="battleGradeContainer">
+        <button id="battleGradeLeftEndMoveBtn" class="battleGradeContainer_gradeMoveBtn">◀</button>
+        <button id="battleGradeLeftMoveBtn" class="battleGradeContainer_gradeMoveBtn">◁</button>
+        <div class="battleGradeListWrapper">
+          <div class="battleGradeList">
+            {% for i in range(0,100) %}
+            <div class="battleGradeList_battleGrade">
+              <div class="battleGrade_gradeInfoContainer">{{i+1}}</div>
+              <div class="battleGrade_starContainer"></div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+        <button id="battleGradeRightMoveBtn" class="battleGradeContainer_gradeMoveBtn">▷</button>
+        <button id="battleGradeRightEndMoveBtn" class="battleGradeContainer_gradeMoveBtn">▶</button>
+        <div class="battleGradeTotalInfoContainer"></div>
+      </div>
+      <div class="battleInfoContainer_label">적 정보</div>
+      <div class="battleEnemyInfoContainer">
+        <img src="/images/noImg.png" alt="" class="battleEnemyInfoContainer_enemyImg">
+        <div class="battleEnemyInfoContainer_enemyInfo">
+          <!-- 새끼 쥐 -->
+          <br>
+          <!-- HP: 100 -->
+        </div>
+        <img src="/images/noImg.png" alt="" class="battleEnemyInfoContainer_bossImg">
+        <div class="battleEnemyInfoContainer_bossInfo">
+          <!-- 쥐 (보스) -->
+          <br>
+          <!-- HP: 10,000 -->
+        </div>
+      </div>
+      <div class="battleInfoContainer_label">전투 보상</div>
+      <div class="battleRewardList">
+        {% for i in range(0,5) %}
+        <div class="battleRewardContainer">
+          {% if i > 1 %}
+          <div class="battleRewardContainer_rewardCondition starRewardCondition">
+            {{['⭐','⭐⭐','⭐⭐⭐'][i-2]}}
+          </div>
+          {% else %}
+          <div class="battleRewardContainer_rewardCondition">
+            {{['100%','100%'][i]}}
+          </div>
+          {% endif %}
+          <img src="/images/{{['gold','exp','jade','jade','jade'][i]}}.png" alt=""
+            class="battleRewardContainer_rewardImg">
+          <span class="battleRewardContainer_rewardAmountContainer">
+            {% if i > 1 %}
+            {{i-1}}
+            {% endif %}
+          </span>
+        </div>
+        {% endfor %}
+      </div>
+      <div class="battleProceedBtnContainer">
+        <div class="battleProceedBtnContainer_scrollContainer">
+          <img src="/images/scroll.png" alt="" class="scrollContainer_scrollImg">
+          <div class="scrollContainer_scrollValueContainer"></div>
+        </div>
+        <button class="battleProceedBtnContainer_battleBtn">전투</button>
+        <button style="display: none;" class="battleProceedBtnContainer_sweepBtn">소탕</button>
+      </div>
+    </div>
+  </div>
+  <div style="display: none;" id="animalPart" class="mainPart">
+    <div class="animalComprehensivePart">
+      <div class="animalComprehensivePart_animalListWrapper">
+        <div class="animalComprehensivePart_animalList">
+          {% for i in range(0,5) %}
+          <div class="animalList_gradeLabel">{{animalGradeKorNameList[i]}}</div>
+          {% for j in range(0,11) %}
+          <div id="{{i}}_{{j}}" class="animalList_animalImgContainer">
+            <img src="/images/animals/{{animalNameList[i][j]}}.png" alt="" class="animalList_animalImg">
+            <div class="animalList_animalAmountContainer"></div>
+          </div>
+          {% endfor %}
+          {% endfor %}
+        </div>
+      </div>
+      <div class="animalComprehensivePart_btnContainer">
+        <button class="animalComprehensivePart_btn" id="animalComprehensivePart_modeChangeBtn">배치</button>
+        <button class="animalComprehensivePart_btn" id="animalComprehensivePart_summonBtn">소환</button>
+        <button class="animalComprehensivePart_btn" id="animalComprehensivePart_summonTenBtn">10회 소환</button>
+      </div>
+    </div>
+    <div style="display: none;" class="animalSpecificPart">
+      <div class="animalSpecificPart_header">
+        <button class="animalSpecificPart_closeBtn">✖</button>
+      </div>
+      <div class="animalSpecificPart_profileContainer">
+        <img src="/images/noImg.png" alt="" class="profileContainer_animalImg">
+        <div class="profileContainer_animalBasicInfoContainer">
+          <div class="animalBasicInfoContainer_animalNameContainer">
+            <span class="animalNameContainer_animalGrade"></span>
+            <span class="animalNameContainer_animalName"></span>
+          </div>
+          <div class="animalBasicInfoContainer_animalAmountContainer"></div>
+        </div>
+        <div class="profileContainer_specContainer">
+          <!-- 공격력: 327,500
+            <br>
+            <br>
+            공격속도: 8 -->
+        </div>
+      </div>
+      <div class="animalSpecificPart_infoContainer">
+        <div id="animalSpecificPartSkillLabel" class="animalSpecificPart_label">스킬</div>
+        <div class="animalSpecificPart_skillInfoContainer">
+          <!-- <span class="skillInfoContainer_skillNameContainer"></span>
+          <span class="skillInfoContainer_skillDetailContainer"></span> -->
+        </div>
+      </div>
+      <div class="animalSpecificPart_infoContainer">
+        <div class="animalSpecificPart_label">조합</div>
+        <div class="animalSpecificPart_combineInfoContainer">
+          <img src="/images/noImg.png" alt="" class="combineInfoContainer_targetImg">
+          <div class="combineInfoContainer_signContainer">=</div>
+          <div class="combineInfoContainer_ingredientImgContainer">
+            <img src="/images/noImg.png" alt="" class="combineInfoContainer_ingredientImg">
+            <div class="ingredientImgContainer_ingredientAmountContainer"></div>
+          </div>
+          <div class="combineInfoContainer_signContainer">+</div>
+          <div class="combineInfoContainer_ingredientImgContainer">
+            <img src="/images/noImg.png" alt="" class="combineInfoContainer_ingredientImg">
+            <div class="ingredientImgContainer_ingredientAmountContainer"></div>
+          </div>
+          <div class="combineInfoContainer_signContainer">+</div>
+          <div class="combineInfoContainer_ingredientImgContainer">
+            <img src="/images/noImg.png" alt="" class="combineInfoContainer_ingredientImg">
+            <div class="ingredientImgContainer_ingredientAmountContainer"></div>
+          </div>
+          <div class="combineInfoContainer_signContainer">+</div>
+          <div class="combineInfoContainer_ingredientImgContainer">
+            <img src="/images/noImg.png" alt="" class="combineInfoContainer_ingredientImg">
+            <div class="ingredientImgContainer_ingredientAmountContainer"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div style="display: none;" id="upgradePart" class="mainPart">
+    <div class="upgradeListWrapper">
+      <div class="upgradeList">
+        <div class="upgradeListLabel">육성 | 등급</div>
+        {% for i in range(0,5)%}
+        <div class="upgradeContainer">
+          <img src="/images/{{['babyGrade','smallGrade','beastGrade','mysteriousCreatureGrade','monarchGrade'][i]}}.png"
+            alt="" class="upgradeContainer_upgradeImg">
+          <div class="upgradeContainer_upgradeInfoContainer" id="{{animalGradeNameList[i]}}UpgradeInfoContainer">
+            <div class="upgradeInfoContainer_detailContainer">
+              &nbsp;{{animalGradeKorNameList[i]}} 육성&nbsp;<span class="upgradeValueSpan">+0</span>
+              <br>
+              <br>
+              <span class="upgradeInfoSpan">{{animalGradeKorNameList[i]}} 등급 동물들의 공격력을 5% 증가시킨다.</span>
+            </div>
+            <div class="upgradeInfoContainer_upgradeExecuter">
+              <button class="upgradeExecuter_upgradeBtn">육성</button>
+              <div class="upgradeExecuter_goldContainer">
+                <img src="/images/gold.png" alt="" class="goldContainer_goldImg">
+                <div id="{{animalGradeNameList[i]}}UpgradeGoldValueContainer" class="goldContainer_goldValueContainer">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+        <div class="upgradeListLabel">육성 | 영물</div>
+        {% for i in range(0,11) %}
+        <div class="upgradeContainer">
+          <img src="/images/animals/{{animalNameList[3][i]}}.png" alt="" class="upgradeContainer_upgradeImg">
+          <div class="upgradeContainer_upgradeInfoContainer" id="{{animalKorNameList[3][i]}}UpgradeInfoContainer">
+            <div class="upgradeInfoContainer_detailContainer">
+              &nbsp;{{animalKorNameList[3][i]}} 육성&nbsp;<span class="upgradeValueSpan">+0</span>
+              <br>
+              <br>
+              <span class="upgradeInfoSpan">
+                {% if i===3 %}
+                {{animalKorNameList[3][i]}}의 공격속도를 0.02 증가시킨다.
+                {% else %}
+                {{animalKorNameList[3][i]}}의 공격력을 10% 증가시킨다.
+                {% endif %}
+              </span>
+            </div>
+            <div class="upgradeInfoContainer_upgradeExecuter">
+              <button class="upgradeExecuter_upgradeBtn">육성</button>
+              <div class="upgradeExecuter_goldContainer">
+                <img src="/images/gold.png" alt="" class="goldContainer_goldImg">
+                <div id="{{animalNameList[3][i]}}UpgradeGoldValueContainer" class="goldContainer_goldValueContainer">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+        <div class="upgradeListLabel">육성 | 군주</div>
+        {% for i in range(0,11) %}
+        <div class="upgradeContainer">
+          <img src="/images/animals/{{animalNameList[4][i]}}.png" alt="" class="upgradeContainer_upgradeImg">
+          <div class="upgradeContainer_upgradeInfoContainer" id="{{animalKorNameList[4][i]}}UpgradeInfoContainer">
+            <div class="upgradeInfoContainer_detailContainer">
+              &nbsp;{{animalKorNameList[4][i]}} 육성&nbsp;<span class="upgradeValueSpan">+0</span>
+              <br>
+              <br>
+              <span class="upgradeInfoSpan">
+                {% if i===3 %}
+                {{animalKorNameList[4][i]}}의 공격속도를 0.04 증가시킨다.
+                {% else %}
+                {{animalKorNameList[4][i]}}의 공격력을 20% 증가시킨다.
+                {% endif %}
+              </span>
+            </div>
+            <div class="upgradeInfoContainer_upgradeExecuter">
+              <button class="upgradeExecuter_upgradeBtn">육성</button>
+              <div class="upgradeExecuter_goldContainer">
+                <img src="/images/gold.png" alt="" class="goldContainer_goldImg">
+                <div id="{{animalNameList[4][i]}}UpgradeGoldValueContainer" class="goldContainer_goldValueContainer">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+  <div style="display: none;" id="achivementPart" class="mainPart">
+    <div class="achimvementListWrapper">
+      <div class="achimvementList">
+        <div class="achimvementList_label">일일 업적 (매일 오전 9시 초기화)</div>
+        {% for i in range(0,2) %}
+        <div class="achivementContainer">
+          <div class="achivementContainer_achivementInfoContainer">
+            <div class="achivementInfoContainer_achivementName">{{dailyAchivementKorNameList[i]}}</div>
+            <div class="achivementInfoContainer_progressContainer">
+              <div class="progressContainer_progressBar"></div>
+              <div class="progressContainer_progressInfoContainer">1/3</div>
+            </div>
+          </div>
+          <div class="achivementContainer_rewardImgContainer">
+            <img src="/images/{{['spirit','jade'][i]}}.png" alt="" class="rewardImgContainer_rewardImg">
+            <div class="rewardImgContainer_rewardAmountContainer">{{dailyAchivementRewardInfoList[i].amounts}}</div>
+            <img class="rewardImgContainer_rewardCompletedImg" src="/images/check.png" alt="">
+          </div>
+        </div>
+        {% endfor %}
+        <div class="achimvementList_label">주간 업적 (일요일 오전 9시 초기화)</div>
+        {% for i in range(0,2) %}
+        <div class="achivementContainer">
+          <div class="achivementContainer_achivementInfoContainer">
+            <div class="achivementInfoContainer_achivementName">{{weeklyAchivementKorNameList[i]}}</div>
+            <div class="achivementInfoContainer_progressContainer">
+              <div class="progressContainer_progressBar"></div>
+              <div class="progressContainer_progressInfoContainer"></div>
+            </div>
+          </div>
+          <div class="achivementContainer_rewardImgContainer">
+            <img src="/images/{{['spirit','jade'][i]}}.png" alt="" class="rewardImgContainer_rewardImg">
+            <div class="rewardImgContainer_rewardAmountContainer">{{weeklyAchivementRewardInfoList[i].amounts}}</div>
+            <img class="rewardImgContainer_rewardCompletedImg" src="/images/check.png" alt="">
+          </div>
+        </div>
+        {% endfor %}
+        <div class="achimvementList_label">영구 업적</div>
+        {% for i in range(0,5) %}
+        <div class="achivementContainer">
+          <div class="achivementContainer_achivementInfoContainer">
+            <div class="achivementInfoContainer_achivementName">{{permanentCollectAchivementKorNameList[i]}}</div>
+            <div class="achivementInfoContainer_progressContainer">
+              <div class="progressContainer_progressBar"></div>
+              <div class="progressContainer_progressInfoContainer"></div>
+            </div>
+          </div>
+          <div class="achivementContainer_rewardImgContainer">
+            <img src="/images/spirit.png" alt="" class="rewardImgContainer_rewardImg">
+            <div class="rewardImgContainer_rewardAmountContainer">
+              {{permanentCollectAchivementRewardInfoList[i].amounts}}</div>
+            <img class="rewardImgContainer_rewardCompletedImg" src="/images/check.png" alt="">
+          </div>
+        </div>
+        {% endfor %}
+
+        {% for i in range(0,27) %}
+        <div class="achivementContainer">
+          <div class="achivementContainer_achivementInfoContainer">
+            <div class="achivementInfoContainer_achivementName">{{permanentUpgradeAchivementKorNameList[i]}}</div>
+            <div class="achivementInfoContainer_progressContainer">
+              <div class="progressContainer_progressBar"></div>
+              <div class="progressContainer_progressInfoContainer"></div>
+            </div>
+          </div>
+          <div class="achivementContainer_rewardImgContainer">
+            <img src="/images/gold.png" alt="" class="rewardImgContainer_rewardImg">
+            <div class="rewardImgContainer_rewardAmountContainer">
+              {{permanentUpgradeAchivementRewardInfoList[i].amounts}}</div>
+            <img class="rewardImgContainer_rewardCompletedImg" src="/images/check.png" alt="">
+          </div>
+        </div>
+        {% endfor %}
+        {% for i in range(0,2) %}
+        <div class="achivementContainer">
+          <div class="achivementContainer_achivementInfoContainer">
+            <div id="{{['permanentBattleWinAchivementName','permanentBattlePerfectWinAchivementName'][i]}}"
+              class="achivementInfoContainer_achivementName">{{['단계 모든 전투 승리','단계 300별 획득'][i]}}
+              <!-- 단계 300별 획득 -->
+            </div>
+            <div class="achivementInfoContainer_progressContainer">
+              <div class="progressContainer_progressBar"></div>
+              <div class="progressContainer_progressInfoContainer"></div>
+            </div>
+          </div>
+          <div class="achivementContainer_rewardImgContainer">
+            <img src="/images/jade.png" alt="" class="rewardImgContainer_rewardImg">
+            <div class="rewardImgContainer_rewardAmountContainer">{{['1,000','2,000'][i]}}</div>
+            <img class="rewardImgContainer_rewardCompletedImg" src="/images/check.png" alt="">
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+  <div style="display: none;" id="passPart" class="mainPart">
+    {% for i in range(0,4) %}
+    <div class="passContainer">
+      {% if i===0 %}
+      <div class="passContainer_passNameContainer">
+        <span class="passNameContainer_passName">출석 보상</span>
+      </div>
+      {% else %}
+      <div
+        class="passContainer_passNameContainer  {{['beastPassContainer','mysteriousCreaturePassContainer','monarchPassContainer'][i-1]}}">
+        <span class="passNameContainer_passName">{{animalGradeKorNameList[i+1]}} 패스</span>
+      </div>
+      {% endif %}
+      {% for j in range(0,2) %}
+      <div class="passContainer_rewardImgContainer">
+        <img src="/images/{{['spirit','scroll'][j]}}.png" alt="" class="rewardImgContainer_rewardImg">
+        <div class="rewardImgContainer_rewardAmountContainer {{['','passPart_scrollRewardAmountContainer'][j]}}">
+          {% if j===0 %}
+          {{['3','1','2','3'][i]}}
+          {% endif %}
+        </div>
+        <img class="rewardImgContainer_rewardCompletedImg" src="/images/check.png" alt="">
+      </div>
+      {% endfor %}
+    </div>
+    {% endfor %}
+  </div>
+  <div style="display: none;" id="shopPart" class="mainPart">
+    <div class="shopListWrapper">
+      <div class="shopList">
+        <div class="shopPart_label">패스<span style="font-weight: 500;">&nbsp;(유효기간 30일, 해당 패스 보유 시, 30일 기간 연장)</span>
+        </div>
+        <div class="shopPart_passShopContainer">
+          {% for i in range(0,3) %}
+          <div
+            class="passShopContainer_passContainer {{['beastPassContainer','mysteriousCreaturePassContainer','monarchPassContainer'][i]}}">
+            <div class="passContainer_nameContainer">{{passInfoList[i].korName}}</div>
+            <div class="passContainer_detailInfoContainer">{{passInfoList[i].shopDetail}}</div>
+            <div class="passContainer_priceContainer">
+              <img src="/images/jade.png" alt="" class="jadeContainer_jadeImg">
+
+              <div class="jadeContainer_jadeValueContainer">{{passInfoList[i].price}}</div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+        <div class="shopPart_label">두루마리 & 영혼</div>
+        <div class="shopPart_goodsShopContainer">
+          {% for i in range(0,4) %}
+          <div class="goodsShopContainer_goodsImgContainer">
+            <div class="goodsImgContainer_priceContainer">
+              <img src="/images/jade.png" alt="" class="jadeContainer_jadeImg">
+              <div class="jadeContainer_jadeValueContainer">{{['10','20','40','100'][i]}}</div>
+            </div>
+            <img src="/images/{{['scroll','scroll','spirit','spirit'][i]}}.png" alt=""
+              class="goodsImgContainer_goodsImg">
+            <div class="goodsImgContainer_amountsContainer">{{['50%','100%','1','4'][i]}}</div>
+            <img src="/images/check.png" alt="" class="goodsShopContainer_purchaseCompletedImg">
+          </div>
+          {% endfor %}
+        </div>
+        <div class="shopPart_label">옥 충전</div>
+        <div class="shopPart_jadeChargeExecuter">
+          <div class="jadeChargeExecuter_jadeContainer">
+            <img src="/images/jade.png" alt="" class="jadeContainer_jadeImg">
+            <div class="jadeContainer_jadeValueController">
+              <button id="jadeChargeExecuter_jadeDownBtn" class="jadeChargeExecuter_jadeControlBtn">🔻</button>
+              <div class="jadeChargeExecuter_jadeValueContainer">0</div>
+              <button id="jadeChargeExecuter_jadeUpBtn" class="jadeChargeExecuter_jadeControlBtn">🔺</button>
+            </div>
+          </div>
+          <button class="jadeChargeExecuter_chargeBtn">충전</button>
+          <div class="jadeChargeExecuter_detailContainer">
+            &nbsp;14일 내로
+            <!-- 카카오뱅크 3333158380350(위대훈) -->
+            본인 계좌로 <span class="jadeChargeExecuter_chargePriceContainer">0</span>원을 입금하셔야 하며,
+            입금하실 때, '홈-프로필 관리'의 캐시코드를 '받는 분 표시'란에 꼭 입력하셔야 합니다.
+            입금이 정상적으로 진행되지 않을 시, 계정이 정지될 수 있으며,
+            입금 관련 문제 발생 시, 문의 부탁드립니다.
+            <br>
+            (현재는 테스트 기간으로 따로 입금이 필요 없습니다.)
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div style="display: none;" id="mailPart" class="mainPart">
+    <div class="mailListWrapper">
+      <div class="mailList">
+        <!-- {% for i in range(0,12) %}
+        <div class="mailList_mailContainer">
+          <div style="display: none;" class="mailContainer_mailId">134</div>
+          <div class="mailContainer_mailContentContainer">
+            <div class="mailContentContainer_mailNameContainer">24.01.05. 출석 보상</div>
+            <div class="mailContentContainer_mailExpireContainer">~24.01.05. 24:00:00</div>
+          </div>
+          <div class="mailContainer_rewardImgContainer">
+            <img src="/images/noImg.png" alt="" class="mailContainer_rewardImg">
+            <div class="mailContainer_rewardAmountContainer">13</div>
+          </div>
+        </div>
+        {% endfor %} -->
+      </div>
+    </div>
+  </div>
+  <div style="display: none;" id="rankPart" class="mainPart">
+    <div class="rankListWrapper">
+      <div class="rankList">
+        {% for i in range(0,100) %}
+        <div style="display: none;" class="rankContainer">
+          <div class="rankContainer_rankValueContainer">{{i+1}}</div>
+          <img src="/images/animals/blueDragon.png" alt="" class="rankContainer_profileImg">
+          <div class="rankContainer_rankerInfoContainer">
+            <div class="rankerInfoContainer_nameContainer"></div>
+            <div class="rankerInfoContainer_levelContainer"></div>
+            <div class="rankerInfoContainer_battleGradeContainer"></div>
+          </div>
+          <button class="rankContainer_watchBtn">구경</button>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    <img src="/images/divider.png" alt="" class="rankPart_divider">
+    <div class="rankContainer" id="myRankContainer">
+      <div class="rankContainer_rankValueContainer">나</div>
+      <img src="/images/animals/blueDragon.png" alt="" class="rankContainer_profileImg">
+      <div class="rankContainer_rankerInfoContainer">
+        <div class="rankerInfoContainer_nameContainer"></div>
+        <div class="rankerInfoContainer_levelContainer"></div>
+        <div class="rankerInfoContainer_battleGradeContainer"></div>
+      </div>
+    </div>
+  </div>
+  <div id="inquiryPart" style="display: none;" class="mainPart">
+    <a href="/tutorial">튜토리얼</a>
+    <br>
+    <br>
+    문의 → 2life1601-@naver.com(메일)
+    <br>
+    <br>
+    제목 형식: 본인 ID/문의 내용
+    <br>
+    <br>
+    문의사항은 평일 오후 5~6시쯤 확인하며, 순차적 진행으로 인해 문의 진행 및 답변까지 다소 시간이 걸릴 수 있으며, 문의 내용에 따라 답변이 따로 없을 수도 있는 점 양해 부탁드립니다.
+  </div>
+  <div class="goodsContainer">
+    <div class="goldContainer">
+      <img src="/images/gold.png" alt="" class="goldContainer_goldImg">
+      <div class="goldContainer_goldValueContainer"></div>
+    </div>
+    <div class="jadeContainer">
+      <img src="/images/jade.png" alt="" class="jadeContainer_jadeImg">
+      <div class="jadeContainer_jadeValueContainer"></div>
+    </div>
+    <div class="scrollContainer">
+      <img src="/images/scroll.png" alt="" class="scrollContainer_scrollImg">
+      <div class="scrollContainer_scrollValueContainer"></div>
+    </div>
+    <div class="spiritContainer">
+      <img src="/images/spirit.png" alt="" class="spiritContainer_spiritImg">
+      <div class="spiritContainer_spiritValueContainer"></div>
+    </div>
+  </div>
+  <div class="menuBtnContainer">
+    <button id="homeBtn" class="menuBtn">홈</button>
+    <button id="animalBtn" class="menuBtn">동물</button>
+    <button id="upgradeBtn" class="menuBtn">육성</button>
+    <button id="achivementBtn" class="menuBtn">업적</button>
+    <button id="passBtn" class="menuBtn">패스</button>
+    <button id="shopBtn" class="menuBtn">상점</button>
+    <button id="mailBtn" class="menuBtn">우편</button>
+    <button id="rankBtn" class="menuBtn">랭킹</button>
+    <button id="inquiryBtn" class="menuBtn">문의</button>
+  </div>
+</main>
+<div style="display: none;" id="outOfProfileModal"></div>
+<div style="display: none;" id="profileModal">
+  <div class="modal_header">
+    <button class="modal_closeBtn">✖</button>
+  </div>
+  <div id="profileImgSetter" class="profileSetter">
+    <div class="profileImgListWrapper">
+      <div class="profileImgList">
+        {% for animalNameListByGrade in animalNameList %}
+        {% for animalName in animalNameListByGrade %}
+        <img src="/images/animals/{{animalName}}.png" alt="" class="profileImgList_profileImg">
+        {% endfor %}
+        {% endfor %}
+      </div>
+    </div>
+    <button class="profileImgSetter_setBtn">이미지 변경</button>
+  </div>
+  <div class="profileSetter">
+    <div class="profileSetter_label">닉네임</div>
+    <input type="text" class="profileSetter_textContainer" id="profileSetter_userNameContainer" value="실험쥐실험쥐실험"
+      placeholder="2~8자 내 한글, 영어, 숫자">
+    <button id="nickChangeBtn" class="profileSetter_changeBtn">변경</button>
+  </div>
+  <div class="profileSetter">
+    <div class="profileSetter_label">ID</div>
+    <input type="text" class="profileSetter_textContainer" id="profileSetter_idContainer" readonly value="">
+    <a class="logoutBtnWrapper" href="/login">
+      <button id="logoutBtn" class="profileSetter_changeBtn">로그아웃</button>
+    </a>
+  </div>
+  <div class="profileSetter">
+    <div class="profileSetter_label">비밀번호</div>
+    <input type="text" class="profileSetter_textContainer" id="profileSetter_passwordContainer" value=""
+      placeholder="6~16자 내 영어, 숫자, !@#$%^&*()._-">
+    <button id="passwordChangeBtn" class="profileSetter_changeBtn">변경</button>
+  </div>
+  <div class="profileSetter">
+    <div class="profileSetter_label">캐시코드</div>
+    <input type="text" class="profileSetter_textContainer" id="profileSetter_cashCodeContainer" readonly value="">
+  </div>
+
+</div>
+<div style="display: none;" class="alertModal"></div>
+<div style="display: none;" class="OutOfAlertModal"></div>
+<div style="display: none;" class="loadingShower">로딩 중</div>
+<div style="display: none;" class="outOfLoadingShower"></div>
+{% endblock %}
+
+{% block script %}
+<script src="/scripts/home.js?version=0.0.1"></script>
+{% endblock %}

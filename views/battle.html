@@ -1,0 +1,61 @@
+{% extends 'layout.html' %}
+
+{% block styleSheet %}
+<link rel="stylesheet" type="text/css" href="/stylesheet/battle.css?version=0.0.1">
+{% endblock %}
+
+{% block content %}
+<main>
+  <img style="display: none;" src="/images/animals/attackObject.png" alt="" id="attackObjectImg">
+  <img src="/images/battleZone.png" alt="" id="battleZoneImg">
+  <canvas id="bottomCanvas" width="2000" height="2000"></canvas>
+  <canvas id="middleCanvas" width="2000" height="2000"></canvas>
+  <canvas id="topCanvas" width="2000" height="2000"></canvas>
+  <div id="battleZoneWrapper"></div>
+  <div id="enemyInfoList">
+    <div id="enemyInfoContainer">
+      <img src="/images/noImg.png" alt="" id="enemyImg">
+      <div id="enemyInfo">
+      </div>
+    </div>
+    <div id="bossInfoContainer">
+      <img src="/images/noImg.png" alt="" id="bossImg">
+      <div id="bossInfo"></div>
+    </div>
+  </div>
+  <div id="animalInfoContainer">
+    <div id="animalProfileContainer">
+      <img src="/images/noImg.png" alt="" id="animalProfileImg">
+      <div id="animalBasicInfoContainer">
+        <div id="animalNameContainer">
+          <span id="animalGrade"></span>
+          <span id="animalName"></span>
+        </div>
+        <div id="animalCoordContainer"></div>
+      </div>
+      <div id="animalSpecContainer"></div>
+    </div>
+    <div id="animalSkillInfoContainer">
+      <div id="animalSkillLabel">스킬</div>
+      <div id="animalSkillInfo"></div>
+    </div>
+  </div>
+
+  <div id="battleController">
+    <div id="timer">3:00</div>
+    <div id="lifeContainer">
+      🖤 60
+    </div>
+    <button id="hpVisibleToggleBtn">HP</button>
+    <button id="speedControlBtn">⨉1</button>
+    <button id="pauseBtn">정지</button>
+    <button id="giveUpBtn">포기</button>
+  </div>
+</main>
+<div style="display: none;" class="alertModal"></div>
+<div style="display: none;" class="OutOfAlertModal"></div>
+{% endblock %}
+
+{% block script %}
+<script src="/scripts/battle.js?version=0.0.1"></script>
+{% endblock %}

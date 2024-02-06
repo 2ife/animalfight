@@ -1,0 +1,159 @@
+header {
+  display: flex;
+  flex-flow: row nowrap;
+  width: 100%;
+  height: 12.5%;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+}
+
+.title {
+  width: 6.25%;
+  height: 100%;
+  margin-left: 43.75%;
+  margin-right: 35.75%;
+}
+
+header a {
+  width: 6.25%;
+  height: 100%;
+  margin-right: 1.75%;
+}
+
+.tutorialImg {
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+main {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 87.5%;
+}
+
+#loginForm,
+#joinForm {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: flex-start;
+  align-items: center;
+  width: 35%;
+  height: 40%;
+  border: 2px black solid;
+}
+
+.loginInputContainer,
+.joinInputContainer {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+  align-items: center;
+  width: 80%;
+  height: 33%;
+}
+
+.loginInputContainer label,
+.joinInputContainer label {
+  width: 30%;
+  font-size: 110%;
+  font-weight: 700;
+  text-align: left;
+}
+
+.loginInputContainer input,
+.joinInputContainer input {
+  width: 60%;
+  height: 35%;
+  border: 2px black solid;
+}
+
+.form_footerBtnContainer {
+  width: 100%;
+  height: 30%;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.modeChangeBtn,
+#loginBtn,
+#joinBtn {
+  width: 25%;
+  height: 60%;
+  border: 1.5px black solid;
+  border-radius: 5%;
+  font-size: 90%;
+  font-weight: 900;
+}
+
+#loginBtn:active,
+#joinBtn:active {
+  padding-bottom: 2dvh;
+}
+
+#joinForm {
+  width: 60%;
+  height: 80%;
+}
+
+.joinInputContainer {
+  height: 20%;
+}
+
+.joinInputContainer label {
+  width: 25%;
+}
+
+.joinInputContainer input {
+  width: 50%;
+  height: 30%;
+  margin: 0 5%;
+}
+
+.joinForm_checkBtn {
+  width: 15%;
+  height: 50%;
+  font-size: 70%;
+  font-weight: 900;
+  border: 2px black solid;
+}
+
+#joinForm .form_footerBtnContainer {
+  height: 20%;
+}
+
+
+.alertModal,
+.loadingShower {
+  position: absolute;
+  left: 25%;
+  top: 30%;
+  justify-content: center;
+  align-items: center;
+  width: 40%;
+  height: 40%;
+  padding: 0 5%;
+  z-index: 7;
+  background-color: white;
+}
+
+.OutOfAlertModal,
+.outOfLoadingShower {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0%;
+  top: 0%;
+  z-index: 6;
+}
+
+.OutOfAlertModal {
+  background-color: black;
+  opacity: 0.5;
+}

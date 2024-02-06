@@ -1,0 +1,195 @@
+* {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+main {
+  width: 100%;
+  height: 100%;
+}
+
+#battleZoneImg,
+#bottomCanvas,
+#middleCanvas,
+#topCanvas,
+#battleZoneWrapper {
+  position: absolute;
+  width: 50%;
+  height: 100%;
+}
+#enemyInfoList{
+  position: absolute;
+  left: 50%;
+  width: 50%;
+  height: 36%;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+}
+#enemyInfoContainer,
+#bossInfoContainer{
+  width: 60%;
+  height: 44.44%;
+  border: 2px black solid;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+  align-items: center;
+}
+#bossInfoContainer{
+  border-top: 0;
+}
+#enemyImg,
+#bossImg{
+  width: 26.66%;
+  height: 100%;
+  border-right: 2px black solid;
+}
+#enemyInfo,
+#bossInfo{
+  width: 72%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 100%;
+}
+#animalInfoContainer{
+  position: absolute;
+  top: 36%;
+  left: 50%;
+  width: 50%;
+  height: 48%;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: flex-start;
+  align-items: center;
+}
+#animalProfileContainer{
+  width: 100%;
+  height: 50%;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+  align-items: center;
+}
+#animalProfileImg{
+  width: 22%;
+  height: 90%;
+  margin: 0 1%;
+  border: 2px black solid;
+}
+#animalBasicInfoContainer{
+  width: 30%;
+    height: 60%;
+    border: 1px black solid;
+    margin: 0 1%;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+}
+#animalNameContainer{
+  font-size: 100%;
+    font-weight: 900;
+}
+.babyGradeSpan {
+  color: gray;
+}
+
+.smallGradeSpan {
+  color: cornflowerblue;
+}
+
+.beastGradeSpan {
+  color: blueviolet;
+}
+
+.mysteriousCreatureGradeSpan {
+  color: orangered;
+}
+
+.monarchGradeSpan {
+  color: gold;
+}
+#animalSpecContainer{
+  width: 40%;
+    height: 60%;
+    border: 1px black solid;
+    margin: 0 1%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 90%;
+}
+#animalSkillInfoContainer{
+  width: 100%;
+  height: 50%;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: flex-start;
+}
+#animalSkillLabel{
+  width: 20%;
+  height: 25%;
+  margin-left: 5%;
+  margin-right: 75%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  font-size: 100%;
+  font-weight: 900;
+}
+#animalSkillInfo{
+  width: 90%;
+  height: 70%;
+  padding: 0 2.5%;
+  border: 1px black solid;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-evenly;
+  align-items: flex-start;
+  font-size: 90%;
+}
+#battleController{
+  position: absolute;
+  top: 88%;
+  left: 50%;
+  width: 50%;
+  height: 12%;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-around;
+  align-items: center;
+  background-color: rgb(220,220,220);
+}
+#timer,#lifeContainer{
+  width: 20%;
+  height: 80%;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  font-size: 100%;
+}
+#hpVisibleToggleBtn,
+#speedControlBtn,
+#pauseBtn,
+#giveUpBtn{
+  width: 10%;
+  height: 83.3%;
+  background-color: white;
+  font-size: 100%;
+  border-radius: 50%;
+}
+#hpVisibleToggleBtn:active,
+#speedControlBtn:active,
+#pauseBtn:active,
+#giveUpBtn:active{
+  font-weight: 900;
+}

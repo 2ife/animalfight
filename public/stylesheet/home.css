@@ -1,0 +1,1650 @@
+* {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+main {
+  width: 100%;
+  height: 100%;
+}
+
+.battleZone {
+  position: absolute;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
+  height: 100%;
+  background-color: rgb(220, 220, 220);
+}
+
+.battleZoneWrapper {
+  position: absolute;
+  width: 50%;
+  height: 100%;
+}
+
+.battleZone_animalImgContainer {
+  width: 16%;
+  height: 16%;
+  padding: 0.125%;
+}
+
+.leftPadding {
+  padding-left: 0.75%;
+}
+
+.rightPadding {
+  padding-right: 0.75%;
+}
+
+.topPadding {
+  padding-top: 0.75%;
+}
+
+.bottomPadding {
+  padding-bottom: 0.75%;
+}
+
+.battleZone_animalImg {
+  width: 100%;
+  height: 100%;
+  background-color: white;
+}
+
+.mainPart {
+  position: absolute;
+  left: 50%;
+  width: 50%;
+  height: 80%;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.profileContainer,
+.levelInfoContainer,
+.battleInfoContainer {
+  width: 100%;
+  height: 16.875%;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.profileContainer_profileImg {
+  width: 13.5%;
+  margin: 0 1.25%;
+  height: 100%;
+}
+
+.profileContainer_userNameContainer {
+  width: 40%;
+  height: 90%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 100%;
+  font-weight: 900;
+}
+
+.profileContainer_profileManageBtn {
+  width: 30%;
+  height: 50%;
+  border: 2px black solid;
+  border-radius: 5%;
+  font-size: 90%;
+}
+
+.profileContainer_profileManageBtn:active {
+  font-weight: 900;
+}
+
+.levelContainer {
+  width: 12.5%;
+  height: 100%;
+  margin: 0 1.25%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  font-size: 90%;
+  font-weight: 900;
+}
+
+.expContainer {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 75%;
+  height: 40%;
+  margin-right: 0 2.5%;
+  border: 1px black solid;
+  position: relative;
+}
+
+.expContainer_expBar {
+  position: absolute;
+  width: 0%;
+  height: 100%;
+  background-color: greenyellow;
+}
+
+.expContainer_expInfoContainer {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  font-size: 75%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.battleInfoContainer {
+  flex-flow: column nowrap;
+  justify-content: flex-start;
+  align-items: center;
+  height: 64%;
+  border-top: 5px rgb(220, 220, 220) solid;
+  border-bottom: 5px rgb(220, 220, 220) solid;
+}
+
+.battleGradeContainer {
+  width: 100%;
+  height: 25%;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.battleGradeTotalInfoContainer {
+  position: absolute;
+  bottom: -30%;
+  left: 32.5%;
+  width: 35%;
+  height: 40%;
+  text-align: center;
+  background-color: white;
+  border: 2px black solid;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 90%;
+  font-weight: 900;
+}
+
+.battleGradeContainer_gradeMoveBtn {
+  width: 5%;
+  height: 100%;
+  font-size: 90%;
+}
+
+.battleGradeContainer_gradeMoveBtn:active {
+  font-weight: 900;
+}
+
+.battleGradeListWrapper {
+  width: 80%;
+  height: 100%;
+  overflow-x: scroll;
+  -ms-overflow-style: none;
+}
+
+.battleGradeListWrapper::-webkit-scrollbar {
+  display: none;
+}
+
+.battleGradeList {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-around;
+  align-items: center;
+  width: 1400%;
+  height: 100%;
+}
+
+.battleGradeList_battleGrade {
+  width: 0.8%;
+  height: 80%;
+  border: 2px black solid;
+  border-radius: 10%;
+  position: relative;
+}
+
+.targetBattleGrade {
+  font-weight: 900;
+}
+
+.battleGradeList_battleGrade:active {
+  font-weight: 900;
+}
+
+.battleGrade_gradeInfoContainer {
+  width: 100%;
+  height: 100%;
+  font-size: 95%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.battleGrade_starContainer {
+  position: absolute;
+  width: 80%;
+  height: 30%;
+  top: 0;
+  left: 10%;
+  font-size: 40%;
+  font-weight: 400;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.battleInfoContainer_label {
+  width: 96%;
+  height: 10%;
+  margin-left: 2%;
+  font-size: 90%;
+  font-weight: 900;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.battleEnemyInfoContainer {
+  width: 100%;
+  height: 25%;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.battleEnemyInfoContainer_enemyImg,
+.battleEnemyInfoContainer_bossImg {
+  width: 11.52%;
+  height: 90%;
+  border: 1px black solid;
+}
+
+.battleEnemyInfoContainer_enemyInfo,
+.battleEnemyInfoContainer_bossInfo {
+  width: 25%;
+  height: 100%;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+  align-items: center;
+  font-size: 100%;
+}
+
+.battleEnemyInfoContainer_enemyInfo {
+  border-right: 2px black solid;
+}
+
+.battleRewardList {
+  width: 96%;
+  height: 20%;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.battleRewardContainer {
+  width: 9.6%;
+  height: 90%;
+  margin: 0 3%;
+  border: 2px black solid;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.battleRewardContainer_rewardCondition {
+  position: absolute;
+  top: -10%;
+  left: -10%;
+  width: 70%;
+  height: 30%;
+  font-size: 60%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px black solid;
+  background-color: white;
+}
+
+.starRewardCondition {
+  font-size: 40%;
+}
+
+.battleRewardContainer_rewardImg {
+  width: 60%;
+  height: 60%;
+}
+
+.battleRewardContainer_rewardAmountContainer {
+  position: absolute;
+  bottom: 2%;
+  right: 5%;
+  width: 50%;
+  height: 30%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  font-size: 70%;
+}
+
+.battleProceedBtnContainer {
+  width: 100%;
+  height: 20%;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.battleProceedBtnContainer_scrollContainer {
+  width: 23.85%;
+  height: 90%;
+  margin: 0 6.075%;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-around;
+  align-items: center;
+  border-radius: 5%;
+  background-color: rgb(220, 220, 220);
+}
+
+.battleProceedBtnContainer_battleBtn,
+.battleProceedBtnContainer_sweepBtn {
+  width: 20%;
+  height: 70%;
+  margin: 0 6%;
+  border: 2px black solid;
+  border-radius: 5%;
+  font-size: 100%;
+}
+
+.battleProceedBtnContainer_battleBtn:active,
+.battleProceedBtnContainer_sweepBtn:active {
+  font-weight: 900;
+}
+
+.animalComprehensivePart,
+.animalSpecificPart {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.animalComprehensivePart_animalListWrapper {
+  width: 100%;
+  height: 80%;
+  overflow-y: scroll;
+  -ms-overflow-style: none;
+}
+
+.animalComprehensivePart_animalListWrapper::-webkit-scrollbar {
+  display: none;
+}
+
+.animalComprehensivePart_animalList {
+  width: 100%;
+  height: 300%;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.animalList_gradeLabel {
+  width: 20%;
+  height: 2.5%;
+  margin-left: 1%;
+  margin-right: 79%;
+  font-size: 100%;
+  font-weight: 900;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(220, 220, 220);
+}
+
+.animalList_animalImgContainer {
+  width: 13%;
+  margin: 1%;
+  border: 2px black solid;
+  border-radius: 5%;
+  position: relative;
+}
+
+.animalList_animalImgContainer:active {
+  width: 14%;
+  margin: 0.5%;
+}
+
+.summonedAnimalImgContainer {
+  width: 14%;
+  margin: 0.5%;
+}
+
+.animalList_animalImg {
+  width: 100%;
+}
+
+.animalList_animalAmountContainer {
+  position: absolute;
+  bottom: 1%;
+  left: 2%;
+  font-size: 75%;
+  background-color: white;
+}
+
+.animalComprehensivePart_btnContainer {
+  width: 100%;
+  height: 20%;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-around;
+  align-items: center;
+  background-color: rgb(220, 220, 220);
+}
+
+.animalComprehensivePart_btn {
+  width: 20%;
+  height: 60%;
+  border: 2px black solid;
+  border-radius: 5%;
+  font-size: 90%;
+  background-color: white;
+}
+
+#animalComprehensivePart_modeChangeBtn {
+  font-weight: 900;
+}
+
+.animalComprehensivePart_btn:active {
+  font-weight: 900;
+}
+
+.animalSpecificPart_header {
+  background-color: rgb(220, 220, 220);
+  width: 100%;
+  height: 10%;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.animalSpecificPart_closeBtn {
+  width: 10%;
+  height: 80%;
+  border: none;
+  font-size: 110%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.animalSpecificPart_closeBtn:active {
+  font-weight: 900;
+}
+
+
+.animalSpecificPart_profileContainer {
+  width: 100%;
+  height: 30%;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.profileContainer_animalImg {
+  width: 22%;
+  height: 90%;
+  margin: 0 1%;
+  border: 2px black solid;
+}
+
+.profileContainer_animalBasicInfoContainer {
+  width: 30%;
+  height: 60%;
+  border: 1px black solid;
+  margin: 0 1%;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.animalBasicInfoContainer_animalNameContainer {
+  font-size: 100%;
+  font-weight: 900;
+}
+
+.babyGradeSpan {
+  color: gray;
+}
+
+.smallGradeSpan {
+  color: cornflowerblue;
+}
+
+.beastGradeSpan {
+  color: blueviolet;
+}
+
+.mysteriousCreatureGradeSpan {
+  color: orangered;
+}
+
+.monarchGradeSpan {
+  color: gold;
+}
+
+.animalBasicInfoContainer_animalAmountContainer {
+  font-size: 90%;
+}
+
+
+.profileContainer_specContainer {
+  width: 40%;
+  height: 60%;
+  border: 1px black solid;
+  margin: 0 1%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 90%;
+}
+
+.animalSpecificPart_infoContainer {
+  width: 100%;
+  height: 30%;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.animalSpecificPart_label {
+  width: 20%;
+  height: 25%;
+  margin-left: 5%;
+  margin-right: 75%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  font-size: 100%;
+  font-weight: 900;
+}
+
+.animalSpecificPart_skillInfoContainer {
+  width: 90%;
+  height: 70%;
+  padding: 0 2.5%;
+  border: 1px black solid;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-evenly;
+  align-items: flex-start;
+  font-size: 90%;
+}
+
+.skillInfoContainer_skillNameContainer {
+  font-weight: 900;
+}
+
+.animalSpecificPart_combineInfoContainer {
+  width: 95%;
+  height: 70%;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.combineInfoContainer_targetImg {
+  width: 15.03%;
+  height: 85%;
+  margin-left: 2.97%;
+  border: 2px black solid;
+}
+
+.combineInfoContainer_targetImg:active {
+  width: 16%;
+  height: 90%;
+  border: 0;
+}
+
+.combineInfoContainer_signContainer {
+  width: 5%;
+  font-size: 150%;
+  font-weight: 900;
+  text-align: center;
+}
+
+.combineInfoContainer_ingredientImgContainer {
+  width: 13.26%;
+  height: 90%;
+  border: 2px black solid;
+  position: relative;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.upgradeListWrapper {
+  width: 100%;
+  height: 100%;
+  overflow-x: scroll;
+  -ms-overflow-style: none;
+}
+
+.upgradeListWrapper::-webkit-scrollbar {
+  display: none;
+}
+
+.upgradeList {
+  padding: 0 2.5%;
+  width: 95%;
+  height: 495%;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.upgradeListLabel {
+  width: 25%;
+  height: 1.515%;
+  margin-left: 2.5%;
+  margin-right: 72.5%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  font-size: 100%;
+  font-weight: 900;
+}
+
+.upgradeContainer {
+  width: 96%;
+  height: 3.03%;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.upgradeContainer_upgradeImg {
+  width: 13.16%;
+  height: 100%;
+  border: 2px black solid;
+}
+
+.upgradeContainer_upgradeInfoContainer {
+  width: 80%;
+  height: 100%;
+  border: 2px black solid;
+  border-left: 0;
+  font-size: 85%;
+  font-weight: 900;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.upgradeInfoContainer_detailContainer {
+  width: 70%;
+  height: 90%;
+}
+
+.upgradeInfoContainer_upgradeExecuter {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+  width: 25%;
+  height: 90%;
+  background-color: rgb(220, 220, 220);
+}
+
+.upgradeInfoContainer_upgradeExecuter:active {
+  width: 25.5%;
+  height: 91.8%;
+}
+
+.upgradeExecuter_upgradeBtn {
+  width: 60%;
+  height: 40%;
+  font-size: 90%;
+  font-weight: 900;
+}
+
+.upgradeExecuter_goldContainer {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+  height: 60%;
+}
+
+.upgradeValueSpan {
+  color: greenyellow;
+}
+
+.upgradeInfoSpan {
+  font-weight: 400;
+
+}
+
+.combineInfoContainer_ingredientImg {
+  width: 100%;
+  height: 83.33%;
+}
+
+.ingredientImgContainer_ingredientAmountContainer {
+  width: 100%;
+  height: 16%;
+  text-align: center;
+  font-size: 70%;
+}
+
+.achimvementListWrapper {
+  width: 100%;
+  height: 100%;
+  overflow-x: scroll;
+  -ms-overflow-style: none;
+}
+
+.achimvementListWrapper::-webkit-scrollbar {
+  display: none;
+}
+
+.achimvementList {
+  padding: 0 2.5%;
+  width: 95%;
+  height: 800%;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.achimvementList_label {
+  width: 75%;
+  height: 1.1%;
+  margin-left: 2.5%;
+  margin-right: 22.5%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  font-size: 100%;
+  font-weight: 900;
+}
+
+.achivementContainer {
+  width: 80%;
+  height: 2.2%;
+  margin-left: 2%;
+  margin-right: 18%;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.achivementContainer_achivementInfoContainer {
+  width: 85%;
+  height: 100%;
+  border: 2px black solid;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.achivementInfoContainer_achivementName {
+  width: 100%;
+  height: 30%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 90%;
+  font-weight: 900;
+}
+
+.achivementInfoContainer_progressContainer {
+  width: 80%;
+  height: 30%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  border: 1px black solid;
+  position: relative;
+}
+
+.progressContainer_progressBar {
+  position: absolute;
+  width: 0%;
+  height: 100%;
+  background-color: greenyellow;
+}
+
+.progressContainer_progressInfoContainer {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  font-size: 85%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.achivementContainer_rewardImgContainer {
+  width: 15%;
+  height: 100%;
+  border: 2px black solid;
+  border-left: 0;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-evenly;
+  align-items: center;
+  position: relative;
+}
+
+.rewardImgContainer_rewardImg {
+  height: 75%;
+}
+
+.rewardImgContainer_rewardAmountContainer {
+  width: 80%;
+  height: 15%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 90%;
+}
+
+.rewardImgContainer_rewardCompletedImg {
+  display: none;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+#passPart {
+  justify-content: space-around;
+}
+
+.passContainer {
+  width: 90%;
+  height: 20%;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.passContainer_passNameContainer {
+  width: 53.3%;
+  height: 100%;
+  border: 2px black solid;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}
+
+.passNameContainer_passName {
+  width: 30%;
+  height: 100%;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 100%;
+  font-weight: 900;
+}
+
+.passContainer_rewardImgContainer {
+  width: 16%;
+  height: 100%;
+  border: 2px black solid;
+  border-left: 0;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-evenly;
+  align-items: center;
+  position: relative;
+}
+
+.shopListWrapper {
+  width: 100%;
+  height: 100%;
+  overflow-x: scroll;
+  -ms-overflow-style: none;
+}
+
+.shopListWrapper::-webkit-scrollbar {
+  display: none;
+}
+
+.shopList {
+  padding: 0 2.5%;
+  width: 95%;
+  height: 200%;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.shopPart_label {
+  width: 97.5%;
+  height: 5%;
+  margin-left: 2.5%;
+  font-size: 100%;
+  font-weight: 900;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.shopPart_passShopContainer {
+  width: 100%;
+  height: 63.75%;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.passShopContainer_passContainer {
+  width: 100%;
+  height: 33.33%;
+  border: 2px black solid;
+  position: relative;
+}
+
+.beastPassContainer {
+  background-image: url('/images/beastGrade.png');
+  background-repeat: repeat-x;
+  background-size: calc(100% / 3);
+}
+
+.mysteriousCreaturePassContainer {
+  background-image: url('/images/mysteriousCreatureGrade.png');
+  background-repeat: repeat-x;
+  background-size: calc(100% / 3);
+}
+
+.monarchPassContainer {
+  background-image: url('/images/monarchGrade.png');
+  background-repeat: repeat-x;
+  background-size: calc(100% / 3);
+}
+
+.passShopContainer_passContainer:first-child {
+  border-bottom: 0;
+}
+
+.passShopContainer_passContainer:last-child {
+  border-top: 0;
+}
+
+.passShopContainer_passContainer:active {
+  font-weight: 900;
+}
+
+.passContainer_detailInfoContainer {
+  position: absolute;
+  top: 0;
+  left: 20%;
+  width: 60%;
+  height: 18%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  font-size: 90%;
+  background-color: white;
+}
+
+.passContainer_nameContainer {
+  position: absolute;
+  left: 35%;
+  width: 30%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 100%;
+  background-color: white;
+}
+
+.passContainer_priceContainer {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 16.29%;
+  height: 20%;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.shopPart_goodsShopContainer {
+  width: 100%;
+  height: 14.35%;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.goodsShopContainer_goodsImgContainer {
+  width: 25%;
+  height: 100%;
+  border: 2px black solid;
+  border-right: 0;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.goodsShopContainer_goodsImgContainer:active {
+  font-weight: 900;
+}
+
+.goodsShopContainer_goodsImgContainer:last-child {
+  border-right: 2px black solid;
+}
+
+.goodsImgContainer_priceContainer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 53%;
+  height: 20%;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.goodsImgContainer_goodsImg {
+  width: 70%;
+  height: 70%;
+}
+
+.goodsImgContainer_amountsContainer {
+  position: absolute;
+  bottom: 2.5%;
+  right: 5%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 85%;
+}
+
+.goodsShopContainer_purchaseCompletedImg {
+  display: none;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.shopPart_jadeChargeExecuter {
+  width: 100%;
+  height: 12.65%;
+  border: 2px black solid;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.jadeChargeExecuter_jadeContainer {
+  width: 60%;
+  height: 40%;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-around;
+  align-items: center;
+  background-color: rgb(220, 220, 220);
+}
+
+.jadeChargeExecuter_jadeContainer .jadeContainer_jadeImg {
+  width: 9.08%;
+}
+
+.jadeContainer_jadeValueController {
+  width: 80%;
+  height: 60%;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-around;
+  align-items: center;
+  border: 1px black solid;
+  background-color: white;
+}
+
+.jadeChargeExecuter_jadeControlBtn {
+  width: 25%;
+  font-size: 100%;
+}
+
+.jadeChargeExecuter_jadeControlBtn:active {
+  font-size: 110%;
+}
+
+.jadeChargeExecuter_jadeValueContainer {
+  width: 50%;
+  font-size: 90%;
+  text-align: center;
+}
+
+.jadeChargeExecuter_chargeBtn {
+  width: 20%;
+  height: 35%;
+  border: 2px black solid;
+  border-radius: 5%;
+  font-size: 100%;
+}
+
+.jadeChargeExecuter_chargeBtn:active {
+  font-weight: 900;
+}
+
+.jadeChargeExecuter_detailContainer {
+  width: 98%;
+  height: 50%;
+  padding: 0 1%;
+  padding-top: 0.5%;
+  padding-bottom: 0;
+  border-top: 1px black solid;
+  font-size: 75%;
+}
+
+.jadeChargeExecuter_chargePriceContainer {
+  font-weight: 900;
+}
+
+#mailPart {
+  justify-content: center;
+}
+
+.mailListWrapper {
+  width: 100%;
+  height: 95%;
+  overflow-y: scroll;
+  -ms-overflow-style: none;
+}
+
+.mailListWrapper::-webkit-scrollbar {
+  display: none;
+}
+
+.mailList {
+  width: 100%;
+  /* height: 210.526%; */
+  /* height: (메일 개수) * 4000 / 228 */
+  /* 메일 개수 - 최소 6 */
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-around;
+  align-items: flex-start;
+}
+
+.mailList_mailContainer {
+  /* width: 56%; */
+  /* width: 44 + 12 * 보상 개수 */
+  /* height: 7.5%; */
+  /* height: 3600/(40*메일 개수) */
+  margin-left: 4%;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+  align-items: center;
+  border: 2px black solid;
+}
+
+.mailContainer_mailContentContainer {
+  /* width: 78.57%; */
+  /* width:  2200 /(22+6*보상 개수) % */
+  height: 100%;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.mailContentContainer_mailNameContainer {
+  width: 95%;
+  height: 50%;
+  margin: 0 2.5%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  font-size: 95%;
+  font-weight: 900;
+}
+
+.mailContentContainer_mailExpireContainer {
+  width: 95%;
+  height: 50%;
+  margin: 0 2.5%;
+  padding-left: 5%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  font-size: 90%;
+}
+
+.mailContainer_rewardImgContainer {
+  /* width: 21.43%; */
+  /* width:  600 /(22+6*보상 개수) % */
+  height: 100%;
+  position: relative;
+  border-left: 2px black solid;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.mailContainer_rewardImg {
+  width: 85%;
+  height: 85%;
+}
+
+.mailContainer_rewardAmountContainer {
+  position: absolute;
+  bottom: 1%;
+  right: 5%;
+  font-size: 80%;
+}
+
+.rankListWrapper {
+  width: 100%;
+  height: 75%;
+  margin-top: 2%;
+  overflow-y: scroll;
+  -ms-overflow-style: none;
+}
+
+.rankListWrapper::-webkit-scrollbar {
+  display: none;
+}
+
+.rankList {
+  width: 100%;
+  height: 442.66%;
+  /* height: 332 * 랭커 수 / 15 % */
+  /* 랭커 수: 5 ~ 100 */
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.rankContainer {
+  width: 92%;
+  height: 4.518%;
+  /* height: 7500 / (83 * 랭커 수) % */
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+  align-items: center;
+  border: 2px black solid;
+}
+
+.rankContainer_rankValueContainer {
+  width: 13.04%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 120%;
+  font-weight: 900;
+  border-right: 2px black solid;
+}
+
+.rankContainer_profileImg {
+  width: 13.04%;
+  height: 100%;
+  margin-left: 2.5%;
+  margin-right: 5%;
+}
+
+.rankContainer_rankerInfoContainer {
+  width: 48%;
+  height: 100%;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-around;
+  align-items: flex-start;
+  font-size: 90%;
+}
+
+.rankerInfoContainer_nameContainer {
+  width: 85%;
+  height: 33.33%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  font-weight: 900;
+}
+
+.rankerInfoContainer_levelContainer {
+  width: 85%;
+  height: 33.33%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.rankerInfoContainer_battleGradeContainer {
+  width: 85%;
+  height: 33.33%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.rankContainer_watchBtn {
+  width: 16%;
+  height: 60%;
+  border: 2px black solid;
+  border-radius: 5%;
+  font-size: 90%;
+}
+
+.rankContainer_watchBtn:active {
+  font-weight: 900;
+}
+
+.rankPart_divider {
+  width: 95%;
+  height: 5%;
+}
+
+#myRankContainer {
+  width: 92%;
+  height: 15%;
+  margin-bottom: 2%;
+}
+
+#inquiryPart {
+  justify-content: center;
+}
+
+.goodsContainer {
+  position: absolute;
+  top: 80%;
+  left: 50%;
+  width: 50%;
+  height: 10%;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.goldContainer,
+.jadeContainer,
+.scrollContainer,
+.spiritContainer {
+  width: 23.85%;
+  height: 90%;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-around;
+  align-items: center;
+  border-radius: 5%;
+  background-color: rgb(220, 220, 220);
+}
+
+.goldContainer_goldImg,
+.jadeContainer_jadeImg,
+.scrollContainer_scrollImg,
+.spiritContainer_spiritImg {
+  width: 24%;
+  height: 64%;
+}
+
+.goldContainer_goldValueContainer,
+.jadeContainer_jadeValueContainer,
+.scrollContainer_scrollValueContainer,
+.spiritContainer_spiritValueContainer {
+  width: 60%;
+  height: 60%;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 80%;
+}
+
+.menuBtnContainer {
+  position: absolute;
+  top: 90%;
+  left: 50%;
+  width: 50%;
+  height: 10%;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-around;
+  align-items: center;
+  background-color: rgb(220, 220, 220);
+}
+
+.menuBtn {
+  width: 9%;
+  height: 90%;
+  border-radius: 50%;
+  font-size: 80%;
+  background-color: white;
+}
+
+.menuBtn:active {
+  font-weight: 900;
+}
+
+#outOfProfileModal {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0%;
+  top: 0%;
+  background-color: black;
+  opacity: 0.5;
+}
+
+#profileModal {
+  position: absolute;
+  width: 56%;
+  height: 64%;
+  left: 22%;
+  top: 18%;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-around;
+  align-items: center;
+  background-color: white;
+}
+
+.modal_header {
+  background-color: rgb(25, 25, 25);
+  width: 100%;
+  height: 10%;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.modal_closeBtn {
+  width: 10%;
+  height: 80%;
+  border: none;
+  background-color: rgb(25, 25, 25);
+  color: rgb(230, 230, 230);
+  font-size: 110%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal_closeBtn:active {
+  font-weight: 900;
+}
+
+.profileSetter {
+  width: 100%;
+  height: 15%;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+#profileImgSetter {
+  height: 30%;
+}
+
+.profileImgListWrapper {
+  width: 72.5%;
+  height: 90%;
+  margin: 0 1.25%;
+  overflow-x: scroll;
+  -ms-overflow-style: none;
+  border: 1px black solid;
+}
+
+.profileImgListWrapper::-webkit-scrollbar {
+  display: none;
+}
+
+.profileImgList {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-around;
+  align-items: center;
+  width: 1100%;
+  height: 100%;
+}
+
+.profileImgList_profileImg {
+  width: 1.65%;
+}
+
+.chosenProfileImg {
+  border: 4px greenyellow solid;
+}
+
+.profileImgSetter_setBtn {
+  width: 20%;
+  height: 40%;
+  margin: 0 1.25%;
+  font-size: 85%;
+  border: 2px black solid;
+  border-radius: 5%;
+}
+
+.profileImgSetter_setBtn:active {
+  font-weight: 900;
+}
+
+.profileSetter_label {
+  width: 15%;
+  margin: 0 2.5%;
+  font-size: 100%;
+  font-weight: 700;
+  text-align: left;
+}
+
+.profileSetter_textContainer {
+  width: 50%;
+  height: 35%;
+  border: 2px black solid;
+}
+
+.profileSetter_changeBtn {
+  width: 15%;
+  height: 60%;
+  margin-left: 5%;
+  font-size: 80%;
+  border: 2px black solid;
+}
+
+.profileSetter_changeBtn:active {
+  font-weight: 900;
+}
+
+.logoutBtnWrapper {
+  width: 15%;
+  height: 60%;
+  margin-left: 5%;
+}
+
+#logoutBtn {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+
+.alertModal,
+.loadingShower {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 30%;
+  height: 20%;
+  position: absolute;
+  left: 35%;
+  top: 40%;
+  z-index: 7;
+  background-color: white;
+  border: 1px black solid;
+}
+.alertModal{
+  width: 60%;
+  height: 40%;
+  left: 20%;
+  top: 30%;
+}
+.OutOfAlertModal,
+.outOfLoadingShower {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0%;
+  top: 0%;
+  z-index: 6;
+}
+
+.OutOfAlertModal {
+  background-color: black;
+  opacity: 0.5;
+}
