@@ -1,14 +1,5 @@
 import axios from "axios";
 
-let mousedown: "mousedown" | "touchstart" = "mousedown";
-let mouseup: "mouseup" | "touchend" = "mouseup";
-if (
-  navigator.userAgent.match(/mobile/i) ||
-  navigator.userAgent.match(/iPad|Android|Touch/i)
-) {
-  mousedown = "touchstart";
-  mouseup = "touchend";
-}
 // common html
 const attackObjectImg = document.querySelector(
   "#attackObjectImg"
@@ -42,6 +33,9 @@ const animalGrade = animalProfileContainer.querySelector(
 const animalName = animalProfileContainer.querySelector(
   "#animalName"
 ) as HTMLSpanElement;
+const animalMoveBtn = animalProfileContainer.querySelector(
+  "#animalMoveBtn"
+) as HTMLButtonElement;
 const animalSpecContainer = animalProfileContainer.querySelector(
   "#animalSpecContainer"
 ) as HTMLDivElement;
@@ -197,13 +191,6 @@ const animalKorNameList = [
     "탐욕",
   ],
 ];
-const animalGradeNameList = [
-  "baby",
-  "small",
-  "beast",
-  "mysteriousCreature",
-  "monarch",
-];
 const animalGradeKorNameList = ["새끼", "미물", "야수", "영물", "군주"];
 const animalSkillInfoList = [
   "공격 대상 기준 좁은 범위 내에 있는 모든 적들에게 (공격력 * ([2] ~ [40])%) 피해를 준다.",
@@ -248,9 +235,9 @@ const downDirectionPathList = [2, 6, 8, 10, 14];
 const upDirectionPathList = [4, 12, 16, 18, 20];
 const animalsImgArr: HTMLImageElement[] = [];
 const animalSkillImgList: { [animal: string]: HTMLImageElement[] } = {};
-const animalSkillImgArr: [] = [];
 let battle: Battle | null = null;
 let savedZoneNumber = 0;
+let battleZoneClickMode: "info" | "move" = "info";
 // common html func
 const updateImgSrc = (
   img: HTMLImageElement,
@@ -343,7 +330,6 @@ const checkBeforeBattle = async () => {
     location.href = "/login";
   }
 };
-checkBeforeBattle();
 
 class Battle {
   declare grade: number;
@@ -454,8 +440,14 @@ class Battle {
     });
     setTimeout(() => {
       const firstAnimal = this.animalsArr[0];
-      const { grade, typeNumber, firstAttackDamage, firstAttackSpeed } =
-        firstAnimal;
+      const {
+        grade,
+        typeNumber,
+        firstAttackDamage,
+        firstAttackSpeed,
+        zoneNumber,
+      } = firstAnimal;
+      savedZoneNumber = zoneNumber;
       updateImgSrc(
         animalProfileImg,
         animalNameList[grade][typeNumber],
@@ -568,6 +560,17 @@ class Battle {
       topCanvasCtx.clearRect(0, 0, topCanvas.width, topCanvas.height);
       middleCanvasCtx.clearRect(0, 0, middleCanvas.width, middleCanvas.height);
       bottomCanvasCtx.clearRect(0, 0, bottomCanvas.width, bottomCanvas.height);
+      if (battleZoneClickMode === "move") {
+        bottomCanvasCtx.fillStyle = "rgb(220,255,220)";
+        for (let i = 0; i < 9; i++) {
+          bottomCanvasCtx.fillRect(
+            [100, 400, 700][i % 3] / (1000 / bottomCanvas.width),
+            [100, 400, 700][Math.floor(i / 3)] / (1000 / bottomCanvas.height),
+            bottomCanvas.width / 5,
+            bottomCanvas.height / 5
+          );
+        }
+      }
       this.animalsArr.forEach((animal) => {
         let highestAttackDamageBuffGrade = 0;
         let highestAttackSpeedBuffGrade = 0;
@@ -1515,22 +1518,10 @@ const getAnimalSkillInfo = (grade: number, typeNumber: number) => {
   }${grade === 4 ? `\n\n${monarchAnimalExtraSkillInfoList[typeNumber]}` : ""}`;
   return animalSkillInfo;
 };
-const mousedownInBattleZone = (event: MouseEvent | TouchEvent) => {
+const clickBattleZone = (event: MouseEvent) => {
   if (!battle || battle.tick <= 0 || battle.pauseOrNot === true) return;
-  let offsetX: number = 0;
-  let offsetY: number = 0;
-  if (
-    navigator.userAgent.match(/mobile/i) ||
-    navigator.userAgent.match(/iPad|Android|Touch/i)
-  ) {
-    const touch = (event as TouchEvent).touches[0];
-    const battleZoneWrapperRect = battleZoneWrapper.getBoundingClientRect();
-    offsetX = touch.clientX - battleZoneWrapperRect.left;
-    offsetY = touch.clientY - battleZoneWrapperRect.top;
-  } else {
-    offsetX = (event as MouseEvent).offsetX;
-    offsetY = (event as MouseEvent).offsetY;
-  }
+  const offsetX = event.offsetX;
+  const offsetY = event.offsetY;
   const coordX = Math.floor((offsetX / battleZoneWrapper.offsetWidth) * 10);
   const coordY = Math.floor((offsetY / battleZoneWrapper.offsetHeight) * 10);
   if (
@@ -1538,102 +1529,67 @@ const mousedownInBattleZone = (event: MouseEvent | TouchEvent) => {
     [1, 2, 4, 5, 7, 8].includes(coordY)
   ) {
     const targetZoneNumber = coordY * 10 + coordX;
-    const originAnimal = battle!.animalsArr.find((animal) => {
-      return animal.zoneNumber === targetZoneNumber;
-    });
-    if (originAnimal) {
+    if (battleZoneClickMode === "info") {
+      const targetAnimal = battle!.animalsArr.find((animal) => {
+        return animal.zoneNumber === targetZoneNumber;
+      })!;
+      if (!targetAnimal) {
+        return;
+      }
       savedZoneNumber = targetZoneNumber;
+      const { grade, typeNumber, firstAttackDamage, firstAttackSpeed } =
+        targetAnimal;
+      updateImgSrc(
+        animalProfileImg,
+        animalNameList[grade][typeNumber],
+        "animals"
+      );
+      animalGrade.innerText = `[${animalGradeKorNameList[grade]}]`;
+      animalGrade.classList.add(
+        [
+          "babyGradeSpan",
+          "smallGradeSpan",
+          "beastGradeSpan",
+          "mysteriousCreatureGradeSpan",
+          "monarchGradeSpan",
+        ][grade]
+      );
+      animalName.innerText = animalKorNameList[grade][typeNumber];
+      animalSpecContainer.innerText = `공격력: ${formatNumber(
+        firstAttackDamage
+      )}\n\n공격속도: ${firstAttackSpeed.toFixed(2)}`;
+      animalSkillInfo.innerText =
+        grade === 0 ? "" : getAnimalSkillInfo(grade, typeNumber);
+    } else {
+      if (savedZoneNumber !== targetZoneNumber) {
+        battle.moveLog.push(
+          `${battle.tick + 1}_${savedZoneNumber}-${targetZoneNumber}`
+        );
+        savedZoneNumber = targetZoneNumber;
+      }
+      battleZoneClickMode = "info";
     }
-  } else {
-    savedZoneNumber = 0;
   }
 };
-const mouseupInBattleZone = (event: MouseEvent | TouchEvent) => {
+const clickAnimalMoveBtn = () => {
   if (!battle || battle.tick <= 0 || battle.pauseOrNot === true) return;
-  if (savedZoneNumber === 0) {
-    return;
-  }
-  let offsetX: number = 0;
-  let offsetY: number = 0;
-  if (
-    navigator.userAgent.match(/mobile/i) ||
-    navigator.userAgent.match(/iPad|Android|Touch/i)
-  ) {
-    const touch = (event as TouchEvent).changedTouches[0];
-    const battleZoneWrapperRect = battleZoneWrapper.getBoundingClientRect();
-    offsetX = touch.clientX - battleZoneWrapperRect.left;
-    offsetY = touch.clientY - battleZoneWrapperRect.top;
-  } else {
-    offsetX = (event as MouseEvent).offsetX;
-    offsetY = (event as MouseEvent).offsetY;
-  }
-  const coordX = Math.floor((offsetX / battleZoneWrapper.offsetWidth) * 10);
-  const coordY = Math.floor((offsetY / battleZoneWrapper.offsetHeight) * 10);
-  if (
-    ![1, 2, 4, 5, 7, 8].includes(coordX) ||
-    ![1, 2, 4, 5, 7, 8].includes(coordY)
-  ) {
-    return;
-  }
-  const targetZoneNumber = coordY * 10 + coordX;
-  if (savedZoneNumber === targetZoneNumber) {
-    const originAnimal = battle!.animalsArr.find((animal) => {
-      return animal.zoneNumber === savedZoneNumber;
-    })!;
-    const { grade, typeNumber, firstAttackDamage, firstAttackSpeed } =
-      originAnimal;
-    updateImgSrc(
-      animalProfileImg,
-      animalNameList[grade][typeNumber],
-      "animals"
-    );
-    animalGrade.innerText = `[${animalGradeKorNameList[grade]}]`;
-    animalGrade.classList.add(
-      [
-        "babyGradeSpan",
-        "smallGradeSpan",
-        "beastGradeSpan",
-        "mysteriousCreatureGradeSpan",
-        "monarchGradeSpan",
-      ][grade]
-    );
-    animalName.innerText = animalKorNameList[grade][typeNumber];
-    animalSpecContainer.innerText = `공격력: ${formatNumber(
-      firstAttackDamage
-    )}\n\n공격속도: ${firstAttackSpeed.toFixed(2)}`;
-    animalSkillInfo.innerText =
-      grade === 0 ? "" : getAnimalSkillInfo(grade, typeNumber);
-  } else {
-    battle.moveLog.push(
-      `${battle.tick + 1}_${savedZoneNumber}-${targetZoneNumber}`
-    );
-  }
-  savedZoneNumber = 0;
+  battleZoneClickMode = "move";
 };
+
+// event listener
 document.addEventListener("visibilitychange", () => {
   if (battle && document.hidden && !battle.pauseOrNot && battle.tick > 0) {
     battle.pauseBattle();
     pauseBtn.innerText = "시작";
   }
 });
-battleZoneWrapper.addEventListener(mousedown, mousedownInBattleZone);
-battleZoneWrapper.addEventListener(mouseup, mouseupInBattleZone);
-if (mousedown === "mousedown") {
-  battleZoneWrapper.addEventListener("mouseleave", () => {
-    if (!savedZoneNumber) return;
-    savedZoneNumber = 0;
-  });
-} else {
-  battleZoneWrapper.addEventListener("touchmove", (event: TouchEvent) => {
-    const touch = event.touches[0];
-    if (
-      savedZoneNumber &&
-      document.elementFromPoint(touch.pageX, touch.pageY) !== battleZoneWrapper
-    ) {
-      savedZoneNumber = 0;
-    }
-  });
-}
+battleZoneWrapper.addEventListener("click", clickBattleZone);
+animalMoveBtn.addEventListener("click", clickAnimalMoveBtn);
+document.addEventListener("keyup", (event: KeyboardEvent) => {
+  if (event.key === " ") {
+    clickAnimalMoveBtn();
+  }
+});
 hpVisibleToggleBtn.addEventListener("click", () => {
   if (battle && battle.tick > 0) {
     battle.hpVisible = battle.hpVisible ? false : true;
@@ -1681,3 +1637,5 @@ giveUpBtn.addEventListener("click", async () => {
     location.href = "/login";
   }
 });
+
+checkBeforeBattle();

@@ -4,13 +4,6 @@
 // };
 // Object.defineProperty(exports, "__esModule", { value: true });
 // const axios = __importDefault(require("axios"));
-let mousedown = "mousedown";
-let mouseup = "mouseup";
-if (navigator.userAgent.match(/mobile/i) ||
-    navigator.userAgent.match(/iPad|Android|Touch/i)) {
-    mousedown = "touchstart";
-    mouseup = "touchend";
-}
 // html
 const battleZone = document.querySelector(".battleZone");
 const battleZoneAnimalImgs = battleZone.querySelectorAll(".battleZone_animalImg");
@@ -31,14 +24,12 @@ const battleGradeTotalInfoContainer = homePart.querySelector(".battleGradeTotalI
 const battleGradeListWrapper = homePart.querySelector(".battleGradeListWrapper");
 const battleGradeList = homePart.querySelector(".battleGradeList");
 const battleGrades = homePart.querySelectorAll(".battleGradeList_battleGrade");
-const battleGradeInfoContainers = homePart.querySelectorAll(".battleGrade_gradeInfoContainer");
 const battleGradeStarContainers = homePart.querySelectorAll(".battleGrade_starContainer");
 const battleEnemyImg = homePart.querySelector(".battleEnemyInfoContainer_enemyImg");
 const battleEnemyInfo = homePart.querySelector(".battleEnemyInfoContainer_enemyInfo");
 const battleBossImg = homePart.querySelector(".battleEnemyInfoContainer_bossImg");
 const battleBossInfo = homePart.querySelector(".battleEnemyInfoContainer_bossInfo");
 const battleRewardContainers = homePart.querySelectorAll(".battleRewardContainer");
-const battleRewardImgs = homePart.querySelectorAll(".battleRewardContainer_rewardImg");
 const battleRewardAmountContainers = homePart.querySelectorAll(".battleRewardContainer_rewardAmountContainer");
 const consumeScrollValueContainer = homePart.querySelector(".scrollContainer_scrollValueContainer");
 const battleBtn = homePart.querySelector(".battleProceedBtnContainer_battleBtn");
@@ -57,7 +48,6 @@ const animalSpecificPartAnimalImg = animalSpecificPart.querySelector(".profileCo
 const animalSpecificPartAnimalGrade = animalSpecificPart.querySelector(".animalNameContainer_animalGrade");
 const animalSpecificPartAnimalName = animalSpecificPart.querySelector(".animalNameContainer_animalName");
 const animalSpecificPartAnimalAmountContainer = animalSpecificPart.querySelector(".animalBasicInfoContainer_animalAmountContainer");
-const animalSpecificPartAnimalNameContainer = animalSpecificPart.querySelector(".animalBasicInfoContainer_animalNameContainer");
 const animalSpecificPartSpecContainer = animalSpecificPart.querySelector(".profileContainer_specContainer");
 const animalSpecificPartSkillInfoContainer = animalSpecificPart.querySelector(".animalSpecificPart_skillInfoContainer");
 const combineInfoContainer = animalSpecificPart.querySelector(".animalSpecificPart_combineInfoContainer");
@@ -90,15 +80,12 @@ const jadeChargeExecuterJadeUpBtn = shopPart.querySelector("#jadeChargeExecuter_
 const jadeChargeBtn = shopPart.querySelector(".jadeChargeExecuter_chargeBtn");
 const jadeChargePriceContainer = shopPart.querySelector(".jadeChargeExecuter_chargePriceContainer");
 const mailPart = document.querySelector("#mailPart");
-const mailListWrapper = mailPart.querySelector(".mailListWrapper");
 const mailList = mailPart.querySelector(".mailList");
 const rankPart = document.querySelector("#rankPart");
-const rankListWrapper = rankPart.querySelector(".rankListWrapper");
 const rankList = rankPart.querySelector(".rankList");
 const rankContainers = rankList.querySelectorAll(".rankContainer");
 const rankerWatchBtns = rankList.querySelectorAll(".rankContainer_watchBtn");
 const myRankContainer = rankPart.querySelector("#myRankContainer");
-const myRankValueContainer = myRankContainer.querySelector(".rankContainer_rankValueContainer");
 const myProfileImgInRankPart = myRankContainer.querySelector(".rankContainer_profileImg");
 const myNameContainerInRankPart = myRankContainer.querySelector(".rankerInfoContainer_nameContainer");
 const myLevelContainerInRankPart = myRankContainer.querySelector(".rankerInfoContainer_levelContainer");
@@ -366,7 +353,7 @@ let temporarySmalls = "";
 let temporaryBeasts = "";
 let temporaryMysteriousCreatures = "";
 let temporaryMonarchs = "";
-let savedZoneNumber = 0;
+let savedAnimal = "";
 // common func
 const checkLoginCode = async () => {
     try {
@@ -462,10 +449,6 @@ const getAnimalCombineInfoList = (grade, typeNumber) => {
     }
     return animalCombineInfoList;
 };
-const getZoneNumberByAnimalIndex = (imgIndex) => {
-    const zoneNumber = [1, 2, 4, 5, 7, 8][Math.floor(imgIndex / 6)] * 10 +
-        [1, 2, 4, 5, 7, 8][imgIndex % 6];
-};
 const getAnimalIndexByZoneNumber = (zoneNumber) => {
     const y = Number(`${zoneNumber}`[0]);
     const x = Number(`${zoneNumber}`[1]);
@@ -532,25 +515,14 @@ const putAnimalsInBattleZone = (arrangement) => {
         updateImgSrc(battleZoneAnimalImgs[index], `${animalNameList[animalGrade][animalTypeIndex]}`, "animals");
     });
 };
-const mousedownInBattleZone = (event) => {
+const clickBattleZone = (event) => {
     if (loadInterval ||
         animalPartMode !== "arrange" ||
         animalPart.style.display !== "flex") {
         return;
     }
-    let offsetX = 0;
-    let offsetY = 0;
-    if (navigator.userAgent.match(/mobile/i) ||
-        navigator.userAgent.match(/iPad|Android|Touch/i)) {
-        const touch = event.touches[0];
-        const battleZoneWrapperRect = battleZoneWrapper.getBoundingClientRect();
-        offsetX = touch.clientX - battleZoneWrapperRect.left;
-        offsetY = touch.clientY - battleZoneWrapperRect.top;
-    }
-    else {
-        offsetX = event.offsetX;
-        offsetY = event.offsetY;
-    }
+    const offsetX = event.offsetX;
+    const offsetY = event.offsetY;
     let coordX = Math.floor((offsetX / battleZoneWrapper.offsetWidth) * 6);
     let coordY = Math.floor((offsetY / battleZoneWrapper.offsetHeight) * 6);
     coordX = coordX === 6 ? 5 : coordX;
@@ -558,105 +530,96 @@ const mousedownInBattleZone = (event) => {
     const targetZoneNumber = [1, 2, 4, 5, 7, 8][coordY] * 10 + [1, 2, 4, 5, 7, 8][coordX];
     const { arrangement } = myUserData;
     const arrangementInfoArr = arrangement.split("/");
-    const targetImgIndex = getAnimalIndexByZoneNumber(targetZoneNumber);
-    if (arrangementInfoArr[targetImgIndex] !== "0") {
-        savedZoneNumber = targetZoneNumber;
+    const targetZoneIndex = getAnimalIndexByZoneNumber(targetZoneNumber);
+    const targetZoneInfo = arrangementInfoArr[targetZoneIndex];
+    const { babies, smalls, beasts, mysteriousCreatures, monarchs } = myAnimalsInfoData;
+    if (targetZoneInfo !== "0") {
+        updateImgSrc(battleZoneAnimalImgs[targetZoneIndex], "noImg");
+        arrangementInfoArr[targetZoneIndex] = "0";
+        const targetZoneInfoArr = targetZoneInfo.split("_");
+        const targetZoneAnimalGrade = Number(targetZoneInfoArr[0]);
+        const targetZoneAnimalTypeNumber = Number(targetZoneInfoArr[1]);
+        const targetGradeAnimalsInfoArr = [
+            babies,
+            smalls,
+            beasts,
+            mysteriousCreatures,
+            monarchs,
+        ][targetZoneAnimalGrade].split("/");
+        targetGradeAnimalsInfoArr[targetZoneAnimalTypeNumber] = `${Number(targetGradeAnimalsInfoArr[targetZoneAnimalTypeNumber]) + 1}`;
+        switch (targetZoneAnimalGrade) {
+            case 0: {
+                myAnimalsInfoData.babies = targetGradeAnimalsInfoArr.join("/");
+                break;
+            }
+            case 1: {
+                myAnimalsInfoData.smalls = targetGradeAnimalsInfoArr.join("/");
+                break;
+            }
+            case 2: {
+                myAnimalsInfoData.beasts = targetGradeAnimalsInfoArr.join("/");
+                break;
+            }
+            case 3: {
+                myAnimalsInfoData.mysteriousCreatures =
+                    targetGradeAnimalsInfoArr.join("/");
+                break;
+            }
+            case 4: {
+                myAnimalsInfoData.monarchs = targetGradeAnimalsInfoArr.join("/");
+                break;
+            }
+        }
+        const originAnimalContainer = document.getElementById(targetZoneInfo);
+        const originAnimalAmountsContainer = originAnimalContainer.querySelector(".animalList_animalAmountContainer");
+        originAnimalAmountsContainer.innerText = `${Number(originAnimalAmountsContainer.innerText) + 1}`;
     }
-    else {
-        savedZoneNumber = 0;
-    }
-};
-const mouseupInBattleZone = (event) => {
-    if (loadInterval ||
-        animalPartMode !== "arrange" ||
-        animalPart.style.display !== "flex") {
-        return;
-    }
-    if (savedZoneNumber === 0) {
-        return;
-    }
-    let offsetX = 0;
-    let offsetY = 0;
-    if (navigator.userAgent.match(/mobile/i) ||
-        navigator.userAgent.match(/iPad|Android|Touch/i)) {
-        const touch = event.changedTouches[0];
-        const battleZoneWrapperRect = battleZoneWrapper.getBoundingClientRect();
-        offsetX = touch.clientX - battleZoneWrapperRect.left;
-        offsetY = touch.clientY - battleZoneWrapperRect.top;
-    }
-    else {
-        offsetX = event.offsetX;
-        offsetY = event.offsetY;
-    }
-    let coordX = Math.floor((offsetX / battleZoneWrapper.offsetWidth) * 6);
-    let coordY = Math.floor((offsetY / battleZoneWrapper.offsetHeight) * 6);
-    coordX = coordX === 6 ? 5 : coordX;
-    coordY = coordY === 6 ? 5 : coordY;
-    const targetZoneNumber = [1, 2, 4, 5, 7, 8][coordY] * 10 + [1, 2, 4, 5, 7, 8][coordX];
-    const { arrangement } = myUserData;
-    const arrangementInfoArr = arrangement.split("/");
-    const savedAnimalIndex = getAnimalIndexByZoneNumber(savedZoneNumber);
-    const savedAnimalInfo = arrangementInfoArr[savedAnimalIndex];
-    const savedAnimalInfoArr = arrangementInfoArr[savedAnimalIndex].split("_");
-    const savedAnimalGrade = Number(savedAnimalInfoArr[0]);
-    const savedAnimalTypeNumber = Number(savedAnimalInfoArr[1]);
-    if (savedZoneNumber === targetZoneNumber) {
-        updateImgSrc(battleZoneAnimalImgs[savedAnimalIndex], "noImg");
-        const { babies, smalls, beasts, mysteriousCreatures, monarchs } = myAnimalsInfoData;
-        const targetGradeAnimalsArr = [
+    if (savedAnimal !== "") {
+        arrangementInfoArr[targetZoneIndex] = savedAnimal;
+        const savedAnimalInfoArr = savedAnimal.split("_");
+        const savedAnimalGrade = Number(savedAnimalInfoArr[0]);
+        const savedAnimalTypeNumber = Number(savedAnimalInfoArr[1]);
+        updateImgSrc(battleZoneAnimalImgs[targetZoneIndex], animalNameList[savedAnimalGrade][savedAnimalTypeNumber], "animals");
+        const targetGradeAnimalsInfoArr = [
             babies,
             smalls,
             beasts,
             mysteriousCreatures,
             monarchs,
         ][savedAnimalGrade].split("/");
-        const newAmountsStr = `${Number(targetGradeAnimalsArr[savedAnimalTypeNumber]) + 1}`;
-        targetGradeAnimalsArr[savedAnimalTypeNumber] = newAmountsStr;
-        animalPartAnimalAmountContainers[savedAnimalGrade * 11 + savedAnimalTypeNumber].innerText = newAmountsStr;
-        const newTargetGradeAnimalsInfo = targetGradeAnimalsArr.join("/");
+        targetGradeAnimalsInfoArr[savedAnimalTypeNumber] = `${Number(targetGradeAnimalsInfoArr[savedAnimalTypeNumber]) - 1}`;
         switch (savedAnimalGrade) {
             case 0: {
-                myAnimalsInfoData.babies = newTargetGradeAnimalsInfo;
+                myAnimalsInfoData.babies = targetGradeAnimalsInfoArr.join("/");
                 break;
             }
             case 1: {
-                myAnimalsInfoData.smalls = newTargetGradeAnimalsInfo;
+                myAnimalsInfoData.smalls = targetGradeAnimalsInfoArr.join("/");
                 break;
             }
             case 2: {
-                myAnimalsInfoData.beasts = newTargetGradeAnimalsInfo;
+                myAnimalsInfoData.beasts = targetGradeAnimalsInfoArr.join("/");
                 break;
             }
             case 3: {
-                myAnimalsInfoData.mysteriousCreatures = newTargetGradeAnimalsInfo;
+                myAnimalsInfoData.mysteriousCreatures =
+                    targetGradeAnimalsInfoArr.join("/");
                 break;
             }
             case 4: {
-                myAnimalsInfoData.monarchs = newTargetGradeAnimalsInfo;
+                myAnimalsInfoData.monarchs = targetGradeAnimalsInfoArr.join("/");
                 break;
             }
         }
-        arrangementInfoArr[savedAnimalIndex] = "0";
-        myUserData.arrangement = arrangementInfoArr.join("/");
+        const savedAnimalContainer = document.getElementById(savedAnimal);
+        const savedAnimalAmountsContainer = savedAnimalContainer.querySelector(".animalList_animalAmountContainer");
+        savedAnimalAmountsContainer.innerText = `${Number(savedAnimalAmountsContainer.innerText) - 1}`;
     }
-    else {
-        const existAnimalIndex = getAnimalIndexByZoneNumber(targetZoneNumber);
-        if (arrangementInfoArr[existAnimalIndex] !== "0") {
-            const existAnimalInfo = arrangementInfoArr[existAnimalIndex];
-            const existAnimalInfoArr = existAnimalInfo.split("_");
-            const existAnimalGrade = Number(existAnimalInfoArr[0]);
-            const existAnimalTypeNumber = Number(existAnimalInfoArr[1]);
-            arrangementInfoArr[savedAnimalIndex] = existAnimalInfo;
-            updateImgSrc(battleZoneAnimalImgs[savedAnimalIndex], animalNameList[existAnimalGrade][existAnimalTypeNumber], "animals");
-        }
-        else {
-            arrangementInfoArr[savedAnimalIndex] = "0";
-            updateImgSrc(battleZoneAnimalImgs[savedAnimalIndex], "noImg");
-        }
-        arrangementInfoArr[existAnimalIndex] = savedAnimalInfo;
-        updateImgSrc(battleZoneAnimalImgs[existAnimalIndex], animalNameList[savedAnimalGrade][savedAnimalTypeNumber], "animals");
-        myUserData.arrangement = arrangementInfoArr.join("/");
-    }
+    battleZoneAnimalImgs.forEach((img) => {
+        img.style.backgroundColor = "white";
+    });
+    myUserData.arrangement = arrangementInfoArr.join("/");
+    savedAnimal = "";
 };
 // homePart func
 const putMyUserData = () => {
@@ -1007,58 +970,10 @@ const clickAnimalPartAnimalImgContainer = (event) => {
         case "arrange": {
             if (targetAmounts === 0)
                 return;
-            let blankImg = null;
-            let blankImgIndex = 0;
-            for (const img of battleZoneAnimalImgs) {
-                if (img.src.includes("noImg")) {
-                    blankImg = img;
-                    break;
-                }
-                blankImgIndex++;
-            }
-            if (!blankImg) {
-                return;
-            }
-            updateImgSrc(blankImg, animalNameList[targetGrade][targetTypeNumber], "animals");
-            const { arrangement } = myUserData;
-            const arrangementInfoArr = arrangement.split("/");
-            arrangementInfoArr[blankImgIndex] = `${targetGrade}_${targetTypeNumber}`;
-            myUserData.arrangement = arrangementInfoArr.join("/");
-            const { babies, smalls, beasts, mysteriousCreatures, monarchs } = myAnimalsInfoData;
-            const targetGradeAnimalsArr = [
-                babies,
-                smalls,
-                beasts,
-                mysteriousCreatures,
-                monarchs,
-            ][targetGrade].split("/");
-            const newAmountsStr = `${targetAmounts - 1}`;
-            targetGradeAnimalsArr[targetTypeNumber] = newAmountsStr;
-            targetAmountContainer.innerText = newAmountsStr;
-            const newTargetGradeAnimalsInfo = targetGradeAnimalsArr.join("/");
-            switch (targetGrade) {
-                case 0: {
-                    myAnimalsInfoData.babies = newTargetGradeAnimalsInfo;
-                    break;
-                }
-                case 1: {
-                    myAnimalsInfoData.smalls = newTargetGradeAnimalsInfo;
-                    break;
-                }
-                case 2: {
-                    myAnimalsInfoData.beasts = newTargetGradeAnimalsInfo;
-                    break;
-                }
-                case 3: {
-                    myAnimalsInfoData.mysteriousCreatures = newTargetGradeAnimalsInfo;
-                    break;
-                }
-                case 4: {
-                    myAnimalsInfoData.monarchs = newTargetGradeAnimalsInfo;
-                    break;
-                }
-            }
-            break;
+            savedAnimal = targetId;
+            battleZoneAnimalImgs.forEach((img) => {
+                img.style.backgroundColor = "rgb(225,255,225)";
+            });
         }
     }
 };
@@ -1081,6 +996,9 @@ const clickAnimalPartModeChangeBtn = async () => {
             try {
                 animalPartMode = "normal";
                 animaPartModeChangeBtn.innerText = "배치";
+                battleZoneAnimalImgs.forEach((img) => {
+                    img.style.backgroundColor = "white";
+                });
                 const { arrangement } = myUserData;
                 const { babies, smalls, beasts, mysteriousCreatures, monarchs } = myAnimalsInfoData;
                 showLoading();
@@ -1337,11 +1255,7 @@ const clickUpgradeExecuter = async (event) => {
         }
         const { animalsInfoData } = data;
         myAnimalsInfoData = animalsInfoData;
-        // putMyAnimalUpgradeInfo()
         putMyAchivementInfo();
-        // to server: type: gradeUpgrade, mysterious, monarch
-        // receive (achivement)
-        // + update
         changeGoodsValue("gold", -neededGold);
         upgradeValue++;
         if (executerIndex <= 4) {
@@ -1573,101 +1487,92 @@ const clickAchivementRewardImgContainer = async (event) => {
         myAchivementData = achivementData;
         putMyAchivementInfo();
         if (achivementIndex === 0) {
-            // myAchivementData.dailyBattleWinRewardOrNot = true;
+            myAchivementData.dailyBattleWinRewardOrNot = true;
             changeGoodsValue("spirit", 1);
         }
         else if (achivementIndex === 1) {
-            // myAchivementData.dailyAnimalSummonRewardOrNot = true;
+            myAchivementData.dailyAnimalSummonRewardOrNot = true;
             changeGoodsValue("jade", 50);
         }
         else if (achivementIndex === 2) {
-            // myAchivementData.weeklyBattleWinRewardOrNot = true;
+            myAchivementData.weeklyBattleWinRewardOrNot = true;
             changeGoodsValue("spirit", 6);
         }
         else if (achivementIndex === 3) {
-            // myAchivementData.weeklyAnimalSummonRewardOrNot = true;
+            myAchivementData.weeklyAnimalSummonRewardOrNot = true;
             changeGoodsValue("jade", 300);
         }
         else if (achivementIndex < 9) {
-            // const { allAnimalsRewardOrNot } = myAchivementData;
-            // const allAnimalsRewardInfoArr = allAnimalsRewardOrNot.split("/");
+            const { allAnimalsRewardOrNot } = myAchivementData;
+            const allAnimalsRewardInfoArr = allAnimalsRewardOrNot.split("/");
             const realIndex = achivementIndex - 4;
-            // allAnimalsRewardInfoArr[realIndex] = "1";
-            // myAchivementData.allAnimalsRewardOrNot =
-            //   allAnimalsRewardInfoArr.join("/");
+            allAnimalsRewardInfoArr[realIndex] = "1";
+            myAchivementData.allAnimalsRewardOrNot =
+                allAnimalsRewardInfoArr.join("/");
             changeGoodsValue("spirit", 5 ** realIndex * 2);
         }
         else if (achivementIndex < 14) {
-            // const { gradeUpgradeRewardOrNot } = myAchivementData;
-            // const gradeUpgradeRewardInfoArr = gradeUpgradeRewardOrNot.split("/");
+            const { gradeUpgradeRewardOrNot } = myAchivementData;
+            const gradeUpgradeRewardInfoArr = gradeUpgradeRewardOrNot.split("/");
             const realIndex = achivementIndex - 9;
-            // gradeUpgradeRewardInfoArr[realIndex] = "1";
-            // myAchivementData.gradeUpgradeRewardOrNot =
-            //   gradeUpgradeRewardInfoArr.join("/");
+            gradeUpgradeRewardInfoArr[realIndex] = "1";
+            myAchivementData.gradeUpgradeRewardOrNot =
+                gradeUpgradeRewardInfoArr.join("/");
             changeGoodsValue("gold", 40 ** realIndex * 400);
         }
         else if (achivementIndex < 25) {
-            // const { mysteriousCreatureEachUpgradeRewardOrNot } = myAchivementData;
-            // const mysteriousCreatureEachUpgradeRewardInfoArr =
-            //   mysteriousCreatureEachUpgradeRewardOrNot.split("/");
-            // mysteriousCreatureEachUpgradeRewardInfoArr[achivementIndex - 14] = "1";
-            // myAchivementData.mysteriousCreatureEachUpgradeRewardOrNot =
-            //   mysteriousCreatureEachUpgradeRewardInfoArr.join("/");
+            const { mysteriousCreatureEachUpgradeRewardOrNot } = myAchivementData;
+            const mysteriousCreatureEachUpgradeRewardInfoArr = mysteriousCreatureEachUpgradeRewardOrNot.split("/");
+            mysteriousCreatureEachUpgradeRewardInfoArr[achivementIndex - 14] = "1";
+            myAchivementData.mysteriousCreatureEachUpgradeRewardOrNot =
+                mysteriousCreatureEachUpgradeRewardInfoArr.join("/");
             changeGoodsValue("gold", 600000);
         }
         else if (achivementIndex < 36) {
-            // const { monarchEachUpgradeRewardOrNot } = myAchivementData;
-            // const monarchEachUpgradeRewardInfoArr =
-            //   monarchEachUpgradeRewardOrNot.split("/");
-            // monarchEachUpgradeRewardInfoArr[achivementIndex - 25] = "1";
-            // myAchivementData.monarchEachUpgradeRewardOrNot =
-            //   monarchEachUpgradeRewardInfoArr.join("/");
+            const { monarchEachUpgradeRewardOrNot } = myAchivementData;
+            const monarchEachUpgradeRewardInfoArr = monarchEachUpgradeRewardOrNot.split("/");
+            monarchEachUpgradeRewardInfoArr[achivementIndex - 25] = "1";
+            myAchivementData.monarchEachUpgradeRewardOrNot =
+                monarchEachUpgradeRewardInfoArr.join("/");
             changeGoodsValue("gold", 20000000);
         }
-        // completeImg.style.display = "block";
+        completeImg.style.display = "block";
         if (achivementIndex === 36) {
-            // myAchivementData.permanentBattleWinReward++;
-            // const { permanentBattleWin, permanentBattleWinReward } = myAchivementData;
-            // if (permanentBattleWin === permanentBattleWinReward) {
-            //   completeImg.style.display = "none";
-            //   const targetBattleGradeGroupIndex = permanentBattleWinReward + 1;
-            //   const fullCounter = 100;
-            //   const { battleInfo } = myUserData;
-            //   const battleInfoLength = battleInfo.length;
-            //   const currentCounter = battleInfoLength;
-            //   const achivementProgressBar = achivementProgressBars[achivementIndex];
-            //   const achivementProgressInfoContainer =
-            //     achivementProgressInfoContainers[achivementIndex];
-            //   achivementProgressBar.style.width = `${
-            //     (currentCounter / fullCounter) * 100
-            //   }%`;
-            //   achivementProgressInfoContainer.innerText = `${currentCounter}/${fullCounter}`;
-            //   permanentBattleWinAchivementName.innerText = `${targetBattleGradeGroupIndex}단계 모든 전투 승리`;
-            // }
+            myAchivementData.permanentBattleWinReward++;
+            const { permanentBattleWin, permanentBattleWinReward } = myAchivementData;
+            if (permanentBattleWin === permanentBattleWinReward) {
+                completeImg.style.display = "none";
+                const targetBattleGradeGroupIndex = permanentBattleWinReward + 1;
+                const fullCounter = 100;
+                const { battleInfo } = myUserData;
+                const battleInfoLength = battleInfo.length;
+                const currentCounter = battleInfoLength;
+                const achivementProgressBar = achivementProgressBars[achivementIndex];
+                const achivementProgressInfoContainer = achivementProgressInfoContainers[achivementIndex];
+                achivementProgressBar.style.width = `${(currentCounter / fullCounter) * 100}%`;
+                achivementProgressInfoContainer.innerText = `${currentCounter}/${fullCounter}`;
+                permanentBattleWinAchivementName.innerText = `${targetBattleGradeGroupIndex}단계 모든 전투 승리`;
+            }
             changeGoodsValue("jade", 1000);
         }
         else if (achivementIndex === 37) {
-            // myAchivementData.permanentBattlePerfectWinReward++;
-            // const { permanentBattlePerfectWin, permanentBattlePerfectWinReward } =
-            //   myAchivementData;
-            // if (permanentBattlePerfectWin === permanentBattlePerfectWinReward) {
-            //   completeImg.style.display = "none";
-            //   const targetBattleGradeGroupIndex = permanentBattlePerfectWinReward + 1;
-            //   const fullCounter = 300;
-            //   const { battleInfo } = myUserData;
-            //   const totalStarAmounts = Array.from(battleInfo).reduce((acc, cur) => {
-            //     return acc + Number(cur);
-            //   }, 0);
-            //   const currentCounter = totalStarAmounts;
-            //   const achivementProgressBar = achivementProgressBars[achivementIndex];
-            //   const achivementProgressInfoContainer =
-            //     achivementProgressInfoContainers[achivementIndex];
-            //   achivementProgressBar.style.width = `${
-            //     (currentCounter / fullCounter) * 100
-            //   }%`;
-            //   achivementProgressInfoContainer.innerText = `${currentCounter}/${fullCounter}`;
-            //   permanentBattlePerfectWinAchivementName.innerText = `${targetBattleGradeGroupIndex}단계 모든 전투 승리`;
-            // }
+            myAchivementData.permanentBattlePerfectWinReward++;
+            const { permanentBattlePerfectWin, permanentBattlePerfectWinReward } = myAchivementData;
+            if (permanentBattlePerfectWin === permanentBattlePerfectWinReward) {
+                completeImg.style.display = "none";
+                const targetBattleGradeGroupIndex = permanentBattlePerfectWinReward + 1;
+                const fullCounter = 300;
+                const { battleInfo } = myUserData;
+                const totalStarAmounts = Array.from(battleInfo).reduce((acc, cur) => {
+                    return acc + Number(cur);
+                }, 0);
+                const currentCounter = totalStarAmounts;
+                const achivementProgressBar = achivementProgressBars[achivementIndex];
+                const achivementProgressInfoContainer = achivementProgressInfoContainers[achivementIndex];
+                achivementProgressBar.style.width = `${(currentCounter / fullCounter) * 100}%`;
+                achivementProgressInfoContainer.innerText = `${currentCounter}/${fullCounter}`;
+                permanentBattlePerfectWinAchivementName.innerText = `${targetBattleGradeGroupIndex}단계 모든 전투 승리`;
+            }
             changeGoodsValue("jade", 2000);
         }
     }
@@ -1916,7 +1821,6 @@ const clickShopPartGoodsImgContainers = async (event) => {
             return;
         }
         const { goodsPurchaseCurrentTime } = data;
-        // to server + receive fewScrollPurchaseTime ,manyScrollPurchaseTime, fewSpiritPurchaseTime, manySpiritPurchaseTime
         changeGoodsValue("jade", -neededJade);
         completeImg.style.display = "block";
         const { level } = myUserData;
@@ -1988,7 +1892,6 @@ const clickJadeChargeBtn = async () => {
             throw new Error();
         }
         const { newCashCode } = data;
-        // to server: currentJadeChargeValue + receive cashCode
         changeGoodsValue("jade", currentJadeChargeValue);
         myUserData.cashCode = newCashCode;
         myUserData.chargeCash = currentJadeChargeValue * 10;
@@ -2017,7 +1920,6 @@ const putMyMails = async () => {
             throw new Error();
         }
         const { mailData } = data;
-        // to server + receive mails(new Date -> expire)
         myMailData = mailData;
         const mailAmounts = myMailData.length < 5 ? 5 : myMailData.length;
         mailList.style.height = `${(mailAmounts * 4000) / 228}%`;
@@ -2116,7 +2018,6 @@ const clickMailContainer = async (event) => {
             }, 1000);
             return;
         }
-        // to server: mailId
         const { giftInfo } = targetMail;
         const giftInfoArr = giftInfo.split("/");
         giftInfoArr.forEach((giftAmountStr, index) => {
@@ -2151,7 +2052,6 @@ const putRankInfo = async () => {
             throw new Error();
         }
         const { rankerData } = data;
-        // to server + receive rank(name,profileAnimal,level,highestBattleGrade,arrangement/ ~top 100), myRank(등수)
         rankerArr = rankerData;
         let rankerArrLength = rankerArr.length;
         rankerArrLength = rankerArrLength < 4 ? 4 : rankerArrLength;
@@ -2183,8 +2083,6 @@ const putRankInfo = async () => {
             rankContainer.style.display = "flex";
         });
         const { nick, level, highestBattleGrade, profileAnimal } = myUserData;
-        // const myRank = 127;
-        // myRankValueContainer.innerText = `${myRank}`;
         updateImgSrc(myProfileImgInRankPart, profileAnimal, "animals");
         myNameContainerInRankPart.innerText = nick;
         myLevelContainerInRankPart.innerText = `LV. ${level}`;
@@ -2241,6 +2139,9 @@ const clickMenuBtn = (partIndex) => () => {
         putMyAnimalsInAnimalPart();
         animalPartMode = "normal";
         animaPartModeChangeBtn.innerText = "배치";
+        battleZoneAnimalImgs.forEach((img) => {
+            img.style.backgroundColor = "white";
+        });
     }
     putAnimalsInBattleZone(myUserData.arrangement);
     if (partIndex === 6) {
@@ -2297,7 +2198,6 @@ const clickProfileImgSetBtn = async () => {
         if (answer === "error") {
             throw new Error();
         }
-        // to server: animalGrade, animalTypeNumber
         alertByModal(`프로필 이미지 변경 완료!\n업데이트를 위해 재접속합니다!`);
         loadInterval = 1;
         setTimeout(() => {
@@ -2355,7 +2255,6 @@ const clickUserInfoChangeBtn = (type) => async () => {
             alertByModal("이미 존재하는 닉네임입니다!");
             return;
         }
-        // to server: type, text(nick->changeNick/password->changePassword)
         alertByModal(`${type === "nick" ? "닉네임" : "비밀번호"} 변경 완료!\n업데이트를 위해 재접속합니다!`);
         loadInterval = 1;
         setTimeout(() => {
@@ -2391,28 +2290,7 @@ const stopLoading = () => {
     loadInterval = null;
 };
 // event listener
-battleZoneWrapper.addEventListener(mousedown, mousedownInBattleZone);
-battleZoneWrapper.addEventListener(mouseup, mouseupInBattleZone);
-if (mousedown === "mousedown") {
-    battleZoneWrapper.addEventListener("mouseleave", () => {
-        if (!savedZoneNumber ||
-            animalPartMode !== "arrange" ||
-            animalPart.style.display !== "flex")
-            return;
-        savedZoneNumber = 0;
-    });
-}
-else {
-    battleZoneWrapper.addEventListener("touchmove", (event) => {
-        const touch = event.touches[0];
-        if (savedZoneNumber &&
-            animalPartMode === "arrange" &&
-            animalPart.style.display === "flex" &&
-            document.elementFromPoint(touch.pageX, touch.pageY) !== battleZoneWrapper) {
-            savedZoneNumber = 0;
-        }
-    });
-}
+battleZoneWrapper.addEventListener("click", clickBattleZone);
 profileManageBtn.addEventListener("click", clickProfileManageBtn);
 battleGradeLeftEndMoveBtn.addEventListener("click", clickBattleGradeMoveBtn("leftEnd"));
 battleGradeLeftMoveBtn.addEventListener("click", clickBattleGradeMoveBtn("left"));

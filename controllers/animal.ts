@@ -1,6 +1,6 @@
 import { RequestHandler } from "express";
 import { AnimalsInfo, User, sequelize } from "../models";
-import { errorObj, ReqError,updateDailyWeeklyAchivement } from "./common";
+import { errorObj, ReqError, updateDailyWeeklyAchivement } from "./common";
 
 const putAnimalAmountsFromArrangementToAnimalsInfo = (
   arrangement: string,
@@ -12,59 +12,79 @@ const putAnimalAmountsFromArrangementToAnimalsInfo = (
     monarchs: string;
   }
 ) => {
-  const animalsObj = {
-    babies: animals.babies,
-    smalls: animals.smalls,
-    beasts: animals.beasts,
-    mysteriousCreatures: animals.mysteriousCreatures,
-    monarchs: animals.monarchs,
-  };
-  const arrangmentInfoArr = arrangement.split("/");
-  arrangmentInfoArr.forEach((arrangmentInfo) => {
-    if (arrangmentInfo === "0") return;
-    const dividerIndex = arrangmentInfo.indexOf("_");
-    const grade = Number(arrangmentInfo.slice(0, dividerIndex));
-    const typeNumber = Number(arrangmentInfo.slice(dividerIndex + 1));
-    let targetGradeAnimals =
-      grade === 0
-        ? animalsObj.babies
-        : grade === 1
-        ? animalsObj.smalls
-        : grade === 2
-        ? animalsObj.beasts
-        : grade === 3
-        ? animalsObj.mysteriousCreatures
-        : animalsObj.monarchs;
-    const targetGradeAmountArr = targetGradeAnimals.split("/");
-    targetGradeAmountArr[typeNumber] = `${
-      Number(targetGradeAmountArr[typeNumber]) + 1
-    }`;
-    targetGradeAnimals = targetGradeAmountArr.join("/");
-
-    switch (grade) {
-      case 0: {
-        animalsObj.babies = targetGradeAnimals;
-        break;
-      }
-      case 1: {
-        animalsObj.smalls = targetGradeAnimals;
-        break;
-      }
-      case 2: {
-        animalsObj.beasts = targetGradeAnimals;
-        break;
-      }
-      case 3: {
-        animalsObj.mysteriousCreatures = targetGradeAnimals;
-        break;
-      }
-      case 4: {
-        animalsObj.monarchs = targetGradeAnimals;
-        break;
+  try {
+    for (let i = 0; i < 5; i++) {
+      const targetGradeAnimals = [
+        animals.babies,
+        animals.smalls,
+        animals.beasts,
+        animals.mysteriousCreatures,
+        animals.monarchs,
+      ][i];
+      const targetGradeAnimalsInfoArr = targetGradeAnimals.split("/");
+      for (const animalsInfo of targetGradeAnimalsInfoArr) {
+        const eachAnimalNumber = Number(animalsInfo);
+        if (!Number.isInteger(eachAnimalNumber) || eachAnimalNumber < 0) {
+          throw new Error();
+        }
       }
     }
-  });
-  return animalsObj;
+    const animalsObj = {
+      babies: animals.babies,
+      smalls: animals.smalls,
+      beasts: animals.beasts,
+      mysteriousCreatures: animals.mysteriousCreatures,
+      monarchs: animals.monarchs,
+    };
+    const arrangmentInfoArr = arrangement.split("/");
+    arrangmentInfoArr.forEach((arrangmentInfo) => {
+      if (arrangmentInfo === "0") return;
+      const dividerIndex = arrangmentInfo.indexOf("_");
+      const grade = Number(arrangmentInfo.slice(0, dividerIndex));
+      const typeNumber = Number(arrangmentInfo.slice(dividerIndex + 1));
+      let targetGradeAnimals =
+        grade === 0
+          ? animalsObj.babies
+          : grade === 1
+          ? animalsObj.smalls
+          : grade === 2
+          ? animalsObj.beasts
+          : grade === 3
+          ? animalsObj.mysteriousCreatures
+          : animalsObj.monarchs;
+      const targetGradeAmountArr = targetGradeAnimals.split("/");
+      targetGradeAmountArr[typeNumber] = `${
+        Number(targetGradeAmountArr[typeNumber]) + 1
+      }`;
+      targetGradeAnimals = targetGradeAmountArr.join("/");
+
+      switch (grade) {
+        case 0: {
+          animalsObj.babies = targetGradeAnimals;
+          break;
+        }
+        case 1: {
+          animalsObj.smalls = targetGradeAnimals;
+          break;
+        }
+        case 2: {
+          animalsObj.beasts = targetGradeAnimals;
+          break;
+        }
+        case 3: {
+          animalsObj.mysteriousCreatures = targetGradeAnimals;
+          break;
+        }
+        case 4: {
+          animalsObj.monarchs = targetGradeAnimals;
+          break;
+        }
+      }
+    });
+    return animalsObj;
+  } catch (err: any) {
+    return "error";
+  }
 };
 const getAnimalCombineInfoList = (
   grade: number,
@@ -106,7 +126,9 @@ const getAnimalCombineInfoList = (
 const saveArrangement: RequestHandler = async (req, res, next) => {
   try {
     const user = res.locals.user as User;
-    const { arrangement, animals } = req.body as {
+    let { arrangement } = req.body;
+    arrangement = `${arrangement}`;
+    const { animals } = req.body as {
       arrangement: string;
       animals: {
         babies: string;
@@ -121,6 +143,14 @@ const saveArrangement: RequestHandler = async (req, res, next) => {
       arrangement,
       animals
     );
+    if (newAnimals === "error") {
+      const errorObj: errorObj = {
+        place: "controllers-animal-saveArrangement",
+        content: `invalid newAnimals! arrangement: ${arrangement} / animals: ${animals}`,
+        user: user.loginId,
+      };
+      throw new ReqError(errorObj, errorObj.content);
+    }
     const originalArrangement = user.arrangement;
     const userAnimalsInfo = await user.getAnimalsInfo();
     const { babies, smalls, beasts, mysteriousCreatures, monarchs } =
@@ -129,6 +159,20 @@ const saveArrangement: RequestHandler = async (req, res, next) => {
       originalArrangement,
       { babies, smalls, beasts, mysteriousCreatures, monarchs }
     );
+    if (originalAnimals === "error") {
+      const errorObj: errorObj = {
+        place: "controllers-animal-saveArrangement",
+        content: `invalid originalAnimals! arrangement: ${originalArrangement} / animals: ${{
+          babies,
+          smalls,
+          beasts,
+          mysteriousCreatures,
+          monarchs,
+        }}`,
+        user: user.loginId,
+      };
+      throw new ReqError(errorObj, errorObj.content);
+    }
     for (let i = 0; i < 5; i++) {
       let newAnimalsByGrade = newAnimals.babies;
       let originalAnimalsByGrade = originalAnimals.babies;
@@ -218,13 +262,10 @@ const summonAnimal: RequestHandler = async (req, res, next) => {
     }
     const animalsInfo = await user.getAnimalsInfo();
     const achivement = await user.getAchivement();
-    updateDailyWeeklyAchivement(achivement)
+    updateDailyWeeklyAchivement(achivement);
     const { babies } = animalsInfo;
     const babiesInfoArr = babies.split("/");
-    const {
-      allBabiesGetOrNot,
-      allAnimalsRewardOrNot,
-    } = achivement;
+    const { allBabiesGetOrNot, allAnimalsRewardOrNot } = achivement;
     const { dailyAnimalSummonCounter, weeklyAnimalSummonCounter } = achivement;
     if (dailyAnimalSummonCounter < 4) {
       let newCounter = dailyAnimalSummonCounter + summonAmounts;

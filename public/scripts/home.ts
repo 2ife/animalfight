@@ -1,15 +1,5 @@
 import axios from "axios";
 
-let mousedown: "mousedown" | "touchstart" = "mousedown";
-let mouseup: "mouseup" | "touchend" = "mouseup";
-if (
-  navigator.userAgent.match(/mobile/i) ||
-  navigator.userAgent.match(/iPad|Android|Touch/i)
-) {
-  mousedown = "touchstart";
-  mouseup = "touchend";
-}
-
 // html
 const battleZone = document.querySelector(".battleZone") as HTMLDivElement;
 const battleZoneAnimalImgs = battleZone.querySelectorAll(
@@ -63,9 +53,6 @@ const battleGradeList = homePart.querySelector(
 const battleGrades = homePart.querySelectorAll(
   ".battleGradeList_battleGrade"
 ) as NodeListOf<HTMLDivElement>;
-const battleGradeInfoContainers = homePart.querySelectorAll(
-  ".battleGrade_gradeInfoContainer"
-) as NodeListOf<HTMLDivElement>;
 const battleGradeStarContainers = homePart.querySelectorAll(
   ".battleGrade_starContainer"
 ) as NodeListOf<HTMLDivElement>;
@@ -84,9 +71,6 @@ const battleBossInfo = homePart.querySelector(
 const battleRewardContainers = homePart.querySelectorAll(
   ".battleRewardContainer"
 ) as NodeListOf<HTMLDivElement>;
-const battleRewardImgs = homePart.querySelectorAll(
-  ".battleRewardContainer_rewardImg"
-) as NodeListOf<HTMLImageElement>;
 const battleRewardAmountContainers = homePart.querySelectorAll(
   ".battleRewardContainer_rewardAmountContainer"
 ) as NodeListOf<HTMLSpanElement>;
@@ -142,9 +126,6 @@ const animalSpecificPartAnimalAmountContainer =
   animalSpecificPart.querySelector(
     ".animalBasicInfoContainer_animalAmountContainer"
   ) as HTMLDivElement;
-const animalSpecificPartAnimalNameContainer = animalSpecificPart.querySelector(
-  ".animalBasicInfoContainer_animalNameContainer"
-) as HTMLDivElement;
 const animalSpecificPartSpecContainer = animalSpecificPart.querySelector(
   ".profileContainer_specContainer"
 ) as HTMLDivElement;
@@ -239,15 +220,9 @@ const jadeChargePriceContainer = shopPart.querySelector(
 ) as HTMLSpanElement;
 
 const mailPart = document.querySelector("#mailPart") as HTMLDivElement;
-const mailListWrapper = mailPart.querySelector(
-  ".mailListWrapper"
-) as HTMLDivElement;
 const mailList = mailPart.querySelector(".mailList") as HTMLDivElement;
 
 const rankPart = document.querySelector("#rankPart") as HTMLDivElement;
-const rankListWrapper = rankPart.querySelector(
-  ".rankListWrapper"
-) as HTMLDivElement;
 const rankList = rankPart.querySelector(".rankList") as HTMLDivElement;
 const rankContainers = rankList.querySelectorAll(
   ".rankContainer"
@@ -257,9 +232,6 @@ const rankerWatchBtns = rankList.querySelectorAll(
 ) as NodeListOf<HTMLButtonElement>;
 const myRankContainer = rankPart.querySelector(
   "#myRankContainer"
-) as HTMLDivElement;
-const myRankValueContainer = myRankContainer.querySelector(
-  ".rankContainer_rankValueContainer"
 ) as HTMLDivElement;
 const myProfileImgInRankPart = myRankContainer.querySelector(
   ".rankContainer_profileImg"
@@ -344,6 +316,7 @@ const loadingShower = document.querySelector(
 const outOfLoadingShower = document.querySelector(
   ".outOfLoadingShower"
 ) as HTMLDivElement;
+
 // common
 const animalsTypeList = [
   "rat",
@@ -514,7 +487,6 @@ const monarchAnimalExtraSkillInfoList = [
   "보스 공격 시마다 (공격력 * 200%) 추가 피해를 준다. (보스 저항 무시)",
   "(총 공격횟수 * 0.01)% 확률로 영혼 1개를 얻는다. (전투 승리 한정 수령)",
 ];
-
 let myUserData: {
   nick: string;
   loginId: string;
@@ -651,7 +623,8 @@ let temporarySmalls = "";
 let temporaryBeasts = "";
 let temporaryMysteriousCreatures = "";
 let temporaryMonarchs = "";
-let savedZoneNumber = 0;
+let savedAnimal = "";
+
 // common func
 const checkLoginCode = async () => {
   try {
@@ -752,11 +725,6 @@ const getAnimalCombineInfoList = (grade: number, typeNumber: number) => {
   }
   return animalCombineInfoList;
 };
-const getZoneNumberByAnimalIndex = (imgIndex: number) => {
-  const zoneNumber =
-    [1, 2, 4, 5, 7, 8][Math.floor(imgIndex / 6)] * 10 +
-    [1, 2, 4, 5, 7, 8][imgIndex % 6];
-};
 const getAnimalIndexByZoneNumber = (zoneNumber: number) => {
   const y = Number(`${zoneNumber}`[0]);
   const x = Number(`${zoneNumber}`[1]);
@@ -806,6 +774,7 @@ const getAnimalSkillInfo = (grade: number, typeNumber: number) => {
   }${grade === 4 ? `\n\n${monarchAnimalExtraSkillInfoList[typeNumber]}` : ""}`;
   return animalSkillInfo;
 };
+
 // common html func
 const updateImgSrc = (
   img: HTMLImageElement,
@@ -841,7 +810,7 @@ const putAnimalsInBattleZone = (arrangement: string) => {
     );
   });
 };
-const mousedownInBattleZone = (event: MouseEvent | TouchEvent) => {
+const clickBattleZone = (event: MouseEvent) => {
   if (
     loadInterval ||
     animalPartMode !== "arrange" ||
@@ -849,20 +818,8 @@ const mousedownInBattleZone = (event: MouseEvent | TouchEvent) => {
   ) {
     return;
   }
-  let offsetX: number = 0;
-  let offsetY: number = 0;
-  if (
-    navigator.userAgent.match(/mobile/i) ||
-    navigator.userAgent.match(/iPad|Android|Touch/i)
-  ) {
-    const touch = (event as TouchEvent).touches[0];
-    const battleZoneWrapperRect = battleZoneWrapper.getBoundingClientRect();
-    offsetX = touch.clientX - battleZoneWrapperRect.left;
-    offsetY = touch.clientY - battleZoneWrapperRect.top;
-  } else {
-    offsetX = (event as MouseEvent).offsetX;
-    offsetY = (event as MouseEvent).offsetY;
-  }
+  const offsetX = event.offsetX;
+  const offsetY = event.offsetY;
   let coordX = Math.floor((offsetX / battleZoneWrapper.offsetWidth) * 6);
   let coordY = Math.floor((offsetY / battleZoneWrapper.offsetHeight) * 6);
   coordX = coordX === 6 ? 5 : coordX;
@@ -871,120 +828,120 @@ const mousedownInBattleZone = (event: MouseEvent | TouchEvent) => {
     [1, 2, 4, 5, 7, 8][coordY] * 10 + [1, 2, 4, 5, 7, 8][coordX];
   const { arrangement } = myUserData;
   const arrangementInfoArr = arrangement.split("/");
-  const targetImgIndex = getAnimalIndexByZoneNumber(targetZoneNumber);
-  if (arrangementInfoArr[targetImgIndex] !== "0") {
-    savedZoneNumber = targetZoneNumber;
-  } else {
-    savedZoneNumber = 0;
+  const targetZoneIndex = getAnimalIndexByZoneNumber(targetZoneNumber);
+  const targetZoneInfo = arrangementInfoArr[targetZoneIndex];
+  const { babies, smalls, beasts, mysteriousCreatures, monarchs } =
+    myAnimalsInfoData;
+  if (targetZoneInfo !== "0") {
+    updateImgSrc(battleZoneAnimalImgs[targetZoneIndex], "noImg");
+    arrangementInfoArr[targetZoneIndex] = "0";
+    const targetZoneInfoArr = targetZoneInfo.split("_");
+    const targetZoneAnimalGrade = Number(targetZoneInfoArr[0]);
+    const targetZoneAnimalTypeNumber = Number(targetZoneInfoArr[1]);
+
+    const targetGradeAnimalsInfoArr = [
+      babies,
+      smalls,
+      beasts,
+      mysteriousCreatures,
+      monarchs,
+    ][targetZoneAnimalGrade].split("/");
+    targetGradeAnimalsInfoArr[targetZoneAnimalTypeNumber] = `${
+      Number(targetGradeAnimalsInfoArr[targetZoneAnimalTypeNumber]) + 1
+    }`;
+    switch (targetZoneAnimalGrade) {
+      case 0: {
+        myAnimalsInfoData.babies = targetGradeAnimalsInfoArr.join("/");
+        break;
+      }
+      case 1: {
+        myAnimalsInfoData.smalls = targetGradeAnimalsInfoArr.join("/");
+        break;
+      }
+      case 2: {
+        myAnimalsInfoData.beasts = targetGradeAnimalsInfoArr.join("/");
+        break;
+      }
+      case 3: {
+        myAnimalsInfoData.mysteriousCreatures =
+          targetGradeAnimalsInfoArr.join("/");
+        break;
+      }
+      case 4: {
+        myAnimalsInfoData.monarchs = targetGradeAnimalsInfoArr.join("/");
+        break;
+      }
+    }
+    const originAnimalContainer = document.getElementById(
+      targetZoneInfo
+    ) as HTMLDivElement;
+    const originAnimalAmountsContainer = originAnimalContainer.querySelector(
+      ".animalList_animalAmountContainer"
+    ) as HTMLDivElement;
+    originAnimalAmountsContainer.innerText = `${
+      Number(originAnimalAmountsContainer.innerText) + 1
+    }`;
   }
-};
-const mouseupInBattleZone = (event: MouseEvent | TouchEvent) => {
-  if (
-    loadInterval ||
-    animalPartMode !== "arrange" ||
-    animalPart.style.display !== "flex"
-  ) {
-    return;
-  }
-  if (savedZoneNumber === 0) {
-    return;
-  }
-  let offsetX: number = 0;
-  let offsetY: number = 0;
-  if (
-    navigator.userAgent.match(/mobile/i) ||
-    navigator.userAgent.match(/iPad|Android|Touch/i)
-  ) {
-    const touch = (event as TouchEvent).changedTouches[0];
-    const battleZoneWrapperRect = battleZoneWrapper.getBoundingClientRect();
-    offsetX = touch.clientX - battleZoneWrapperRect.left;
-    offsetY = touch.clientY - battleZoneWrapperRect.top;
-  } else {
-    offsetX = (event as MouseEvent).offsetX;
-    offsetY = (event as MouseEvent).offsetY;
-  }
-  let coordX = Math.floor((offsetX / battleZoneWrapper.offsetWidth) * 6);
-  let coordY = Math.floor((offsetY / battleZoneWrapper.offsetHeight) * 6);
-  coordX = coordX === 6 ? 5 : coordX;
-  coordY = coordY === 6 ? 5 : coordY;
-  const targetZoneNumber =
-    [1, 2, 4, 5, 7, 8][coordY] * 10 + [1, 2, 4, 5, 7, 8][coordX];
-  const { arrangement } = myUserData;
-  const arrangementInfoArr = arrangement.split("/");
-  const savedAnimalIndex = getAnimalIndexByZoneNumber(savedZoneNumber);
-  const savedAnimalInfo = arrangementInfoArr[savedAnimalIndex];
-  const savedAnimalInfoArr = arrangementInfoArr[savedAnimalIndex].split("_");
-  const savedAnimalGrade = Number(savedAnimalInfoArr[0]);
-  const savedAnimalTypeNumber = Number(savedAnimalInfoArr[1]);
-  if (savedZoneNumber === targetZoneNumber) {
-    updateImgSrc(battleZoneAnimalImgs[savedAnimalIndex], "noImg");
-    const { babies, smalls, beasts, mysteriousCreatures, monarchs } =
-      myAnimalsInfoData;
-    const targetGradeAnimalsArr = [
+  if (savedAnimal !== "") {
+    arrangementInfoArr[targetZoneIndex] = savedAnimal;
+    const savedAnimalInfoArr = savedAnimal.split("_");
+    const savedAnimalGrade = Number(savedAnimalInfoArr[0]);
+    const savedAnimalTypeNumber = Number(savedAnimalInfoArr[1]);
+    updateImgSrc(
+      battleZoneAnimalImgs[targetZoneIndex],
+      animalNameList[savedAnimalGrade][savedAnimalTypeNumber],
+      "animals"
+    );
+    const targetGradeAnimalsInfoArr = [
       babies,
       smalls,
       beasts,
       mysteriousCreatures,
       monarchs,
     ][savedAnimalGrade].split("/");
-    const newAmountsStr = `${
-      Number(targetGradeAnimalsArr[savedAnimalTypeNumber]) + 1
+    targetGradeAnimalsInfoArr[savedAnimalTypeNumber] = `${
+      Number(targetGradeAnimalsInfoArr[savedAnimalTypeNumber]) - 1
     }`;
-    targetGradeAnimalsArr[savedAnimalTypeNumber] = newAmountsStr;
-    animalPartAnimalAmountContainers[
-      savedAnimalGrade * 11 + savedAnimalTypeNumber
-    ].innerText = newAmountsStr;
-    const newTargetGradeAnimalsInfo = targetGradeAnimalsArr.join("/");
     switch (savedAnimalGrade) {
       case 0: {
-        myAnimalsInfoData.babies = newTargetGradeAnimalsInfo;
+        myAnimalsInfoData.babies = targetGradeAnimalsInfoArr.join("/");
         break;
       }
       case 1: {
-        myAnimalsInfoData.smalls = newTargetGradeAnimalsInfo;
+        myAnimalsInfoData.smalls = targetGradeAnimalsInfoArr.join("/");
         break;
       }
       case 2: {
-        myAnimalsInfoData.beasts = newTargetGradeAnimalsInfo;
+        myAnimalsInfoData.beasts = targetGradeAnimalsInfoArr.join("/");
         break;
       }
       case 3: {
-        myAnimalsInfoData.mysteriousCreatures = newTargetGradeAnimalsInfo;
+        myAnimalsInfoData.mysteriousCreatures =
+          targetGradeAnimalsInfoArr.join("/");
         break;
       }
       case 4: {
-        myAnimalsInfoData.monarchs = newTargetGradeAnimalsInfo;
+        myAnimalsInfoData.monarchs = targetGradeAnimalsInfoArr.join("/");
         break;
       }
     }
-    arrangementInfoArr[savedAnimalIndex] = "0";
-    myUserData.arrangement = arrangementInfoArr.join("/");
-  } else {
-    const existAnimalIndex = getAnimalIndexByZoneNumber(targetZoneNumber);
-    if (arrangementInfoArr[existAnimalIndex] !== "0") {
-      const existAnimalInfo = arrangementInfoArr[existAnimalIndex];
-      const existAnimalInfoArr = existAnimalInfo.split("_");
-      const existAnimalGrade = Number(existAnimalInfoArr[0]);
-      const existAnimalTypeNumber = Number(existAnimalInfoArr[1]);
-      arrangementInfoArr[savedAnimalIndex] = existAnimalInfo;
-      updateImgSrc(
-        battleZoneAnimalImgs[savedAnimalIndex],
-        animalNameList[existAnimalGrade][existAnimalTypeNumber],
-        "animals"
-      );
-    } else {
-      arrangementInfoArr[savedAnimalIndex] = "0";
-      updateImgSrc(battleZoneAnimalImgs[savedAnimalIndex], "noImg");
-    }
-    arrangementInfoArr[existAnimalIndex] = savedAnimalInfo;
-    updateImgSrc(
-      battleZoneAnimalImgs[existAnimalIndex],
-      animalNameList[savedAnimalGrade][savedAnimalTypeNumber],
-      "animals"
-    );
-    myUserData.arrangement = arrangementInfoArr.join("/");
+    const savedAnimalContainer = document.getElementById(
+      savedAnimal
+    ) as HTMLDivElement;
+    const savedAnimalAmountsContainer = savedAnimalContainer.querySelector(
+      ".animalList_animalAmountContainer"
+    ) as HTMLDivElement;
+    savedAnimalAmountsContainer.innerText = `${
+      Number(savedAnimalAmountsContainer.innerText) - 1
+    }`;
   }
+  battleZoneAnimalImgs.forEach((img) => {
+    img.style.backgroundColor = "white";
+  });
+  myUserData.arrangement = arrangementInfoArr.join("/");
+  savedAnimal = "";
 };
+
 // homePart func
 const putMyUserData = () => {
   const {
@@ -1412,63 +1369,10 @@ const clickAnimalPartAnimalImgContainer = (event: MouseEvent) => {
     }
     case "arrange": {
       if (targetAmounts === 0) return;
-      let blankImg: HTMLImageElement | null = null;
-      let blankImgIndex = 0;
-      for (const img of battleZoneAnimalImgs) {
-        if (img.src.includes("noImg")) {
-          blankImg = img;
-          break;
-        }
-        blankImgIndex++;
-      }
-      if (!blankImg) {
-        return;
-      }
-      updateImgSrc(
-        blankImg,
-        animalNameList[targetGrade][targetTypeNumber],
-        "animals"
-      );
-      const { arrangement } = myUserData;
-      const arrangementInfoArr = arrangement.split("/");
-      arrangementInfoArr[blankImgIndex] = `${targetGrade}_${targetTypeNumber}`;
-      myUserData.arrangement = arrangementInfoArr.join("/");
-      const { babies, smalls, beasts, mysteriousCreatures, monarchs } =
-        myAnimalsInfoData;
-      const targetGradeAnimalsArr = [
-        babies,
-        smalls,
-        beasts,
-        mysteriousCreatures,
-        monarchs,
-      ][targetGrade].split("/");
-      const newAmountsStr = `${targetAmounts - 1}`;
-      targetGradeAnimalsArr[targetTypeNumber] = newAmountsStr;
-      targetAmountContainer.innerText = newAmountsStr;
-      const newTargetGradeAnimalsInfo = targetGradeAnimalsArr.join("/");
-      switch (targetGrade) {
-        case 0: {
-          myAnimalsInfoData.babies = newTargetGradeAnimalsInfo;
-          break;
-        }
-        case 1: {
-          myAnimalsInfoData.smalls = newTargetGradeAnimalsInfo;
-          break;
-        }
-        case 2: {
-          myAnimalsInfoData.beasts = newTargetGradeAnimalsInfo;
-          break;
-        }
-        case 3: {
-          myAnimalsInfoData.mysteriousCreatures = newTargetGradeAnimalsInfo;
-          break;
-        }
-        case 4: {
-          myAnimalsInfoData.monarchs = newTargetGradeAnimalsInfo;
-          break;
-        }
-      }
-      break;
+      savedAnimal = targetId;
+      battleZoneAnimalImgs.forEach((img) => {
+        img.style.backgroundColor = "rgb(225,255,225)";
+      });
     }
   }
 };
@@ -1490,6 +1394,9 @@ const clickAnimalPartModeChangeBtn = async () => {
       try {
         animalPartMode = "normal";
         animaPartModeChangeBtn.innerText = "배치";
+        battleZoneAnimalImgs.forEach((img) => {
+          img.style.backgroundColor = "white";
+        });
         const { arrangement } = myUserData;
         const { babies, smalls, beasts, mysteriousCreatures, monarchs } =
           myAnimalsInfoData;
@@ -1767,11 +1674,7 @@ const clickUpgradeExecuter = async (event: MouseEvent) => {
     }
     const { animalsInfoData } = data;
     myAnimalsInfoData = animalsInfoData;
-    // putMyAnimalUpgradeInfo()
     putMyAchivementInfo();
-    // to server: type: gradeUpgrade, mysterious, monarch
-    // receive (achivement)
-    // + update
     changeGoodsValue("gold", -neededGold);
     upgradeValue++;
     if (executerIndex <= 4) {
@@ -2049,93 +1952,93 @@ const clickAchivementRewardImgContainer = async (event: MouseEvent) => {
     myAchivementData = achivementData;
     putMyAchivementInfo();
     if (achivementIndex === 0) {
-      // myAchivementData.dailyBattleWinRewardOrNot = true;
+      myAchivementData.dailyBattleWinRewardOrNot = true;
       changeGoodsValue("spirit", 1);
     } else if (achivementIndex === 1) {
-      // myAchivementData.dailyAnimalSummonRewardOrNot = true;
+      myAchivementData.dailyAnimalSummonRewardOrNot = true;
       changeGoodsValue("jade", 50);
     } else if (achivementIndex === 2) {
-      // myAchivementData.weeklyBattleWinRewardOrNot = true;
+      myAchivementData.weeklyBattleWinRewardOrNot = true;
       changeGoodsValue("spirit", 6);
     } else if (achivementIndex === 3) {
-      // myAchivementData.weeklyAnimalSummonRewardOrNot = true;
+      myAchivementData.weeklyAnimalSummonRewardOrNot = true;
       changeGoodsValue("jade", 300);
     } else if (achivementIndex < 9) {
-      // const { allAnimalsRewardOrNot } = myAchivementData;
-      // const allAnimalsRewardInfoArr = allAnimalsRewardOrNot.split("/");
+      const { allAnimalsRewardOrNot } = myAchivementData;
+      const allAnimalsRewardInfoArr = allAnimalsRewardOrNot.split("/");
       const realIndex = achivementIndex - 4;
-      // allAnimalsRewardInfoArr[realIndex] = "1";
-      // myAchivementData.allAnimalsRewardOrNot =
-      //   allAnimalsRewardInfoArr.join("/");
+      allAnimalsRewardInfoArr[realIndex] = "1";
+      myAchivementData.allAnimalsRewardOrNot =
+        allAnimalsRewardInfoArr.join("/");
       changeGoodsValue("spirit", 5 ** realIndex * 2);
     } else if (achivementIndex < 14) {
-      // const { gradeUpgradeRewardOrNot } = myAchivementData;
-      // const gradeUpgradeRewardInfoArr = gradeUpgradeRewardOrNot.split("/");
+      const { gradeUpgradeRewardOrNot } = myAchivementData;
+      const gradeUpgradeRewardInfoArr = gradeUpgradeRewardOrNot.split("/");
       const realIndex = achivementIndex - 9;
-      // gradeUpgradeRewardInfoArr[realIndex] = "1";
-      // myAchivementData.gradeUpgradeRewardOrNot =
-      //   gradeUpgradeRewardInfoArr.join("/");
+      gradeUpgradeRewardInfoArr[realIndex] = "1";
+      myAchivementData.gradeUpgradeRewardOrNot =
+        gradeUpgradeRewardInfoArr.join("/");
       changeGoodsValue("gold", 40 ** realIndex * 400);
     } else if (achivementIndex < 25) {
-      // const { mysteriousCreatureEachUpgradeRewardOrNot } = myAchivementData;
-      // const mysteriousCreatureEachUpgradeRewardInfoArr =
-      //   mysteriousCreatureEachUpgradeRewardOrNot.split("/");
-      // mysteriousCreatureEachUpgradeRewardInfoArr[achivementIndex - 14] = "1";
-      // myAchivementData.mysteriousCreatureEachUpgradeRewardOrNot =
-      //   mysteriousCreatureEachUpgradeRewardInfoArr.join("/");
+      const { mysteriousCreatureEachUpgradeRewardOrNot } = myAchivementData;
+      const mysteriousCreatureEachUpgradeRewardInfoArr =
+        mysteriousCreatureEachUpgradeRewardOrNot.split("/");
+      mysteriousCreatureEachUpgradeRewardInfoArr[achivementIndex - 14] = "1";
+      myAchivementData.mysteriousCreatureEachUpgradeRewardOrNot =
+        mysteriousCreatureEachUpgradeRewardInfoArr.join("/");
       changeGoodsValue("gold", 600000);
     } else if (achivementIndex < 36) {
-      // const { monarchEachUpgradeRewardOrNot } = myAchivementData;
-      // const monarchEachUpgradeRewardInfoArr =
-      //   monarchEachUpgradeRewardOrNot.split("/");
-      // monarchEachUpgradeRewardInfoArr[achivementIndex - 25] = "1";
-      // myAchivementData.monarchEachUpgradeRewardOrNot =
-      //   monarchEachUpgradeRewardInfoArr.join("/");
+      const { monarchEachUpgradeRewardOrNot } = myAchivementData;
+      const monarchEachUpgradeRewardInfoArr =
+        monarchEachUpgradeRewardOrNot.split("/");
+      monarchEachUpgradeRewardInfoArr[achivementIndex - 25] = "1";
+      myAchivementData.monarchEachUpgradeRewardOrNot =
+        monarchEachUpgradeRewardInfoArr.join("/");
       changeGoodsValue("gold", 20000000);
     }
-    // completeImg.style.display = "block";
+    completeImg.style.display = "block";
     if (achivementIndex === 36) {
-      // myAchivementData.permanentBattleWinReward++;
-      // const { permanentBattleWin, permanentBattleWinReward } = myAchivementData;
-      // if (permanentBattleWin === permanentBattleWinReward) {
-      //   completeImg.style.display = "none";
-      //   const targetBattleGradeGroupIndex = permanentBattleWinReward + 1;
-      //   const fullCounter = 100;
-      //   const { battleInfo } = myUserData;
-      //   const battleInfoLength = battleInfo.length;
-      //   const currentCounter = battleInfoLength;
-      //   const achivementProgressBar = achivementProgressBars[achivementIndex];
-      //   const achivementProgressInfoContainer =
-      //     achivementProgressInfoContainers[achivementIndex];
-      //   achivementProgressBar.style.width = `${
-      //     (currentCounter / fullCounter) * 100
-      //   }%`;
-      //   achivementProgressInfoContainer.innerText = `${currentCounter}/${fullCounter}`;
-      //   permanentBattleWinAchivementName.innerText = `${targetBattleGradeGroupIndex}단계 모든 전투 승리`;
-      // }
+      myAchivementData.permanentBattleWinReward++;
+      const { permanentBattleWin, permanentBattleWinReward } = myAchivementData;
+      if (permanentBattleWin === permanentBattleWinReward) {
+        completeImg.style.display = "none";
+        const targetBattleGradeGroupIndex = permanentBattleWinReward + 1;
+        const fullCounter = 100;
+        const { battleInfo } = myUserData;
+        const battleInfoLength = battleInfo.length;
+        const currentCounter = battleInfoLength;
+        const achivementProgressBar = achivementProgressBars[achivementIndex];
+        const achivementProgressInfoContainer =
+          achivementProgressInfoContainers[achivementIndex];
+        achivementProgressBar.style.width = `${
+          (currentCounter / fullCounter) * 100
+        }%`;
+        achivementProgressInfoContainer.innerText = `${currentCounter}/${fullCounter}`;
+        permanentBattleWinAchivementName.innerText = `${targetBattleGradeGroupIndex}단계 모든 전투 승리`;
+      }
       changeGoodsValue("jade", 1000);
     } else if (achivementIndex === 37) {
-      // myAchivementData.permanentBattlePerfectWinReward++;
-      // const { permanentBattlePerfectWin, permanentBattlePerfectWinReward } =
-      //   myAchivementData;
-      // if (permanentBattlePerfectWin === permanentBattlePerfectWinReward) {
-      //   completeImg.style.display = "none";
-      //   const targetBattleGradeGroupIndex = permanentBattlePerfectWinReward + 1;
-      //   const fullCounter = 300;
-      //   const { battleInfo } = myUserData;
-      //   const totalStarAmounts = Array.from(battleInfo).reduce((acc, cur) => {
-      //     return acc + Number(cur);
-      //   }, 0);
-      //   const currentCounter = totalStarAmounts;
-      //   const achivementProgressBar = achivementProgressBars[achivementIndex];
-      //   const achivementProgressInfoContainer =
-      //     achivementProgressInfoContainers[achivementIndex];
-      //   achivementProgressBar.style.width = `${
-      //     (currentCounter / fullCounter) * 100
-      //   }%`;
-      //   achivementProgressInfoContainer.innerText = `${currentCounter}/${fullCounter}`;
-      //   permanentBattlePerfectWinAchivementName.innerText = `${targetBattleGradeGroupIndex}단계 모든 전투 승리`;
-      // }
+      myAchivementData.permanentBattlePerfectWinReward++;
+      const { permanentBattlePerfectWin, permanentBattlePerfectWinReward } =
+        myAchivementData;
+      if (permanentBattlePerfectWin === permanentBattlePerfectWinReward) {
+        completeImg.style.display = "none";
+        const targetBattleGradeGroupIndex = permanentBattlePerfectWinReward + 1;
+        const fullCounter = 300;
+        const { battleInfo } = myUserData;
+        const totalStarAmounts = Array.from(battleInfo).reduce((acc, cur) => {
+          return acc + Number(cur);
+        }, 0);
+        const currentCounter = totalStarAmounts;
+        const achivementProgressBar = achivementProgressBars[achivementIndex];
+        const achivementProgressInfoContainer =
+          achivementProgressInfoContainers[achivementIndex];
+        achivementProgressBar.style.width = `${
+          (currentCounter / fullCounter) * 100
+        }%`;
+        achivementProgressInfoContainer.innerText = `${currentCounter}/${fullCounter}`;
+        permanentBattlePerfectWinAchivementName.innerText = `${targetBattleGradeGroupIndex}단계 모든 전투 승리`;
+      }
       changeGoodsValue("jade", 2000);
     }
   } catch (err: any) {
@@ -2418,7 +2321,6 @@ const clickShopPartGoodsImgContainers = async (event: MouseEvent) => {
       return;
     }
     const { goodsPurchaseCurrentTime } = data;
-    // to server + receive fewScrollPurchaseTime ,manyScrollPurchaseTime, fewSpiritPurchaseTime, manySpiritPurchaseTime
     changeGoodsValue("jade", -neededJade);
     completeImg.style.display = "block";
     const { level } = myUserData;
@@ -2499,7 +2401,6 @@ const clickJadeChargeBtn = async () => {
       throw new Error();
     }
     const { newCashCode } = data;
-    // to server: currentJadeChargeValue + receive cashCode
     changeGoodsValue("jade", currentJadeChargeValue);
     myUserData.cashCode = newCashCode;
     myUserData.chargeCash = currentJadeChargeValue * 10;
@@ -2527,7 +2428,6 @@ const putMyMails = async () => {
       throw new Error();
     }
     const { mailData } = data;
-    // to server + receive mails(new Date -> expire)
     myMailData = mailData;
     const mailAmounts = myMailData.length < 5 ? 5 : myMailData.length;
     mailList.style.height = `${(mailAmounts * 4000) / 228}%`;
@@ -2636,7 +2536,6 @@ const clickMailContainer = async (event: MouseEvent) => {
       }, 1000);
       return;
     }
-    // to server: mailId
     const { giftInfo } = targetMail;
     const giftInfoArr = giftInfo.split("/");
     giftInfoArr.forEach((giftAmountStr, index) => {
@@ -2676,7 +2575,6 @@ const putRankInfo = async () => {
       throw new Error();
     }
     const { rankerData } = data;
-    // to server + receive rank(name,profileAnimal,level,highestBattleGrade,arrangement/ ~top 100), myRank(등수)
     rankerArr = rankerData;
     let rankerArrLength = rankerArr.length;
     rankerArrLength = rankerArrLength < 4 ? 4 : rankerArrLength;
@@ -2720,8 +2618,6 @@ const putRankInfo = async () => {
       rankContainer.style.display = "flex";
     });
     const { nick, level, highestBattleGrade, profileAnimal } = myUserData;
-    // const myRank = 127;
-    // myRankValueContainer.innerText = `${myRank}`;
     updateImgSrc(myProfileImgInRankPart, profileAnimal, "animals");
     myNameContainerInRankPart.innerText = nick;
     myLevelContainerInRankPart.innerText = `LV. ${level}`;
@@ -2783,6 +2679,9 @@ const clickMenuBtn = (partIndex: number) => () => {
     putMyAnimalsInAnimalPart();
     animalPartMode = "normal";
     animaPartModeChangeBtn.innerText = "배치";
+    battleZoneAnimalImgs.forEach((img) => {
+      img.style.backgroundColor = "white";
+    });
   }
   putAnimalsInBattleZone(myUserData.arrangement);
   if (partIndex === 6) {
@@ -2842,7 +2741,6 @@ const clickProfileImgSetBtn = async () => {
     if (answer === "error") {
       throw new Error();
     }
-    // to server: animalGrade, animalTypeNumber
     alertByModal(`프로필 이미지 변경 완료!\n업데이트를 위해 재접속합니다!`);
     loadInterval = 1;
     setTimeout(() => {
@@ -2900,7 +2798,6 @@ const clickUserInfoChangeBtn = (type: "nick" | "password") => async () => {
       alertByModal("이미 존재하는 닉네임입니다!");
       return;
     }
-    // to server: type, text(nick->changeNick/password->changePassword)
     alertByModal(
       `${
         type === "nick" ? "닉네임" : "비밀번호"
@@ -2942,31 +2839,7 @@ const stopLoading = () => {
 };
 
 // event listener
-battleZoneWrapper.addEventListener(mousedown, mousedownInBattleZone);
-battleZoneWrapper.addEventListener(mouseup, mouseupInBattleZone);
-if (mousedown === "mousedown") {
-  battleZoneWrapper.addEventListener("mouseleave", () => {
-    if (
-      !savedZoneNumber ||
-      animalPartMode !== "arrange" ||
-      animalPart.style.display !== "flex"
-    )
-      return;
-    savedZoneNumber = 0;
-  });
-} else {
-  battleZoneWrapper.addEventListener("touchmove", (event: TouchEvent) => {
-    const touch = event.touches[0];
-    if (
-      savedZoneNumber &&
-      animalPartMode === "arrange" &&
-      animalPart.style.display === "flex" &&
-      document.elementFromPoint(touch.pageX, touch.pageY) !== battleZoneWrapper
-    ) {
-      savedZoneNumber = 0;
-    }
-  });
-}
+battleZoneWrapper.addEventListener("click", clickBattleZone);
 profileManageBtn.addEventListener("click", clickProfileManageBtn);
 battleGradeLeftEndMoveBtn.addEventListener(
   "click",

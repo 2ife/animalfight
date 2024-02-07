@@ -89,7 +89,7 @@ main {
     margin: 0 1%;
     display: flex;
     flex-flow: column nowrap;
-    justify-content: center;
+    justify-content: space-evenly;
     align-items: center;
 }
 #animalNameContainer{
@@ -114,6 +114,15 @@ main {
 
 .monarchGradeSpan {
   color: gold;
+}
+#animalMoveBtn{
+  width: 60%;
+  height: 40%;
+  border: 2px black solid;
+  font-size: 90%;
+}
+#animalMoveBtn:active{
+  font-weight: 900;
 }
 #animalSpecContainer{
   width: 40%;
