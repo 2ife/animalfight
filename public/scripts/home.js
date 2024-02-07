@@ -532,13 +532,13 @@ const clickBattleZone = (event) => {
     const arrangementInfoArr = arrangement.split("/");
     const targetZoneIndex = getAnimalIndexByZoneNumber(targetZoneNumber);
     const targetZoneInfo = arrangementInfoArr[targetZoneIndex];
-    const { babies, smalls, beasts, mysteriousCreatures, monarchs } = myAnimalsInfoData;
     if (targetZoneInfo !== "0") {
         updateImgSrc(battleZoneAnimalImgs[targetZoneIndex], "noImg");
         arrangementInfoArr[targetZoneIndex] = "0";
         const targetZoneInfoArr = targetZoneInfo.split("_");
         const targetZoneAnimalGrade = Number(targetZoneInfoArr[0]);
         const targetZoneAnimalTypeNumber = Number(targetZoneInfoArr[1]);
+        const { babies, smalls, beasts, mysteriousCreatures, monarchs } = myAnimalsInfoData;
         const targetGradeAnimalsInfoArr = [
             babies,
             smalls,
@@ -580,6 +580,7 @@ const clickBattleZone = (event) => {
         const savedAnimalGrade = Number(savedAnimalInfoArr[0]);
         const savedAnimalTypeNumber = Number(savedAnimalInfoArr[1]);
         updateImgSrc(battleZoneAnimalImgs[targetZoneIndex], animalNameList[savedAnimalGrade][savedAnimalTypeNumber], "animals");
+        const { babies, smalls, beasts, mysteriousCreatures, monarchs } = myAnimalsInfoData;
         const targetGradeAnimalsInfoArr = [
             babies,
             smalls,
