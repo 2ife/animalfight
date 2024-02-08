@@ -30,6 +30,8 @@ const hpVisibleToggleBtn = document.querySelector("#hpVisibleToggleBtn");
 const speedControlBtn = document.querySelector("#speedControlBtn");
 const pauseBtn = document.querySelector("#pauseBtn");
 const giveUpBtn = document.querySelector("#giveUpBtn");
+const alertModal = document.querySelector(".alertModal");
+const OutOfAlertModal = document.querySelector(".OutOfAlertModal");
 // common
 const animalsTypeList = [
     "rat",
@@ -604,7 +606,10 @@ class Battle {
             if (answer === "error") {
                 throw new Error();
             }
-            location.href = `/home`;
+            alertByModal('승리!\n잠시 후, 홈으로 돌아갑니다.');
+            setTimeout(() => {
+                location.href = `/home`;
+            }, 1000);
         }
         catch (err) {
             location.href = `/login`;
@@ -612,8 +617,10 @@ class Battle {
     }
     loseBattle() {
         this.pauseBattle();
-        location.href = "/home";
-        // 이후 처리(all increase parameter)
+        alertByModal('패배!\n잠시 후, 홈으로 돌아갑니다.');
+        setTimeout(() => {
+            location.href = `/home`;
+        }, 1000);
     }
     loseLife(life) {
         this.life -= life;
@@ -1253,6 +1260,11 @@ const clickAnimalMoveBtn = () => {
     if (!battle || battle.tick <= 0 || battle.pauseOrNot === true)
         return;
     battleZoneClickMode = "move";
+};
+const alertByModal = (msg) => {
+    alertModal.innerText = msg;
+    alertModal.style.display = "flex";
+    OutOfAlertModal.style.display = "flex";
 };
 // event listener
 document.addEventListener("visibilitychange", () => {

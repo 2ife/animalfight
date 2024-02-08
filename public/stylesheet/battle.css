@@ -202,3 +202,26 @@ main {
 #giveUpBtn:active{
   font-weight: 900;
 }
+.alertModal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 60%;
+  height: 40%;
+  left: 20%;
+  top: 30%;
+  position: absolute;
+  z-index: 7;
+  background-color: white;
+  border: 1px black solid;
+}
+.OutOfAlertModal {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0%;
+  top: 0%;
+  z-index: 6;
+  background-color: black;
+  opacity: 0.5;
+}

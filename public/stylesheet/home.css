@@ -737,6 +737,9 @@ main {
   height: 40%;
   font-size: 90%;
   font-weight: 900;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .upgradeExecuter_goldContainer {

@@ -55,6 +55,11 @@ const speedControlBtn = document.querySelector(
 const pauseBtn = document.querySelector("#pauseBtn") as HTMLButtonElement;
 const giveUpBtn = document.querySelector("#giveUpBtn") as HTMLButtonElement;
 
+const alertModal = document.querySelector(".alertModal") as HTMLDivElement;
+const OutOfAlertModal = document.querySelector(
+  ".OutOfAlertModal"
+) as HTMLDivElement;
+
 // common
 const animalsTypeList = [
   "rat",
@@ -330,7 +335,6 @@ const checkBeforeBattle = async () => {
     location.href = "/login";
   }
 };
-
 class Battle {
   declare grade: number;
   declare life: number;
@@ -771,15 +775,20 @@ class Battle {
       if (answer === "error") {
         throw new Error();
       }
-      location.href = `/home`;
+      alertByModal('승리!\n잠시 후, 홈으로 돌아갑니다.')
+      setTimeout(() => {
+        location.href = `/home`;
+      }, 1000);
     } catch (err: any) {
       location.href = `/login`;
     }
   }
   loseBattle() {
     this.pauseBattle();
-    location.href = "/home";
-    // 이후 처리(all increase parameter)
+    alertByModal('패배!\n잠시 후, 홈으로 돌아갑니다.')
+    setTimeout(() => {
+      location.href = `/home`;
+    }, 1000);
   }
   loseLife(life: number) {
     this.life -= life;
@@ -1575,7 +1584,11 @@ const clickAnimalMoveBtn = () => {
   if (!battle || battle.tick <= 0 || battle.pauseOrNot === true) return;
   battleZoneClickMode = "move";
 };
-
+const alertByModal = (msg: string) => {
+  alertModal.innerText = msg;
+  alertModal.style.display = "flex";
+  OutOfAlertModal.style.display = "flex";
+};
 // event listener
 document.addEventListener("visibilitychange", () => {
   if (battle && document.hidden && !battle.pauseOrNot && battle.tick > 0) {
@@ -1637,5 +1650,4 @@ giveUpBtn.addEventListener("click", async () => {
     location.href = "/login";
   }
 });
-
 checkBeforeBattle();

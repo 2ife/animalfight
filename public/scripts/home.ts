@@ -624,6 +624,9 @@ let temporaryBeasts = "";
 let temporaryMysteriousCreatures = "";
 let temporaryMonarchs = "";
 let savedAnimal = "";
+let animalSummonBtnClickInterval: any = null;
+let animalSummonTenBtnClickInterval: any = null;
+let upgradeExecuterClickInterval: any = null;
 
 // common func
 const checkLoginCode = async () => {
@@ -1243,7 +1246,35 @@ const sweep = async () => {
     if (answer === "error") {
       throw new Error();
     }
-    location.reload();
+    const { userData, achivementData } = data;
+    const { level, exp, gold, jade, scroll, spirit } = userData;
+    const {
+      dailyBattleWinCounter,
+      dailyBattleWinRewardOrNot,
+      dailyTargetTime,
+      weeklyBattleWinCounter,
+      weeklyBattleWinRewardOrNot,
+      weeklyTargetTime,
+    } = achivementData;
+    myUserData.level = level;
+    myUserData.exp = exp;
+    myUserData.gold = gold;
+    myUserData.jade = jade;
+    myUserData.scroll = scroll;
+    myUserData.spirit = spirit;
+    levelContainer.innerText = `LV. ${level}`;
+    const expToLevelUp = 2 ** (Math.ceil(level / 10) - 1) * level * 100;
+    const expPercent = ((exp / expToLevelUp) * 100).toFixed(2);
+    expBar.style.width = `${expPercent}%`;
+    expInfoContainer.innerText = `${exp} (${expPercent}%)`;
+    putMyGoods();
+    myAchivementData.dailyBattleWinCounter = dailyBattleWinCounter;
+    myAchivementData.dailyBattleWinRewardOrNot = dailyBattleWinRewardOrNot;
+    myAchivementData.dailyTargetTime = dailyTargetTime;
+    myAchivementData.weeklyBattleWinCounter = weeklyBattleWinCounter;
+    myAchivementData.weeklyBattleWinRewardOrNot = weeklyBattleWinRewardOrNot;
+    myAchivementData.weeklyTargetTime = weeklyTargetTime;
+    putMyAchivementInfo();
   } catch (err: any) {
     stopLoading();
     reload = true;
@@ -1424,7 +1455,7 @@ const clickAnimalPartModeChangeBtn = async () => {
     }
   }
 };
-const summonAnimal = (number: 1 | 10) => async () => {
+const summonAnimal = async (number: 1 | 10) => {
   if (loadInterval) return;
   try {
     if (animalPartMode === "arrange") {
@@ -1435,14 +1466,14 @@ const summonAnimal = (number: 1 | 10) => async () => {
     if (spirit < number) {
       return;
     }
-    showLoading();
+    loadInterval = -1;
     const loginCode = localStorage.getItem("LOGIN_CODE");
     const res = await axios.post("/animal/summonAnimal", {
       loginCode,
       summonAmounts: number,
     });
-    stopLoading();
-    loadInterval = 1;
+    loadInterval = null;
+    loadInterval = -1;
     const { data } = res;
     const { answer } = data;
     if (answer === "error") {
@@ -1621,10 +1652,9 @@ const putMyAnimalUpgradeInfo = () => {
     }
   });
 };
-const clickUpgradeExecuter = async (event: MouseEvent) => {
+const clickUpgradeExecuter = async (target: HTMLDivElement) => {
   if (loadInterval) return;
   try {
-    const target = event.currentTarget as HTMLDivElement;
     const neededGoldValueContainer = target.querySelector(
       ".goldContainer_goldValueContainer"
     ) as HTMLDivElement;
@@ -1660,14 +1690,14 @@ const clickUpgradeExecuter = async (event: MouseEvent) => {
     if (gold < neededGold) {
       return;
     }
-    showLoading();
+    loadInterval = -1;
     const loginCode = localStorage.getItem("LOGIN_CODE");
     const res = await axios.post("/animal/upgradeAnimal", {
       loginCode,
       upgradePart,
       upgradeIndex: realIndex,
     });
-    stopLoading();
+    loadInterval = null;
     const { data } = res;
     const { answer } = data;
     if (answer === "error") {
@@ -2670,6 +2700,10 @@ const clickMenuBtn = (partIndex: number) => () => {
   menuBtns.forEach((menuBtn) => {
     menuBtn.style.fontWeight = "400";
   });
+  if (animalSpecificPart.style.display === "flex") {
+    animalSpecificPart.style.display = "none";
+    animalComprehensivePart.style.display = "flex";
+  }
   if (animalPartMode === "arrange") {
     myUserData.arrangement = temporaryArrangement;
     myAnimalsInfoData.babies = temporaryBabies;
@@ -2871,16 +2905,129 @@ animalPartAnimalImgContainers.forEach((animalPartAnimalImgContainer) => {
   );
 });
 animaPartModeChangeBtn.addEventListener("click", clickAnimalPartModeChangeBtn);
-animalSummonBtn.addEventListener("click", summonAnimal(1));
-animalSummonTenBtn.addEventListener("click", summonAnimal(10));
+if (
+  navigator.userAgent.match(/mobile/i) ||
+  navigator.userAgent.match(/iPad|Android|Touch/i)
+) {
+  animalSummonBtn.addEventListener("touchstart", () => {
+    upgradeExecuterClickInterval = setInterval(() => {
+      summonAnimal(1);
+    }, 200);
+  });
+  animalSummonBtn.addEventListener("touchend", () => {
+    if (upgradeExecuterClickInterval) {
+      clearInterval(upgradeExecuterClickInterval);
+    }
+  });
+  animalSummonBtn.addEventListener("touchmove", (event: TouchEvent) => {
+    const touch = event.touches[0];
+    if (
+      upgradeExecuterClickInterval &&
+      document.elementFromPoint(touch.pageX, touch.pageY) !== animalSummonBtn
+    ) {
+      clearInterval(upgradeExecuterClickInterval);
+    }
+  });
+  animalSummonTenBtn.addEventListener("touchstart", () => {
+    upgradeExecuterClickInterval = setInterval(() => {
+      summonAnimal(10);
+    }, 200);
+  });
+  animalSummonTenBtn.addEventListener("touchend", () => {
+    if (upgradeExecuterClickInterval) {
+      clearInterval(upgradeExecuterClickInterval);
+    }
+  });
+  animalSummonTenBtn.addEventListener("touchmove", (event: TouchEvent) => {
+    const touch = event.touches[0];
+    if (
+      upgradeExecuterClickInterval &&
+      document.elementFromPoint(touch.pageX, touch.pageY) !== animalSummonTenBtn
+    ) {
+      clearInterval(upgradeExecuterClickInterval);
+    }
+  });
+} else {
+  animalSummonBtn.addEventListener("mousedown", (event: MouseEvent) => {
+    upgradeExecuterClickInterval = setInterval(() => {
+      summonAnimal(1);
+    }, 200);
+  });
+  animalSummonBtn.addEventListener("mouseup", () => {
+    if (upgradeExecuterClickInterval) {
+      clearInterval(upgradeExecuterClickInterval);
+    }
+  });
+  animalSummonBtn.addEventListener("mouseleave", () => {
+    if (upgradeExecuterClickInterval) {
+      clearInterval(upgradeExecuterClickInterval);
+    }
+  });
+  animalSummonTenBtn.addEventListener("mousedown", (event: MouseEvent) => {
+    upgradeExecuterClickInterval = setInterval(() => {
+      summonAnimal(10);
+    }, 200);
+  });
+  animalSummonTenBtn.addEventListener("mouseup", () => {
+    if (upgradeExecuterClickInterval) {
+      clearInterval(upgradeExecuterClickInterval);
+    }
+  });
+  animalSummonTenBtn.addEventListener("mouseleave", () => {
+    if (upgradeExecuterClickInterval) {
+      clearInterval(upgradeExecuterClickInterval);
+    }
+  });
+}
 animalSpecificPartCloseBtn.addEventListener(
   "click",
   clickAnimalSpecificPartCloseBtn
 );
 combineInfoContainerTargetImg.addEventListener("click", combineAnimal);
-
 upgradeExecuters.forEach((executer) => {
-  executer.addEventListener("click", clickUpgradeExecuter);
+  // executer.addEventListener("click", clickUpgradeExecuter);
+  if (
+    navigator.userAgent.match(/mobile/i) ||
+    navigator.userAgent.match(/iPad|Android|Touch/i)
+  ) {
+    executer.addEventListener("touchstart", (event: TouchEvent) => {
+      const target = event.currentTarget as HTMLDivElement
+      upgradeExecuterClickInterval = setInterval(() => {
+        clickUpgradeExecuter(target);
+      }, 200);
+    });
+    executer.addEventListener("touchend", () => {
+      if (upgradeExecuterClickInterval) {
+        clearInterval(upgradeExecuterClickInterval);
+      }
+    });
+    executer.addEventListener("touchmove", (event: TouchEvent) => {
+      const touch = event.touches[0];
+      if (
+        upgradeExecuterClickInterval &&
+        document.elementFromPoint(touch.pageX, touch.pageY) !== executer
+      ) {
+        clearInterval(upgradeExecuterClickInterval);
+      }
+    });
+  } else {
+    executer.addEventListener("mousedown", (event: MouseEvent) => {
+      const target = event.currentTarget as HTMLDivElement
+      upgradeExecuterClickInterval = setInterval(() => {
+        clickUpgradeExecuter(target);
+      }, 200);
+    });
+    executer.addEventListener("mouseup", () => {
+      if (upgradeExecuterClickInterval) {
+        clearInterval(upgradeExecuterClickInterval);
+      }
+    });
+    executer.addEventListener("mouseleave", () => {
+      if (upgradeExecuterClickInterval) {
+        clearInterval(upgradeExecuterClickInterval);
+      }
+    });
+  }
 });
 
 achivementRewardImgContainers.forEach((imgContainer) => {

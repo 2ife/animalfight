@@ -1265,7 +1265,13 @@ const sweep: RequestHandler = async (req, res, next) => {
     if (!weeklyBattleWinRewardOrNot && weeklyBattleWinCounter < 15) {
       achivement.weeklyBattleWinCounter++;
     }
-
+const userData={level:user.level,exp:user.exp,
+gold:user.gold,jade:user.jade,scroll:user.scroll,spirit:user.spirit
+}
+const achivementData ={
+  dailyBattleWinCounter,dailyBattleWinRewardOrNot,dailyTargetTime:achivement.dailyTargetTime,
+  weeklyBattleWinCounter,weeklyBattleWinRewardOrNot,weeklyTargetTime:achivement.weeklyTargetTime
+}
     const transaction = await sequelize.transaction();
     try {
       await user.save({ transaction });
@@ -1280,7 +1286,8 @@ const sweep: RequestHandler = async (req, res, next) => {
       };
       throw new ReqError(errorObj, err.message);
     }
-    res.json({ answer: "sweep success" });
+    res.json({ userData,
+      achivementData });
   } catch (err: any) {
     if (!err.place) {
       err.place = "controllers-battle-sweep";
