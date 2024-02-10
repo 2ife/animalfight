@@ -372,7 +372,7 @@ const winBattle = async (req, res, next) => {
                         originAnimal.moveAnimal(targetZoneNumber);
                     }
                     if (this.tick === 3600) {
-                        const boss = this.enemiesArr[119];
+                        const boss = this.enemiesArr[60];
                         if (boss.dead) {
                             const livingEnemies = this.enemiesArr.filter((enemy) => {
                                 return (!enemy.dead &&

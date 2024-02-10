@@ -2337,6 +2337,7 @@ animaPartModeChangeBtn.addEventListener("click", clickAnimalPartModeChangeBtn);
 if (navigator.userAgent.match(/mobile/i) ||
     navigator.userAgent.match(/iPad|Android|Touch/i)) {
     animalSummonBtn.addEventListener("touchstart", () => {
+        summonAnimal(1);
         upgradeExecuterClickInterval = setInterval(() => {
             summonAnimal(1);
         }, 200);
@@ -2354,6 +2355,7 @@ if (navigator.userAgent.match(/mobile/i) ||
         }
     });
     animalSummonTenBtn.addEventListener("touchstart", () => {
+        summonAnimal(10);
         upgradeExecuterClickInterval = setInterval(() => {
             summonAnimal(10);
         }, 200);
@@ -2373,6 +2375,7 @@ if (navigator.userAgent.match(/mobile/i) ||
 }
 else {
     animalSummonBtn.addEventListener("mousedown", (event) => {
+        summonAnimal(1);
         upgradeExecuterClickInterval = setInterval(() => {
             summonAnimal(1);
         }, 200);
@@ -2388,6 +2391,7 @@ else {
         }
     });
     animalSummonTenBtn.addEventListener("mousedown", (event) => {
+        summonAnimal(10);
         upgradeExecuterClickInterval = setInterval(() => {
             summonAnimal(10);
         }, 200);
@@ -2411,6 +2415,7 @@ upgradeExecuters.forEach((executer) => {
         navigator.userAgent.match(/iPad|Android|Touch/i)) {
         executer.addEventListener("touchstart", (event) => {
             const target = event.currentTarget;
+            clickUpgradeExecuter(target);
             upgradeExecuterClickInterval = setInterval(() => {
                 clickUpgradeExecuter(target);
             }, 200);
@@ -2431,6 +2436,7 @@ upgradeExecuters.forEach((executer) => {
     else {
         executer.addEventListener("mousedown", (event) => {
             const target = event.currentTarget;
+            clickUpgradeExecuter(target);
             upgradeExecuterClickInterval = setInterval(() => {
                 clickUpgradeExecuter(target);
             }, 200);
