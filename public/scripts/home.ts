@@ -2910,7 +2910,8 @@ if (
   navigator.userAgent.match(/iPad|Android|Touch/i)
 ) {
   animalSummonBtn.addEventListener("touchstart", () => {
-    upgradeExecuterClickInterval = setInterval(() => {
+      summonAnimal(1);
+      upgradeExecuterClickInterval = setInterval(() => {
       summonAnimal(1);
     }, 200);
   });
@@ -2929,7 +2930,8 @@ if (
     }
   });
   animalSummonTenBtn.addEventListener("touchstart", () => {
-    upgradeExecuterClickInterval = setInterval(() => {
+      summonAnimal(10);
+      upgradeExecuterClickInterval = setInterval(() => {
       summonAnimal(10);
     }, 200);
   });
@@ -2949,7 +2951,8 @@ if (
   });
 } else {
   animalSummonBtn.addEventListener("mousedown", (event: MouseEvent) => {
-    upgradeExecuterClickInterval = setInterval(() => {
+      summonAnimal(1);
+      upgradeExecuterClickInterval = setInterval(() => {
       summonAnimal(1);
     }, 200);
   });
@@ -2964,7 +2967,8 @@ if (
     }
   });
   animalSummonTenBtn.addEventListener("mousedown", (event: MouseEvent) => {
-    upgradeExecuterClickInterval = setInterval(() => {
+      summonAnimal(10);
+      upgradeExecuterClickInterval = setInterval(() => {
       summonAnimal(10);
     }, 200);
   });
@@ -2992,7 +2996,8 @@ upgradeExecuters.forEach((executer) => {
   ) {
     executer.addEventListener("touchstart", (event: TouchEvent) => {
       const target = event.currentTarget as HTMLDivElement
-      upgradeExecuterClickInterval = setInterval(() => {
+        clickUpgradeExecuter(target);
+        upgradeExecuterClickInterval = setInterval(() => {
         clickUpgradeExecuter(target);
       }, 200);
     });
@@ -3013,7 +3018,8 @@ upgradeExecuters.forEach((executer) => {
   } else {
     executer.addEventListener("mousedown", (event: MouseEvent) => {
       const target = event.currentTarget as HTMLDivElement
-      upgradeExecuterClickInterval = setInterval(() => {
+        clickUpgradeExecuter(target);
+        upgradeExecuterClickInterval = setInterval(() => {
         clickUpgradeExecuter(target);
       }, 200);
     });

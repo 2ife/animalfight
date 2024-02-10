@@ -375,7 +375,9 @@ const winBattle = async (req, res, next) => {
                         const boss = this.enemiesArr[119];
                         if (boss.dead) {
                             const livingEnemies = this.enemiesArr.filter((enemy) => {
-                                return !enemy.dead;
+                                return (!enemy.dead &&
+                                    (enemy.path !== 20 ||
+                                        (enemy.path === 20 && enemy.coordY > 50)));
                             });
                             const livingEnemiesAmounts = livingEnemies.length;
                             this.loseLife(livingEnemiesAmounts);
@@ -1095,12 +1097,21 @@ const sweep = async (req, res, next) => {
         if (!weeklyBattleWinRewardOrNot && weeklyBattleWinCounter < 15) {
             achivement.weeklyBattleWinCounter++;
         }
-        const userData = { level: user.level, exp: user.exp,
-            gold: user.gold, jade: user.jade, scroll: user.scroll, spirit: user.spirit
+        const userData = {
+            level: user.level,
+            exp: user.exp,
+            gold: user.gold,
+            jade: user.jade,
+            scroll: user.scroll,
+            spirit: user.spirit,
         };
         const achivementData = {
-            dailyBattleWinCounter, dailyBattleWinRewardOrNot, dailyTargetTime: achivement.dailyTargetTime,
-            weeklyBattleWinCounter, weeklyBattleWinRewardOrNot, weeklyTargetTime: achivement.weeklyTargetTime
+            dailyBattleWinCounter,
+            dailyBattleWinRewardOrNot,
+            dailyTargetTime: achivement.dailyTargetTime,
+            weeklyBattleWinCounter,
+            weeklyBattleWinRewardOrNot,
+            weeklyTargetTime: achivement.weeklyTargetTime,
         };
         const transaction = await models_1.sequelize.transaction();
         try {
@@ -1117,8 +1128,7 @@ const sweep = async (req, res, next) => {
             };
             throw new common_1.ReqError(errorObj, err.message);
         }
-        res.json({ userData,
-            achivementData });
+        res.json({ userData, achivementData });
     }
     catch (err) {
         if (!err.place) {

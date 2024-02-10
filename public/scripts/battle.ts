@@ -531,7 +531,10 @@ class Battle {
         const boss = this.enemiesArr[119];
         if (boss.dead) {
           const livingEnemies = this.enemiesArr.filter((enemy) => {
-            return !enemy.dead;
+            return (
+              !enemy.dead &&
+              (enemy.path !== 20 || (enemy.path === 20 && enemy.coordY > 50))
+            );
           });
           const livingEnemiesAmounts = livingEnemies.length;
           this.loseLife(livingEnemiesAmounts);
@@ -775,7 +778,7 @@ class Battle {
       if (answer === "error") {
         throw new Error();
       }
-      alertByModal('승리!\n잠시 후, 홈으로 돌아갑니다.')
+      alertByModal("승리!\n잠시 후, 홈으로 돌아갑니다.");
       setTimeout(() => {
         location.href = `/home`;
       }, 1000);
@@ -785,7 +788,7 @@ class Battle {
   }
   loseBattle() {
     this.pauseBattle();
-    alertByModal('패배!\n잠시 후, 홈으로 돌아갑니다.')
+    alertByModal("패배!\n잠시 후, 홈으로 돌아갑니다.");
     setTimeout(() => {
       location.href = `/home`;
     }, 1000);

@@ -410,7 +410,11 @@ const winBattle: RequestHandler = async (req, res, next) => {
             const boss = this.enemiesArr[119];
             if (boss.dead) {
               const livingEnemies = this.enemiesArr.filter((enemy) => {
-                return !enemy.dead;
+                return (
+                  !enemy.dead &&
+                  (enemy.path !== 20 ||
+                    (enemy.path === 20 && enemy.coordY > 50))
+                );
               });
               const livingEnemiesAmounts = livingEnemies.length;
               this.loseLife(livingEnemiesAmounts);
@@ -1265,13 +1269,22 @@ const sweep: RequestHandler = async (req, res, next) => {
     if (!weeklyBattleWinRewardOrNot && weeklyBattleWinCounter < 15) {
       achivement.weeklyBattleWinCounter++;
     }
-const userData={level:user.level,exp:user.exp,
-gold:user.gold,jade:user.jade,scroll:user.scroll,spirit:user.spirit
-}
-const achivementData ={
-  dailyBattleWinCounter,dailyBattleWinRewardOrNot,dailyTargetTime:achivement.dailyTargetTime,
-  weeklyBattleWinCounter,weeklyBattleWinRewardOrNot,weeklyTargetTime:achivement.weeklyTargetTime
-}
+    const userData = {
+      level: user.level,
+      exp: user.exp,
+      gold: user.gold,
+      jade: user.jade,
+      scroll: user.scroll,
+      spirit: user.spirit,
+    };
+    const achivementData = {
+      dailyBattleWinCounter,
+      dailyBattleWinRewardOrNot,
+      dailyTargetTime: achivement.dailyTargetTime,
+      weeklyBattleWinCounter,
+      weeklyBattleWinRewardOrNot,
+      weeklyTargetTime: achivement.weeklyTargetTime,
+    };
     const transaction = await sequelize.transaction();
     try {
       await user.save({ transaction });
@@ -1286,8 +1299,7 @@ const achivementData ={
       };
       throw new ReqError(errorObj, err.message);
     }
-    res.json({ userData,
-      achivementData });
+    res.json({ userData, achivementData });
   } catch (err: any) {
     if (!err.place) {
       err.place = "controllers-battle-sweep";
