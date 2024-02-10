@@ -1602,7 +1602,7 @@ document.addEventListener("visibilitychange", () => {
 battleZoneWrapper.addEventListener("click", clickBattleZone);
 animalMoveBtn.addEventListener("click", clickAnimalMoveBtn);
 document.addEventListener("keyup", (event: KeyboardEvent) => {
-  if (event.key === " ") {
+  if (event.key === "m") {
     clickAnimalMoveBtn();
   }
 });

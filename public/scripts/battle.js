@@ -1277,7 +1277,7 @@ document.addEventListener("visibilitychange", () => {
 battleZoneWrapper.addEventListener("click", clickBattleZone);
 animalMoveBtn.addEventListener("click", clickAnimalMoveBtn);
 document.addEventListener("keyup", (event) => {
-    if (event.key === " ") {
+    if (event.key === "m") {
         clickAnimalMoveBtn();
     }
 });
