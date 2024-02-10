@@ -1896,7 +1896,9 @@ const clickJadeChargeBtn = async () => {
         return;
     try {
         if (myUserData.cashCode) {
-            alertByModal(`이전 옥 충전 입금이 아직 확인되지 않았습니다! 입금을 진행한 경우, 영업일 오후 6시에 확인 예정으로 잠시 대기 부탁드립니다. 아직 입금을 진행하지 않은 경우, 본인 계좌로 ${myUserData.chargeCash}원 저축 부탁드립니다. 입금하실 때, '홈-프로필 관리'의 캐시코드를 '받는 분 표시'란에 꼭 입력하셔야 합니다.`);
+            alertByModal(
+                `이전 옥 충전 회수 및 입금이 아직 확인되지 않았습니다! 영업일 오후 6시에 확인하여 옥 회수 및 입금 확인할 예정으로 잠시 대기 부탁드립니다. 아직 입금을 진행하지 않은 경우, 본인 계좌로 ${myUserData.chargeCash}원 저축 부탁드립니다. 입금하실 때, '홈-프로필 관리'의 캐시코드를 '받는 분 표시'란에 꼭 입력하셔야 합니다.`
+              );
             return;
         }
         const currentJadeChargeValue = Number(jadeChargeExecuterJadeValueContainer.innerText);
