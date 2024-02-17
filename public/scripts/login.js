@@ -90,12 +90,12 @@ const login = async () => {
         loginPasswordContainer.value = "";
         return alertByModal(loginFailMessage);
     }
-    showLoading();
     try {
+        showLoading();
         const res = await axios.default.post("/auth/login", { id, password });
         const { data } = res;
         const { answer, loginCode } = data;
-        if (answer === 'error') {
+        if (answer === "error") {
             throw new Error();
         }
         stopLoading();
@@ -108,8 +108,8 @@ const login = async () => {
             alertByModal("정지된 ID입니다!");
         }
         if (loginCode) {
-            localStorage.setItem('LOGIN_CODE', loginCode);
-            location.href = '/home';
+            localStorage.setItem("LOGIN_CODE", loginCode);
+            location.href = "/home";
         }
     }
     catch (err) {
@@ -146,8 +146,8 @@ const join = async () => {
         resetJoinFormInput();
         return alertByModal("닉네임, 아이디, 비밀번호를 형식에 맞게 작성하세요.");
     }
-    showLoading();
     try {
+        showLoading();
         const res = await axios.default.post("/auth/join", {
             nick,
             id,
@@ -189,8 +189,8 @@ const checkNickOverlap = async (event) => {
         joinNickContainer.value = "";
         return alertByModal("유효하지 않은 닉네임입니다!");
     }
-    showLoading();
     try {
+        showLoading();
         const res = await axios.default.post("/auth/checkNick", { nick });
         const { data } = res;
         const { nickExist, error } = data;
@@ -216,7 +216,6 @@ const checkIdOverlap = async (event) => {
     if (loadInterval) {
         return;
     }
-    showLoading();
     const id = joinIdContainer.value;
     const idTest = testLoginInfo("id", id);
     if (!idTest) {
@@ -224,6 +223,7 @@ const checkIdOverlap = async (event) => {
         return alertByModal("유효하지 않은 아이디입니다!");
     }
     try {
+        showLoading();
         const res = await axios.default.post("/auth/checkId", { id });
         const { data } = res;
         const { idExist, fatal } = data;

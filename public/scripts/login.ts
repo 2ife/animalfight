@@ -116,15 +116,15 @@ const login = async () => {
     loginPasswordContainer.value = "";
     return alertByModal(loginFailMessage);
   }
-  showLoading();
   try {
+    showLoading();
     const res = await axios.post("/auth/login", { id, password });
     const { data } = res;
-    const {  answer,loginCode } = data as {
-      answer: "no user" | "lock" | 'error'|undefined;
-      loginCode:string|undefined
+    const { answer, loginCode } = data as {
+      answer: "no user" | "lock" | "error" | undefined;
+      loginCode: string | undefined;
     };
-    if (answer==='error') {
+    if (answer === "error") {
       throw new Error();
     }
     stopLoading();
@@ -134,10 +134,10 @@ const login = async () => {
     } else if (answer === "lock") {
       reload = true;
       alertByModal("정지된 ID입니다!");
-    } 
-    if(loginCode){
-      localStorage.setItem('LOGIN_CODE',loginCode)
-      location.href='/home'
+    }
+    if (loginCode) {
+      localStorage.setItem("LOGIN_CODE", loginCode);
+      location.href = "/home";
     }
   } catch (err: any) {
     reload = true;
@@ -175,8 +175,8 @@ const join = async () => {
     resetJoinFormInput();
     return alertByModal("닉네임, 아이디, 비밀번호를 형식에 맞게 작성하세요.");
   }
-  showLoading();
   try {
+    showLoading();
     const res = await axios.post("/auth/join", {
       nick,
       id,
@@ -184,7 +184,7 @@ const join = async () => {
       passwordCheck,
     });
     const { data } = res;
-    const {answer}=data
+    const { answer } = data;
     if (answer === "join success") {
       return location.reload();
     }
@@ -195,7 +195,7 @@ const join = async () => {
     };
     if (error) {
       throw new Error();
-    } 
+    }
     if (nickExist || idExist) {
       resetJoinFormInput();
       return alertByModal(
@@ -225,8 +225,8 @@ const checkNickOverlap = async (event: MouseEvent) => {
     joinNickContainer.value = "";
     return alertByModal("유효하지 않은 닉네임입니다!");
   }
-  showLoading();
   try {
+    showLoading();
     const res = await axios.post("/auth/checkNick", { nick });
     const { data } = res;
     const { nickExist, error } = data as {
@@ -253,7 +253,6 @@ const checkIdOverlap = async (event: MouseEvent) => {
   if (loadInterval) {
     return;
   }
-  showLoading();
   const id = joinIdContainer.value;
   const idTest = testLoginInfo("id", id);
   if (!idTest) {
@@ -261,6 +260,7 @@ const checkIdOverlap = async (event: MouseEvent) => {
     return alertByModal("유효하지 않은 아이디입니다!");
   }
   try {
+    showLoading();
     const res = await axios.post("/auth/checkId", { id });
     const { data } = res;
     const { idExist, fatal } = data as {
