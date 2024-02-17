@@ -46,7 +46,7 @@ const checkTargetAchivementCounter = (achivement, animalsInfo, achivementIndex) 
                     ? Number(mysteriousCreatureEachUpgrade.split("/")[achivementIndex - 14])
                     : Number(monarchEachUpgrade.split("/")[achivementIndex - 25]);
     if (achivementIndex < 4) {
-        if (targetAchivementCounter === [3, 4, 15, 20][achivementIndex]) {
+        if (targetAchivementCounter === [3, 8, 15, 40][achivementIndex]) {
             return true;
         }
     }
@@ -131,7 +131,7 @@ const receiveAchivementReward = async (req, res, next) => {
         }
         if (achivementIndex === 0) {
             achivement.dailyBattleWinRewardOrNot = true;
-            user.spirit += 1;
+            user.spirit += 2;
         }
         else if (achivementIndex === 1) {
             achivement.dailyAnimalSummonRewardOrNot = true;
@@ -139,7 +139,7 @@ const receiveAchivementReward = async (req, res, next) => {
         }
         else if (achivementIndex === 2) {
             achivement.weeklyBattleWinRewardOrNot = true;
-            user.spirit += 6;
+            user.spirit += 12;
         }
         else if (achivementIndex === 3) {
             achivement.weeklyAnimalSummonRewardOrNot = true;
@@ -157,7 +157,7 @@ const receiveAchivementReward = async (req, res, next) => {
                 }
             })
                 .join("/");
-            user.spirit += 5 ** (achivementIndex - 4) * 2;
+            user.spirit += 6 ** (achivementIndex - 4) * 4;
         }
         else if (achivementIndex < 14) {
             achivement.gradeUpgradeRewardOrNot = achivement.gradeUpgradeRewardOrNot
@@ -300,7 +300,7 @@ const receivePassReward = async (req, res, next) => {
         }
         switch (rewardIndex) {
             case 0: {
-                user.spirit += [3, 1, 2, 3][passIndex];
+                user.spirit += [6, 2, 4, 6][passIndex];
                 targetPass.lastSpiritRewardTime = currentTime;
                 break;
             }

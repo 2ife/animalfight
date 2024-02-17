@@ -1789,7 +1789,7 @@ const putMyAchivementInfo = () => {
   for (let i = 0; i < 4; i++) {
     const achivementProgressBar = achivementProgressBars[i];
     const achivementProgressInfoContainer = achivementProgressInfoContainers[i];
-    const fullCounter = [3, 4, 15, 20][i];
+    const fullCounter = [3, 8, 15, 40][i];
     const currentCounter = [
       dailyBattleWinCounter,
       dailyAnimalSummonCounter,
@@ -1984,13 +1984,13 @@ const clickAchivementRewardImgContainer = async (event: MouseEvent) => {
     putMyAchivementInfo();
     if (achivementIndex === 0) {
       myAchivementData.dailyBattleWinRewardOrNot = true;
-      changeGoodsValue("spirit", 1);
+      changeGoodsValue("spirit", 2);
     } else if (achivementIndex === 1) {
       myAchivementData.dailyAnimalSummonRewardOrNot = true;
       changeGoodsValue("jade", 50);
     } else if (achivementIndex === 2) {
       myAchivementData.weeklyBattleWinRewardOrNot = true;
-      changeGoodsValue("spirit", 6);
+      changeGoodsValue("spirit", 12);
     } else if (achivementIndex === 3) {
       myAchivementData.weeklyAnimalSummonRewardOrNot = true;
       changeGoodsValue("jade", 300);
@@ -2001,7 +2001,7 @@ const clickAchivementRewardImgContainer = async (event: MouseEvent) => {
       allAnimalsRewardInfoArr[realIndex] = "1";
       myAchivementData.allAnimalsRewardOrNot =
         allAnimalsRewardInfoArr.join("/");
-      changeGoodsValue("spirit", 5 ** realIndex * 2);
+      changeGoodsValue("spirit", 6 ** realIndex * 4);
     } else if (achivementIndex < 14) {
       const { gradeUpgradeRewardOrNot } = myAchivementData;
       const gradeUpgradeRewardInfoArr = gradeUpgradeRewardOrNot.split("/");
@@ -2195,7 +2195,7 @@ const clickPassRewardImgContainer = async (event: MouseEvent) => {
     })!;
     switch (rewardIndex) {
       case 0: {
-        changeGoodsValue("spirit", [3, 1, 2, 3][passIndex]);
+        changeGoodsValue("spirit", [6, 2, 4, 6][passIndex]);
         targetPass.lastSpiritRewardTime = lastTargetRewardTime;
         break;
       }
@@ -2327,7 +2327,7 @@ const clickShopPartGoodsImgContainers = async (event: MouseEvent) => {
     const targetGoodsIndex = Array.from(shopPartGoodsImgContainers).indexOf(
       target
     );
-    const neededJade = [10, 20, 40, 100][targetGoodsIndex];
+    const neededJade = [10, 20, 100, 200][targetGoodsIndex];
     if (myUserData.jade < neededJade) {
       return;
     }
@@ -2368,12 +2368,12 @@ const clickShopPartGoodsImgContainers = async (event: MouseEvent) => {
       }
       case 2: {
         myUserData.fewSpiritPurchaseTime = goodsPurchaseCurrentTime;
-        changeGoodsValue("spirit", 1);
+        changeGoodsValue("spirit", 5);
         break;
       }
       case 3: {
         myUserData.manySpiritPurchaseTime = goodsPurchaseCurrentTime;
-        changeGoodsValue("spirit", 4);
+        changeGoodsValue("spirit", 10);
         break;
       }
     }
@@ -2409,7 +2409,7 @@ const clickJadeChargeBtn = async () => {
   try {
     if (myUserData.cashCode) {
       alertByModal(
-        `이전 옥 충전 회수 및 입금이 아직 확인되지 않았습니다! 영업일 오후 6시에 확인하여 옥 회수 및 입금 확인할 예정으로 잠시 대기 부탁드립니다. 아직 입금을 진행하지 않은 경우, 본인 계좌로 ${myUserData.chargeCash}원 저축 부탁드립니다. 입금하실 때, '홈-프로필 관리'의 캐시코드를 '받는 분 표시'란에 꼭 입력하셔야 합니다.`
+        `이전 옥 충전의 회수 작업이 아직 진행되지 않았습니다! 충전일 7일 이후(영업일 기준) 오후 4시에 회수할 예정으로, 옥 회수가 아닌 입금으로 진행하고 싶은 경우, 오후 4시 이전에 입금 부탁드립니다. 아직 입금을 진행하지 않은 경우, 문의메뉴에 있는 계좌로 ${myUserData.chargeCash}원 입금 부탁드립니다. 입금하실 때, '홈-프로필 관리'의 캐시코드를 '받는 분 표시'란에 꼭 입력하셔야 합니다.`
       );
       return;
     }

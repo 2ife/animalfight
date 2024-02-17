@@ -131,18 +131,18 @@ animalsTypeList,
 ] %}
 {% set animalGradeNameList = ['baby','small','beast','mysteriousCreature','monarch'] %}
 {% set animalGradeKorNameList = ['새끼','미물','야수','영물','군주'] %}
-{% set dailyAchivementKorNameList = ['전투 승리 3회','동물 4회 소환'] %}
+{% set dailyAchivementKorNameList = ['전투 승리 3회','동물 8회 소환'] %}
 {% set dailyAchivementRewardInfoList = [{
 reward: 'spirit',
-amounts: 1
+amounts: 2
 },{
 reward: 'jade',
 amounts: 50
 }] %}
-{% set weeklyAchivementKorNameList = ['전투 승리 15회','동물 20회 소환'] %}
+{% set weeklyAchivementKorNameList = ['전투 승리 15회','동물 40회 소환'] %}
 {% set weeklyAchivementRewardInfoList = [{
 reward: 'spirit',
-amounts: 6
+amounts: 12
 },{
 reward: 'jade',
 amounts: 300
@@ -275,19 +275,19 @@ amounts:'20.0m'
 ] %}
 {% set permanentCollectAchivementRewardInfoList = [{
 reward:'spirit',
-amounts:'2'
+amounts:'4'
 },{
 reward:'spirit',
-amounts:'10'
+amounts:'24'
 },{
 reward:'spirit',
-amounts:'50'
+amounts:'144'
 },{
 reward:'spirit',
-amounts:'250'
+amounts:'864'
 },{
 reward:'spirit',
-amounts:'1,250'
+amounts:'5,184'
 }] %}
 {% set passInfoList = [{
 name: 'beast pass',
@@ -589,7 +589,7 @@ shopDetail:'매일 출석 시 영혼 3, 두루마리 90% 획득!'
             <div class="achivementInfoContainer_achivementName">{{dailyAchivementKorNameList[i]}}</div>
             <div class="achivementInfoContainer_progressContainer">
               <div class="progressContainer_progressBar"></div>
-              <div class="progressContainer_progressInfoContainer">1/3</div>
+              <div class="progressContainer_progressInfoContainer"></div>
             </div>
           </div>
           <div class="achivementContainer_rewardImgContainer">
@@ -692,7 +692,7 @@ shopDetail:'매일 출석 시 영혼 3, 두루마리 90% 획득!'
         <img src="/images/{{['spirit','scroll'][j]}}.png" alt="" class="rewardImgContainer_rewardImg">
         <div class="rewardImgContainer_rewardAmountContainer {{['','passPart_scrollRewardAmountContainer'][j]}}">
           {% if j===0 %}
-          {{['3','1','2','3'][i]}}
+          {{['6','2','4','6'][i]}}
           {% endif %}
         </div>
         <img class="rewardImgContainer_rewardCompletedImg" src="/images/check.png" alt="">
@@ -726,11 +726,11 @@ shopDetail:'매일 출석 시 영혼 3, 두루마리 90% 획득!'
           <div class="goodsShopContainer_goodsImgContainer">
             <div class="goodsImgContainer_priceContainer">
               <img src="/images/jade.png" alt="" class="jadeContainer_jadeImg">
-              <div class="jadeContainer_jadeValueContainer">{{['10','20','40','100'][i]}}</div>
+              <div class="jadeContainer_jadeValueContainer">{{['10','20','100','200'][i]}}</div>
             </div>
             <img src="/images/{{['scroll','scroll','spirit','spirit'][i]}}.png" alt=""
               class="goodsImgContainer_goodsImg">
-            <div class="goodsImgContainer_amountsContainer">{{['50%','100%','1','4'][i]}}</div>
+            <div class="goodsImgContainer_amountsContainer">{{['50%','100%','5','10'][i]}}</div>
             <img src="/images/check.png" alt="" class="goodsShopContainer_purchaseCompletedImg">
           </div>
           {% endfor %}
@@ -747,11 +747,11 @@ shopDetail:'매일 출석 시 영혼 3, 두루마리 90% 획득!'
           </div>
           <button class="jadeChargeExecuter_chargeBtn">충전</button>
           <div class="jadeChargeExecuter_detailContainer">
-            &nbsp;영업일 기준 7일 이후에 캐시를 회수합니다. <!-- 카카오뱅크 3333158380350(위대훈) -->회수가 어려울 시, 본인 계좌로 <span
+            &nbsp;영업일 기준 7일 이후에 충전한 옥을 회수합니다. 회수가 어려울 시, 문의메뉴에 있는 계좌로 <span
               class="jadeChargeExecuter_chargePriceContainer">0</span>원을 입금하셔야 하며,
             입금하실 때, '홈-프로필 관리'의 캐시코드를 '받는 분 표시'란에 꼭 입력하셔야 합니다.
-            입금이 정상적으로 진행되지 않을 시, 계정이 정지될 수 있으며,
-            입금 관련 문제 발생 시, 문의 부탁드립니다.
+            회수 및 입금이 정상적으로 진행되지 않을 시, 계정이 정지될 수 있으며,
+            회수 및 입금 관련 문제 발생 시, 문의 부탁드립니다.
           </div>
         </div>
       </div>
@@ -760,19 +760,6 @@ shopDetail:'매일 출석 시 영혼 3, 두루마리 90% 획득!'
   <div style="display: none;" id="mailPart" class="mainPart">
     <div class="mailListWrapper">
       <div class="mailList">
-        <!-- {% for i in range(0,12) %}
-        <div class="mailList_mailContainer">
-          <div style="display: none;" class="mailContainer_mailId">134</div>
-          <div class="mailContainer_mailContentContainer">
-            <div class="mailContentContainer_mailNameContainer">24.01.05. 출석 보상</div>
-            <div class="mailContentContainer_mailExpireContainer">~24.01.05. 24:00:00</div>
-          </div>
-          <div class="mailContainer_rewardImgContainer">
-            <img src="/images/noImg.png" alt="" class="mailContainer_rewardImg">
-            <div class="mailContainer_rewardAmountContainer">13</div>
-          </div>
-        </div>
-        {% endfor %} -->
       </div>
     </div>
   </div>
@@ -814,7 +801,10 @@ shopDetail:'매일 출석 시 영혼 3, 두루마리 90% 획득!'
     제목 형식: 본인 ID/문의 내용
     <br>
     <br>
-    문의사항은 평일 오후 5~6시쯤 확인하며, 순차적 진행으로 인해 문의 진행 및 답변까지 다소 시간이 걸릴 수 있으며, 문의 내용에 따라 답변이 따로 없을 수도 있는 점 양해 부탁드립니다.
+    문의사항은 영업일 오후 5~6시쯤 확인하며, 순차적 진행으로 인해 문의 진행 및 답변까지 다소 시간이 걸릴 수 있으며, 문의 내용에 따라 답변이 따로 없을 수도 있는 점 양해 부탁드립니다.
+    <br>
+    <br>
+  계좌: 현재는 테스트 기간으로 입금이 불가합니다.
   </div>
   <div class="goodsContainer">
     <div class="goldContainer">

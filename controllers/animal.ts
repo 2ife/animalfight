@@ -267,14 +267,14 @@ const summonAnimal: RequestHandler = async (req, res, next) => {
     const babiesInfoArr = babies.split("/");
     const { allBabiesGetOrNot, allAnimalsRewardOrNot } = achivement;
     const { dailyAnimalSummonCounter, weeklyAnimalSummonCounter } = achivement;
-    if (dailyAnimalSummonCounter < 4) {
+    if (dailyAnimalSummonCounter < 8) {
       let newCounter = dailyAnimalSummonCounter + summonAmounts;
-      newCounter = newCounter > 4 ? 4 : newCounter;
+      newCounter = newCounter > 8 ? 8 : newCounter;
       achivement.dailyAnimalSummonCounter = newCounter;
     }
-    if (weeklyAnimalSummonCounter < 20) {
+    if (weeklyAnimalSummonCounter < 40) {
       let newCounter = weeklyAnimalSummonCounter + summonAmounts;
-      newCounter = newCounter > 20 ? 20 : newCounter;
+      newCounter = newCounter > 40 ? 40 : newCounter;
       achivement.weeklyAnimalSummonCounter = newCounter;
     }
     const allBabiesGetOrNotInfoArr = allBabiesGetOrNot.split("/");

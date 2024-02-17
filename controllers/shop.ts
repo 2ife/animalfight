@@ -113,7 +113,7 @@ const purchaseGoods: RequestHandler = async (req, res, next) => {
     if (targetPurchaseTime > todayStartTime) {
       return res.json({ answer: "date changed" });
     }
-    const neededJade = [10, 20, 40, 100][targetGoodsIndex];
+    const neededJade = [10, 20, 100, 200][targetGoodsIndex];
     if (user.jade < neededJade) {
       const errorObj: errorObj = {
         place: "controllers-shop-purchaseGoods",
@@ -136,12 +136,12 @@ const purchaseGoods: RequestHandler = async (req, res, next) => {
       }
       case 2: {
         user.fewSpiritPurchaseTime = currentTime;
-        user.spirit += 1;
+        user.spirit += 5;
         break;
       }
       case 3: {
         user.manySpiritPurchaseTime = currentTime;
-        user.spirit += 4;
+        user.spirit += 10;
         break;
       }
     }
