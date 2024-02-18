@@ -170,6 +170,7 @@ const searchUser = async (req, res, next) => {
                             lockMemo: { [sequelize_1.Op.not]: null },
                             cashCode: { [sequelize_1.Op.not]: null },
                         },
+                        order: [['chargeTime', 'ASC']]
                     });
                 }
                 else if (userLocked && userCharged) {
@@ -179,6 +180,7 @@ const searchUser = async (req, res, next) => {
                             lockMemo: { [sequelize_1.Op.not]: null },
                             cashCode: { [sequelize_1.Op.not]: null },
                         },
+                        order: [['chargeTime', 'ASC']]
                     });
                 }
                 else if (userLocked && !userCharged && searchText === "") {
@@ -204,6 +206,7 @@ const searchUser = async (req, res, next) => {
                             lockMemo: null,
                             cashCode: { [sequelize_1.Op.not]: null },
                         },
+                        order: [['chargeTime', 'ASC']]
                     });
                 }
                 else if (!userLocked && userCharged) {
@@ -213,6 +216,7 @@ const searchUser = async (req, res, next) => {
                             lockMemo: null,
                             cashCode: { [sequelize_1.Op.not]: null },
                         },
+                        order: [['chargeTime', 'ASC']]
                     });
                 }
                 else if (!userLocked && !userCharged && searchText === "") {
@@ -241,6 +245,7 @@ const searchUser = async (req, res, next) => {
                             lockMemo: { [sequelize_1.Op.not]: null },
                             cashCode: { [sequelize_1.Op.not]: null },
                         },
+                        order: [['chargeTime', 'ASC']]
                     });
                 }
                 else if (userLocked && userCharged) {
@@ -250,6 +255,7 @@ const searchUser = async (req, res, next) => {
                             lockMemo: { [sequelize_1.Op.not]: null },
                             cashCode: { [sequelize_1.Op.not]: null },
                         },
+                        order: [['chargeTime', 'ASC']]
                     });
                 }
                 else if (userLocked && !userCharged && searchText === "") {
@@ -284,6 +290,7 @@ const searchUser = async (req, res, next) => {
                             lockMemo: null,
                             cashCode: { [sequelize_1.Op.not]: null },
                         },
+                        order: [['chargeTime', 'ASC']]
                     });
                 }
                 else if (!userLocked && !userCharged && searchText === "") {
@@ -312,6 +319,7 @@ const searchUser = async (req, res, next) => {
                             cashCode: { [sequelize_1.Op.not]: null },
                             lockMemo: { [sequelize_1.Op.not]: null },
                         },
+                        order: [['chargeTime', 'ASC']]
                     });
                 }
                 else if (userLocked) {
@@ -320,6 +328,7 @@ const searchUser = async (req, res, next) => {
                             cashCode: { [sequelize_1.Op.like]: `%${searchText}%` },
                             lockMemo: { [sequelize_1.Op.not]: null },
                         },
+                        order: [['chargeTime', 'ASC']]
                     });
                 }
                 else if (!userLocked && searchText === "") {
@@ -328,6 +337,7 @@ const searchUser = async (req, res, next) => {
                             cashCode: { [sequelize_1.Op.not]: null },
                             lockMemo: null,
                         },
+                        order: [['chargeTime', 'ASC']]
                     });
                 }
                 else if (!userLocked) {
@@ -336,6 +346,7 @@ const searchUser = async (req, res, next) => {
                             cashCode: { [sequelize_1.Op.like]: `%${searchText}%` },
                             lockMemo: null,
                         },
+                        order: [['chargeTime', 'ASC']]
                     });
                 }
                 break;

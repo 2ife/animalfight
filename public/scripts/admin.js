@@ -221,9 +221,13 @@ const renderUserTable = (page) => {
         userLockMemoCell.innerText = lockMemo ? lockMemo : "";
         userCashCodeCell.innerText = cashCode ? cashCode : "";
         userChargeCashCell.innerText = chargeCash.toLocaleString("KO-KR");
-        userChargeTimeCell.innerText = chargeTime
-            ? `${new Date(chargeTime).toLocaleDateString()}`
-            : "";
+        if (chargeTime) {
+            const chargeDate = new Date(chargeTime);
+            const UTCYear = chargeDate.getUTCFullYear();
+            const UTCMonth = chargeDate.getUTCMonth() + 1;
+            const UTCDate = chargeDate.getUTCDate();
+            userChargeTimeCell.innerText = `${UTCYear}. ${UTCMonth}. ${UTCDate}.`;
+        }
         userErrorCell.innerText = `${error ? "O" : "X"}`;
     }
 };

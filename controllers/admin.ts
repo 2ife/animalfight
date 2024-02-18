@@ -166,6 +166,7 @@ const searchUser: RequestHandler = async (req, res, next) => {
               lockMemo: { [Op.not]: null },
               cashCode: { [Op.not]: null },
             },
+            order:[['chargeTime','ASC']]
           });
         } else if (userLocked && userCharged) {
           targetUsers = await User.findAll({
@@ -174,6 +175,7 @@ const searchUser: RequestHandler = async (req, res, next) => {
               lockMemo: { [Op.not]: null },
               cashCode: { [Op.not]: null },
             },
+            order:[['chargeTime','ASC']]
           });
         } else if (userLocked && !userCharged && searchText === "") {
           targetUsers = await User.findAll({
@@ -196,6 +198,7 @@ const searchUser: RequestHandler = async (req, res, next) => {
               lockMemo: null,
               cashCode: { [Op.not]: null },
             },
+            order:[['chargeTime','ASC']]
           });
         } else if (!userLocked && userCharged) {
           targetUsers = await User.findAll({
@@ -204,6 +207,7 @@ const searchUser: RequestHandler = async (req, res, next) => {
               lockMemo: null,
               cashCode: { [Op.not]: null },
             },
+            order:[['chargeTime','ASC']]
           });
         } else if (!userLocked && !userCharged && searchText === "") {
           targetUsers = await User.findAll({
@@ -230,6 +234,7 @@ const searchUser: RequestHandler = async (req, res, next) => {
               lockMemo: { [Op.not]: null },
               cashCode: { [Op.not]: null },
             },
+            order:[['chargeTime','ASC']]
           });
         } else if (userLocked && userCharged) {
           targetUsers = await User.findAll({
@@ -238,6 +243,7 @@ const searchUser: RequestHandler = async (req, res, next) => {
               lockMemo: { [Op.not]: null },
               cashCode: { [Op.not]: null },
             },
+            order:[['chargeTime','ASC']]
           });
         } else if (userLocked && !userCharged && searchText === "") {
           targetUsers = await User.findAll({
@@ -268,6 +274,7 @@ const searchUser: RequestHandler = async (req, res, next) => {
               lockMemo: null,
               cashCode: { [Op.not]: null },
             },
+            order:[['chargeTime','ASC']]
           });
         } else if (!userLocked && !userCharged && searchText === "") {
           targetUsers = await User.findAll({
@@ -294,6 +301,7 @@ const searchUser: RequestHandler = async (req, res, next) => {
               cashCode: { [Op.not]: null },
               lockMemo: { [Op.not]: null },
             },
+            order:[['chargeTime','ASC']]
           });
         } else if (userLocked) {
           targetUsers = await User.findAll({
@@ -301,6 +309,7 @@ const searchUser: RequestHandler = async (req, res, next) => {
               cashCode: { [Op.like]: `%${searchText}%` },
               lockMemo: { [Op.not]: null },
             },
+            order:[['chargeTime','ASC']]
           });
         } else if (!userLocked && searchText === "") {
           targetUsers = await User.findAll({
@@ -308,6 +317,7 @@ const searchUser: RequestHandler = async (req, res, next) => {
               cashCode: { [Op.not]: null },
               lockMemo: null,
             },
+            order:[['chargeTime','ASC']]
           });
         } else if (!userLocked) {
           targetUsers = await User.findAll({
@@ -315,6 +325,7 @@ const searchUser: RequestHandler = async (req, res, next) => {
               cashCode: { [Op.like]: `%${searchText}%` },
               lockMemo: null,
             },
+            order:[['chargeTime','ASC']]
           });
         }
         break;

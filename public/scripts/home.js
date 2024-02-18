@@ -300,6 +300,7 @@ let myUserData = {
     battleInfo: "",
     cashCode: null,
     chargeCash: 0,
+    chargeTime: 0,
     fewScrollPurchaseTime: 0,
     manyScrollPurchaseTime: 0,
     fewSpiritPurchaseTime: 0,
@@ -354,10 +355,21 @@ let temporaryBeasts = "";
 let temporaryMysteriousCreatures = "";
 let temporaryMonarchs = "";
 let savedAnimal = "";
-let animalSummonBtnClickInterval = null;
-let animalSummonTenBtnClickInterval = null;
-let upgradeExecuterClickInterval = null;
+let clickInterval = null;
 // common func
+const alertChargeInfo = () => {
+    const { chargeCash, chargeTime } = myUserData;
+    const chargeDate = new Date(chargeTime);
+    const collectDate = chargeDate.getUTCDay() === 6
+        ? new Date(chargeTime + 86400000 * 9)
+        : chargeDate.getUTCDay() === 0
+            ? new Date(chargeTime + 86400000 * 8)
+            : new Date(chargeTime + 86400000 * 7);
+    const UTCYear = collectDate.getUTCFullYear();
+    const UTCMonth = collectDate.getUTCMonth() + 1;
+    const UTCDate = collectDate.getUTCDate();
+    alertByModal(`이전 옥 충전의 회수 작업이 아직 진행되지 않았습니다! ${UTCYear}. ${UTCMonth}. ${UTCDate}. 오후 1-3시에 ${(chargeCash / 10).toLocaleString("ko-KR")} 옥 회수할 예정으로, 옥 회수가 아닌 입금으로 진행하고 싶은 경우, 오후 1시 이전에 입금 부탁드립니다. 아직 입금을 진행하지 않은 경우, 문의메뉴에 있는 계좌로 ${chargeCash.toLocaleString("ko-KR")}원 입금 부탁드립니다. 입금하실 때, '홈-프로필 관리'의 캐시코드를 '받는 분 표시'란에 꼭 입력하셔야 합니다.`);
+};
 const checkLoginCode = async () => {
     try {
         const loginCode = localStorage.getItem("LOGIN_CODE");
@@ -396,6 +408,9 @@ const checkLoginCode = async () => {
         putMyShopInfo();
         putMyGoods();
         menuBtns[0].style.fontWeight = "900";
+        if (myUserData.cashCode) {
+            alertChargeInfo();
+        }
     }
     catch (err) {
         console.log(err);
@@ -1877,10 +1892,9 @@ const clickShopPartGoodsImgContainers = async (event) => {
         alertByModal("오류가 발생하여 로그아웃됩니다!");
     }
 };
-const clickJadeChargeValueControlBtn = (event) => {
+const clickJadeChargeValueControlBtn = (target) => {
     if (loadInterval)
         return;
-    const target = event.currentTarget;
     const direction = target === jadeChargeExecuterJadeUpBtn ? "up" : "down";
     const currentJadeChargeValue = Number(jadeChargeExecuterJadeValueContainer.innerText);
     if ((currentJadeChargeValue === 10000 && direction === "up") ||
@@ -1896,7 +1910,7 @@ const clickJadeChargeBtn = async () => {
         return;
     try {
         if (myUserData.cashCode) {
-            alertByModal(`이전 옥 충전의 회수 작업이 아직 진행되지 않았습니다! 충전일 7일 이후(영업일 기준) 오후 4시에 회수할 예정으로, 옥 회수가 아닌 입금으로 진행하고 싶은 경우, 오후 4시 이전에 입금 부탁드립니다. 아직 입금을 진행하지 않은 경우, 문의메뉴에 있는 계좌로 ${myUserData.chargeCash}원 입금 부탁드립니다. 입금하실 때, '홈-프로필 관리'의 캐시코드를 '받는 분 표시'란에 꼭 입력하셔야 합니다.`);
+            alertChargeInfo();
             return;
         }
         const currentJadeChargeValue = Number(jadeChargeExecuterJadeValueContainer.innerText);
@@ -2338,98 +2352,97 @@ if (navigator.userAgent.match(/mobile/i) ||
     navigator.userAgent.match(/iPad|Android|Touch/i)) {
     animalSummonBtn.addEventListener("touchstart", () => {
         summonAnimal(1);
-        upgradeExecuterClickInterval = setInterval(() => {
+        clickInterval = setInterval(() => {
             summonAnimal(1);
         }, 200);
     });
     animalSummonBtn.addEventListener("touchend", () => {
-        if (upgradeExecuterClickInterval) {
-            clearInterval(upgradeExecuterClickInterval);
+        if (clickInterval) {
+            clearInterval(clickInterval);
         }
     });
     animalSummonBtn.addEventListener("touchmove", (event) => {
         const touch = event.touches[0];
-        if (upgradeExecuterClickInterval &&
+        if (clickInterval &&
             document.elementFromPoint(touch.pageX, touch.pageY) !== animalSummonBtn) {
-            clearInterval(upgradeExecuterClickInterval);
+            clearInterval(clickInterval);
         }
     });
     animalSummonTenBtn.addEventListener("touchstart", () => {
         summonAnimal(10);
-        upgradeExecuterClickInterval = setInterval(() => {
+        clickInterval = setInterval(() => {
             summonAnimal(10);
         }, 200);
     });
     animalSummonTenBtn.addEventListener("touchend", () => {
-        if (upgradeExecuterClickInterval) {
-            clearInterval(upgradeExecuterClickInterval);
+        if (clickInterval) {
+            clearInterval(clickInterval);
         }
     });
     animalSummonTenBtn.addEventListener("touchmove", (event) => {
         const touch = event.touches[0];
-        if (upgradeExecuterClickInterval &&
+        if (clickInterval &&
             document.elementFromPoint(touch.pageX, touch.pageY) !== animalSummonTenBtn) {
-            clearInterval(upgradeExecuterClickInterval);
+            clearInterval(clickInterval);
         }
     });
 }
 else {
     animalSummonBtn.addEventListener("mousedown", (event) => {
         summonAnimal(1);
-        upgradeExecuterClickInterval = setInterval(() => {
+        clickInterval = setInterval(() => {
             summonAnimal(1);
         }, 200);
     });
     animalSummonBtn.addEventListener("mouseup", () => {
-        if (upgradeExecuterClickInterval) {
-            clearInterval(upgradeExecuterClickInterval);
+        if (clickInterval) {
+            clearInterval(clickInterval);
         }
     });
     animalSummonBtn.addEventListener("mouseleave", () => {
-        if (upgradeExecuterClickInterval) {
-            clearInterval(upgradeExecuterClickInterval);
+        if (clickInterval) {
+            clearInterval(clickInterval);
         }
     });
     animalSummonTenBtn.addEventListener("mousedown", (event) => {
         summonAnimal(10);
-        upgradeExecuterClickInterval = setInterval(() => {
+        clickInterval = setInterval(() => {
             summonAnimal(10);
         }, 200);
     });
     animalSummonTenBtn.addEventListener("mouseup", () => {
-        if (upgradeExecuterClickInterval) {
-            clearInterval(upgradeExecuterClickInterval);
+        if (clickInterval) {
+            clearInterval(clickInterval);
         }
     });
     animalSummonTenBtn.addEventListener("mouseleave", () => {
-        if (upgradeExecuterClickInterval) {
-            clearInterval(upgradeExecuterClickInterval);
+        if (clickInterval) {
+            clearInterval(clickInterval);
         }
     });
 }
 animalSpecificPartCloseBtn.addEventListener("click", clickAnimalSpecificPartCloseBtn);
 combineInfoContainerTargetImg.addEventListener("click", combineAnimal);
 upgradeExecuters.forEach((executer) => {
-    // executer.addEventListener("click", clickUpgradeExecuter);
     if (navigator.userAgent.match(/mobile/i) ||
         navigator.userAgent.match(/iPad|Android|Touch/i)) {
         executer.addEventListener("touchstart", (event) => {
             const target = event.currentTarget;
             clickUpgradeExecuter(target);
-            upgradeExecuterClickInterval = setInterval(() => {
+            clickInterval = setInterval(() => {
                 clickUpgradeExecuter(target);
             }, 200);
         });
         executer.addEventListener("touchend", () => {
-            if (upgradeExecuterClickInterval) {
-                clearInterval(upgradeExecuterClickInterval);
+            if (clickInterval) {
+                clearInterval(clickInterval);
             }
         });
         executer.addEventListener("touchmove", (event) => {
             const touch = event.touches[0];
-            if (upgradeExecuterClickInterval &&
+            if (clickInterval &&
                 document.elementFromPoint(touch.pageX, touch.pageY) !== executer) {
-                clearInterval(upgradeExecuterClickInterval);
+                clearInterval(clickInterval);
             }
         });
     }
@@ -2437,18 +2450,18 @@ upgradeExecuters.forEach((executer) => {
         executer.addEventListener("mousedown", (event) => {
             const target = event.currentTarget;
             clickUpgradeExecuter(target);
-            upgradeExecuterClickInterval = setInterval(() => {
+            clickInterval = setInterval(() => {
                 clickUpgradeExecuter(target);
             }, 200);
         });
         executer.addEventListener("mouseup", () => {
-            if (upgradeExecuterClickInterval) {
-                clearInterval(upgradeExecuterClickInterval);
+            if (clickInterval) {
+                clearInterval(clickInterval);
             }
         });
         executer.addEventListener("mouseleave", () => {
-            if (upgradeExecuterClickInterval) {
-                clearInterval(upgradeExecuterClickInterval);
+            if (clickInterval) {
+                clearInterval(clickInterval);
             }
         });
     }
@@ -2465,8 +2478,85 @@ shopPartPassContainers.forEach((passContainer) => {
 shopPartGoodsImgContainers.forEach((imgContainer) => {
     imgContainer.addEventListener("click", clickShopPartGoodsImgContainers);
 });
-jadeChargeExecuterJadeDownBtn.addEventListener("click", clickJadeChargeValueControlBtn);
-jadeChargeExecuterJadeUpBtn.addEventListener("click", clickJadeChargeValueControlBtn);
+if (navigator.userAgent.match(/mobile/i) ||
+    navigator.userAgent.match(/iPad|Android|Touch/i)) {
+    jadeChargeExecuterJadeDownBtn.addEventListener("touchstart", (event) => {
+        const target = event.currentTarget;
+        clickJadeChargeValueControlBtn(target);
+        clickInterval = setInterval(() => {
+            clickJadeChargeValueControlBtn(target);
+        }, 200);
+    });
+    jadeChargeExecuterJadeUpBtn.addEventListener("touchstart", (event) => {
+        const target = event.currentTarget;
+        clickJadeChargeValueControlBtn(target);
+        clickInterval = setInterval(() => {
+            clickJadeChargeValueControlBtn(target);
+        }, 200);
+    });
+    jadeChargeExecuterJadeDownBtn.addEventListener("touchend", () => {
+        if (clickInterval) {
+            clearInterval(clickInterval);
+        }
+    });
+    jadeChargeExecuterJadeUpBtn.addEventListener("touchend", () => {
+        if (clickInterval) {
+            clearInterval(clickInterval);
+        }
+    });
+    jadeChargeExecuterJadeDownBtn.addEventListener("touchmove", (event) => {
+        const touch = event.touches[0];
+        if (clickInterval &&
+            document.elementFromPoint(touch.pageX, touch.pageY) !==
+                jadeChargeExecuterJadeDownBtn) {
+            clearInterval(clickInterval);
+        }
+    });
+    jadeChargeExecuterJadeUpBtn.addEventListener("touchmove", (event) => {
+        const touch = event.touches[0];
+        if (clickInterval &&
+            document.elementFromPoint(touch.pageX, touch.pageY) !==
+                jadeChargeExecuterJadeUpBtn) {
+            clearInterval(clickInterval);
+        }
+    });
+}
+else {
+    jadeChargeExecuterJadeDownBtn.addEventListener("mousedown", (event) => {
+        const target = event.currentTarget;
+        clickJadeChargeValueControlBtn(target);
+        clickInterval = setInterval(() => {
+            clickJadeChargeValueControlBtn(target);
+        }, 200);
+    });
+    jadeChargeExecuterJadeUpBtn.addEventListener("mousedown", (event) => {
+        const target = event.currentTarget;
+        clickJadeChargeValueControlBtn(target);
+        clickInterval = setInterval(() => {
+            clickJadeChargeValueControlBtn(target);
+        }, 200);
+    });
+    jadeChargeExecuterJadeDownBtn.addEventListener("mouseup", () => {
+        if (clickInterval) {
+            clearInterval(clickInterval);
+        }
+    });
+    jadeChargeExecuterJadeUpBtn.addEventListener("mouseup", () => {
+        if (clickInterval) {
+            clearInterval(clickInterval);
+        }
+    });
+    jadeChargeExecuterJadeDownBtn.addEventListener("mouseleave", () => {
+        if (clickInterval) {
+            clearInterval(clickInterval);
+        }
+    });
+    jadeChargeExecuterJadeUpBtn.addEventListener("mouseleave", () => {
+        if (clickInterval) {
+            clearInterval(clickInterval);
+        }
+    });
+}
 jadeChargeBtn.addEventListener("click", clickJadeChargeBtn);
 rankerWatchBtns.forEach((watchBtn) => {
     watchBtn.addEventListener("click", clickWatchBtn);

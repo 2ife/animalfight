@@ -1632,10 +1632,11 @@ main {
   border: 1px black solid;
 }
 .alertModal{
-  width: 60%;
+  width: 57.5%;
   height: 40%;
   left: 20%;
   top: 30%;
+  padding: 0 1.25%;
 }
 .OutOfAlertModal,
 .outOfLoadingShower {
