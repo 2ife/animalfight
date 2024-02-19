@@ -936,7 +936,7 @@ const winBattle = async (req, res, next) => {
         if (randomForSpirit < greedsTotalAttackNumbers) {
             user.spirit += 1;
         }
-        user.gold += battleGrade * 3;
+        user.gold += battleGrade * 10;
         user.exp += battleGrade * 20;
         const tryLevelUp = (level, exp) => {
             if (exp >= 2 ** (Math.ceil(level / 10) - 1) * level * 100) {

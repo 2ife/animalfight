@@ -1087,7 +1087,7 @@ const clickBattleGrade = (event: MouseEvent) => {
   battleRewardAmountContainers.forEach((amountContainer, index) => {
     if (index >= 2) return;
     amountContainer.innerText = formatNumber(
-      [currentGrade * 3, currentGrade * 20][index]
+      [currentGrade * 10, currentGrade * 20][index]
     );
   });
   consumeScrollValueContainer.innerText = formatNumber(

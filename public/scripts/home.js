@@ -729,7 +729,7 @@ const clickBattleGrade = (event) => {
     battleRewardAmountContainers.forEach((amountContainer, index) => {
         if (index >= 2)
             return;
-        amountContainer.innerText = formatNumber([currentGrade * 3, currentGrade * 20][index]);
+        amountContainer.innerText = formatNumber([currentGrade * 10, currentGrade * 20][index]);
     });
     consumeScrollValueContainer.innerText = formatNumber((Math.ceil(currentGrade / 20) + 1) * 5);
     if (stars === 3) {
