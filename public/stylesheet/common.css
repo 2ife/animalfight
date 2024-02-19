@@ -107,6 +107,13 @@ section {
   display: block;
 }
 
+img{
+  -webkit-touch-callout: none;
+  -webkit-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+}
+
 body {
   line-height: 1;
 }

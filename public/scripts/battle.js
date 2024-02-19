@@ -1210,9 +1210,7 @@ const getAnimalSkillInfo = (grade, typeNumber) => {
     let animalSkillInfo = animalSkillInfoList[typeNumber].replace(/\[([0-9\.]+)\]/g, function (match, num) {
         return `${[0, 0.5, 1, 2, 4][grade] * Number(num)}`;
     });
-    animalSkillInfo = `${animalSkillInfo}${grade >= 3 && typeNumber === 6
-        ? " (개별 육성 비례하여 이동속도 감소 효과 소폭 증가)"
-        : ""}${grade === 4 ? `\n\n${monarchAnimalExtraSkillInfoList[typeNumber]}` : ""}`;
+    animalSkillInfo = `${animalSkillInfo}${grade === 4 ? `\n\n${monarchAnimalExtraSkillInfoList[typeNumber]}` : ""}`;
     return animalSkillInfo;
 };
 const clickBattleZone = (event) => {

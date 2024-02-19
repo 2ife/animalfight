@@ -1400,6 +1400,9 @@ main {
 
 #inquiryPart {
   justify-content: center;
+  padding: 0 1.25%;
+  width: 47.5%;
+  user-select: text;
 }
 
 .goodsContainer {
