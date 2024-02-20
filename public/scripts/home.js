@@ -917,6 +917,9 @@ const sweep = async () => {
         expBar.style.width = `${expPercent}%`;
         expInfoContainer.innerText = `${exp} (${expPercent}%)`;
         putMyGoods();
+        for (let i = 0; i < 4; i++) {
+            passScrollRewardAmountContainers[i].innerText = formatNumber([10, 3, 6, 9][i] * (3 + level));
+        }
         myAchivementData.dailyBattleWinCounter = dailyBattleWinCounter;
         myAchivementData.dailyBattleWinRewardOrNot = dailyBattleWinRewardOrNot;
         myAchivementData.dailyTargetTime = dailyTargetTime;

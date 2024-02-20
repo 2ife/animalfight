@@ -1237,7 +1237,7 @@ const sweep: RequestHandler = async (req, res, next) => {
       throw new ReqError(errorObj, errorObj.content);
     }
     user.scroll -= neededScrolls;
-    user.gold += 3 * currentGrade;
+    user.gold += 10 * currentGrade;
     user.exp += 20 * currentGrade;
     const tryLevelUp = (
       level: number,
@@ -1278,11 +1278,11 @@ const sweep: RequestHandler = async (req, res, next) => {
       spirit: user.spirit,
     };
     const achivementData = {
-      dailyBattleWinCounter,
-      dailyBattleWinRewardOrNot,
+      dailyBattleWinCounter:achivement.dailyBattleWinCounter,
+      dailyBattleWinRewardOrNot:achivement.dailyBattleWinRewardOrNot,
       dailyTargetTime: achivement.dailyTargetTime,
-      weeklyBattleWinCounter,
-      weeklyBattleWinRewardOrNot,
+      weeklyBattleWinCounter:achivement.weeklyBattleWinCounter,
+      weeklyBattleWinRewardOrNot:achivement.weeklyBattleWinRewardOrNot,
       weeklyTargetTime: achivement.weeklyTargetTime,
     };
     const transaction = await sequelize.transaction();

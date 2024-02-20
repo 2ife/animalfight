@@ -1075,7 +1075,7 @@ const sweep = async (req, res, next) => {
             throw new common_1.ReqError(errorObj, errorObj.content);
         }
         user.scroll -= neededScrolls;
-        user.gold += 3 * currentGrade;
+        user.gold += 10 * currentGrade;
         user.exp += 20 * currentGrade;
         const tryLevelUp = (level, exp) => {
             if (exp >= 2 ** (Math.ceil(level / 10) - 1) * level * 100) {
@@ -1106,11 +1106,11 @@ const sweep = async (req, res, next) => {
             spirit: user.spirit,
         };
         const achivementData = {
-            dailyBattleWinCounter,
-            dailyBattleWinRewardOrNot,
+            dailyBattleWinCounter: achivement.dailyBattleWinCounter,
+            dailyBattleWinRewardOrNot: achivement.dailyBattleWinRewardOrNot,
             dailyTargetTime: achivement.dailyTargetTime,
-            weeklyBattleWinCounter,
-            weeklyBattleWinRewardOrNot,
+            weeklyBattleWinCounter: achivement.weeklyBattleWinCounter,
+            weeklyBattleWinRewardOrNot: achivement.weeklyBattleWinRewardOrNot,
             weeklyTargetTime: achivement.weeklyTargetTime,
         };
         const transaction = await models_1.sequelize.transaction();
