@@ -1294,6 +1294,7 @@ const sweep = async () => {
         [10, 3, 6, 9][i] * (3 + level)
       );
     }
+    putMyShopInfo()
     myAchivementData.dailyBattleWinCounter = dailyBattleWinCounter;
     myAchivementData.dailyBattleWinRewardOrNot = dailyBattleWinRewardOrNot;
     myAchivementData.dailyTargetTime = dailyTargetTime;

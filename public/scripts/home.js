@@ -920,6 +920,7 @@ const sweep = async () => {
         for (let i = 0; i < 4; i++) {
             passScrollRewardAmountContainers[i].innerText = formatNumber([10, 3, 6, 9][i] * (3 + level));
         }
+    putMyShopInfo()
         myAchivementData.dailyBattleWinCounter = dailyBattleWinCounter;
         myAchivementData.dailyBattleWinRewardOrNot = dailyBattleWinRewardOrNot;
         myAchivementData.dailyTargetTime = dailyTargetTime;
