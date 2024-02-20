@@ -2168,6 +2168,9 @@ const putMyPassInfo = () => {
       ) as HTMLImageElement;
       completeImg.style.display = "block";
     }
+    if(menuBtns[4].style.color!=='blue'&&(lastSpiritRewardTime < todayStartTime||lastScrollRewardTime < todayStartTime)){
+      menuBtns[4].style.color='blue'
+    }
   }
 };
 const clickPassRewardImgContainer = async (event: MouseEvent) => {
@@ -2234,6 +2237,18 @@ const clickPassRewardImgContainer = async (event: MouseEvent) => {
       }
     }
     completeImg.style.display = "block";
+    for(const pass of myPassData){
+      const currentDate = new Date();
+  const UTCYear = currentDate.getUTCFullYear();
+  const UTCMonth = currentDate.getUTCMonth();
+  const UTCDate = currentDate.getUTCDate();
+  const todayStartTime = Date.UTC(UTCYear, UTCMonth, UTCDate, 0, 0, 0, 0);
+    if(pass.lastScrollRewardTime<todayStartTime||
+      pass.lastSpiritRewardTime<todayStartTime){
+        return
+      }
+    }
+    menuBtns[4].style.color='black'
   } catch (err: any) {
     stopLoading();
     reload = true;
@@ -2544,6 +2559,9 @@ const putMyMails = async () => {
       mailContainer.addEventListener("click", clickMailContainer);
       mailList.append(mailContainer);
     }
+    if(menuBtns[6].style.color==='blue'&&myMailData.length===0){
+      menuBtns[6].style.color='black'
+    }
   } catch (err: any) {
     stopLoading();
     reload = true;
@@ -2718,6 +2736,9 @@ const putMyGoods = () => {
 // menuBtnContainer func
 const clickMenuBtn = (partIndex: number) => () => {
   if (loadInterval) return;
+  if([4,6].includes(partIndex)&&menuBtns[partIndex].style.color==='blue'){
+
+  }
   mainParts.forEach((mainPart) => {
     mainPart.style.display = "none";
   });

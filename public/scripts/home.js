@@ -920,7 +920,7 @@ const sweep = async () => {
         for (let i = 0; i < 4; i++) {
             passScrollRewardAmountContainers[i].innerText = formatNumber([10, 3, 6, 9][i] * (3 + level));
         }
-    putMyShopInfo()
+        putMyShopInfo();
         myAchivementData.dailyBattleWinCounter = dailyBattleWinCounter;
         myAchivementData.dailyBattleWinRewardOrNot = dailyBattleWinRewardOrNot;
         myAchivementData.dailyTargetTime = dailyTargetTime;
@@ -1671,6 +1671,9 @@ const putMyPassInfo = () => {
             const completeImg = passPartRewardImgContainer.querySelector(".rewardImgContainer_rewardCompletedImg");
             completeImg.style.display = "block";
         }
+        if (menuBtns[4].style.color !== 'blue' && (lastSpiritRewardTime < todayStartTime || lastScrollRewardTime < todayStartTime)) {
+            menuBtns[4].style.color = 'blue';
+        }
     }
 };
 const clickPassRewardImgContainer = async (event) => {
@@ -1730,6 +1733,18 @@ const clickPassRewardImgContainer = async (event) => {
             }
         }
         completeImg.style.display = "block";
+        for (const pass of myPassData) {
+            const currentDate = new Date();
+            const UTCYear = currentDate.getUTCFullYear();
+            const UTCMonth = currentDate.getUTCMonth();
+            const UTCDate = currentDate.getUTCDate();
+            const todayStartTime = Date.UTC(UTCYear, UTCMonth, UTCDate, 0, 0, 0, 0);
+            if (pass.lastScrollRewardTime < todayStartTime ||
+                pass.lastSpiritRewardTime < todayStartTime) {
+                return;
+            }
+        }
+        menuBtns[4].style.color = 'black';
     }
     catch (err) {
         stopLoading();
@@ -2011,6 +2026,9 @@ const putMyMails = async () => {
             mailContainer.addEventListener("click", clickMailContainer);
             mailList.append(mailContainer);
         }
+        if (menuBtns[6].style.color === 'blue' && myMailData.length === 0) {
+            menuBtns[6].style.color = 'black';
+        }
     }
     catch (err) {
         stopLoading();
@@ -2163,6 +2181,8 @@ const putMyGoods = () => {
 const clickMenuBtn = (partIndex) => () => {
     if (loadInterval)
         return;
+    if ([4, 6].includes(partIndex) && menuBtns[partIndex].style.color === 'blue') {
+    }
     mainParts.forEach((mainPart) => {
         mainPart.style.display = "none";
     });
