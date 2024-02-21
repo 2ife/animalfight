@@ -628,19 +628,20 @@ let temporaryMonarchs = "";
 let savedAnimal = "";
 let clickInterval: any = null;
 
+
 // common func
 const alertChargeInfo = () => {
   const { chargeCash, chargeTime } = myUserData;
-  const chargeDate=new Date(chargeTime)
+  const chargeDate = new Date(chargeTime);
   const collectDate =
     chargeDate.getUTCDay() === 6
       ? new Date(chargeTime + 86400000 * 9)
       : chargeDate.getUTCDay() === 0
       ? new Date(chargeTime + 86400000 * 8)
       : new Date(chargeTime + 86400000 * 7);
-      const UTCYear=collectDate.getUTCFullYear()
-      const UTCMonth=collectDate.getUTCMonth()+1
-      const UTCDate=collectDate.getUTCDate()
+  const UTCYear = collectDate.getUTCFullYear();
+  const UTCMonth = collectDate.getUTCMonth() + 1;
+  const UTCDate = collectDate.getUTCDate();
   alertByModal(
     `이전 옥 충전의 회수 작업이 아직 진행되지 않았습니다! ${UTCYear}. ${UTCMonth}. ${UTCDate}. 오후 1-3시에 ${(
       chargeCash / 10
@@ -698,8 +699,11 @@ const checkLoginCode = async () => {
     if (myUserData.cashCode) {
       alertChargeInfo();
     }
+    putMyMails();
   } catch (err) {
-    console.log(err);
+    stopLoading();
+    reload = true;
+    alertByModal("오류가 발생하여 재접속합니다!");
   }
 };
 const formatNumber = (num: number) => {
@@ -795,7 +799,9 @@ const getAnimalSkillInfo = (grade: number, typeNumber: number) => {
       return `${[0, 0.5, 1, 2, 4][grade] * Number(num)}`;
     }
   );
-  animalSkillInfo = `${animalSkillInfo}${grade === 4 ? `\n\n${monarchAnimalExtraSkillInfoList[typeNumber]}` : ""}`;
+  animalSkillInfo = `${animalSkillInfo}${
+    grade === 4 ? `\n\n${monarchAnimalExtraSkillInfoList[typeNumber]}` : ""
+  }`;
   return animalSkillInfo;
 };
 
@@ -1289,12 +1295,12 @@ const sweep = async () => {
     expBar.style.width = `${expPercent}%`;
     expInfoContainer.innerText = `${exp} (${expPercent}%)`;
     putMyGoods();
-    for(let i=0;i<4;i++){
+    for (let i = 0; i < 4; i++) {
       passScrollRewardAmountContainers[i].innerText = formatNumber(
         [10, 3, 6, 9][i] * (3 + level)
       );
     }
-    putMyShopInfo()
+    putMyShopInfo();
     myAchivementData.dailyBattleWinCounter = dailyBattleWinCounter;
     myAchivementData.dailyBattleWinRewardOrNot = dailyBattleWinRewardOrNot;
     myAchivementData.dailyTargetTime = dailyTargetTime;
@@ -2168,8 +2174,12 @@ const putMyPassInfo = () => {
       ) as HTMLImageElement;
       completeImg.style.display = "block";
     }
-    if(menuBtns[4].style.color!=='blue'&&(lastSpiritRewardTime < todayStartTime||lastScrollRewardTime < todayStartTime)){
-      menuBtns[4].style.color='blue'
+    if (
+      menuBtns[4].style.color !== "blue" &&
+      (lastSpiritRewardTime < todayStartTime ||
+        lastScrollRewardTime < todayStartTime)
+    ) {
+      menuBtns[4].style.color = "blue";
     }
   }
 };
@@ -2237,18 +2247,20 @@ const clickPassRewardImgContainer = async (event: MouseEvent) => {
       }
     }
     completeImg.style.display = "block";
-    for(const pass of myPassData){
+    for (const pass of myPassData) {
       const currentDate = new Date();
-  const UTCYear = currentDate.getUTCFullYear();
-  const UTCMonth = currentDate.getUTCMonth();
-  const UTCDate = currentDate.getUTCDate();
-  const todayStartTime = Date.UTC(UTCYear, UTCMonth, UTCDate, 0, 0, 0, 0);
-    if(pass.lastScrollRewardTime<todayStartTime||
-      pass.lastSpiritRewardTime<todayStartTime){
-        return
+      const UTCYear = currentDate.getUTCFullYear();
+      const UTCMonth = currentDate.getUTCMonth();
+      const UTCDate = currentDate.getUTCDate();
+      const todayStartTime = Date.UTC(UTCYear, UTCMonth, UTCDate, 0, 0, 0, 0);
+      if (
+        pass.lastScrollRewardTime < todayStartTime ||
+        pass.lastSpiritRewardTime < todayStartTime
+      ) {
+        return;
       }
     }
-    menuBtns[4].style.color='black'
+    menuBtns[4].style.color = "black";
   } catch (err: any) {
     stopLoading();
     reload = true;
@@ -2559,8 +2571,8 @@ const putMyMails = async () => {
       mailContainer.addEventListener("click", clickMailContainer);
       mailList.append(mailContainer);
     }
-    if(menuBtns[6].style.color==='blue'&&myMailData.length===0){
-      menuBtns[6].style.color='black'
+    if (menuBtns[6].style.color === "blue" && myMailData.length === 0) {
+      menuBtns[6].style.color = "black";
     }
   } catch (err: any) {
     stopLoading();
@@ -2736,9 +2748,6 @@ const putMyGoods = () => {
 // menuBtnContainer func
 const clickMenuBtn = (partIndex: number) => () => {
   if (loadInterval) return;
-  if([4,6].includes(partIndex)&&menuBtns[partIndex].style.color==='blue'){
-
-  }
   mainParts.forEach((mainPart) => {
     mainPart.style.display = "none";
   });
@@ -2764,16 +2773,7 @@ const clickMenuBtn = (partIndex: number) => () => {
     });
   }
   putAnimalsInBattleZone(myUserData.arrangement);
-  if (partIndex === 6) {
-    let mailExist = mailList.childElementCount === 0 ? false : true;
-    while (mailExist) {
-      mailList.children[0].remove();
-      if (mailList.childElementCount === 0) {
-        mailExist = false;
-      }
-    }
-    putMyMails();
-  } else if (partIndex === 7) {
+  if (partIndex === 7) {
     putRankInfo();
   }
   const targetPart = mainParts[partIndex];

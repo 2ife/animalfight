@@ -411,9 +411,12 @@ const checkLoginCode = async () => {
         if (myUserData.cashCode) {
             alertChargeInfo();
         }
+        putMyMails();
     }
     catch (err) {
-        console.log(err);
+        stopLoading();
+        reload = true;
+        alertByModal("오류가 발생하여 재접속합니다!");
     }
 };
 const formatNumber = (num) => {
@@ -1671,8 +1674,10 @@ const putMyPassInfo = () => {
             const completeImg = passPartRewardImgContainer.querySelector(".rewardImgContainer_rewardCompletedImg");
             completeImg.style.display = "block";
         }
-        if (menuBtns[4].style.color !== 'blue' && (lastSpiritRewardTime < todayStartTime || lastScrollRewardTime < todayStartTime)) {
-            menuBtns[4].style.color = 'blue';
+        if (menuBtns[4].style.color !== "blue" &&
+            (lastSpiritRewardTime < todayStartTime ||
+                lastScrollRewardTime < todayStartTime)) {
+            menuBtns[4].style.color = "blue";
         }
     }
 };
@@ -1744,7 +1749,7 @@ const clickPassRewardImgContainer = async (event) => {
                 return;
             }
         }
-        menuBtns[4].style.color = 'black';
+        menuBtns[4].style.color = "black";
     }
     catch (err) {
         stopLoading();
@@ -2026,8 +2031,8 @@ const putMyMails = async () => {
             mailContainer.addEventListener("click", clickMailContainer);
             mailList.append(mailContainer);
         }
-        if (menuBtns[6].style.color === 'blue' && myMailData.length === 0) {
-            menuBtns[6].style.color = 'black';
+        if (menuBtns[6].style.color === "blue" && myMailData.length === 0) {
+            menuBtns[6].style.color = "black";
         }
     }
     catch (err) {
@@ -2181,8 +2186,6 @@ const putMyGoods = () => {
 const clickMenuBtn = (partIndex) => () => {
     if (loadInterval)
         return;
-    if ([4, 6].includes(partIndex) && menuBtns[partIndex].style.color === 'blue') {
-    }
     mainParts.forEach((mainPart) => {
         mainPart.style.display = "none";
     });
@@ -2208,17 +2211,7 @@ const clickMenuBtn = (partIndex) => () => {
         });
     }
     putAnimalsInBattleZone(myUserData.arrangement);
-    if (partIndex === 6) {
-        let mailExist = mailList.childElementCount === 0 ? false : true;
-        while (mailExist) {
-            mailList.children[0].remove();
-            if (mailList.childElementCount === 0) {
-                mailExist = false;
-            }
-        }
-        putMyMails();
-    }
-    else if (partIndex === 7) {
+    if (partIndex === 7) {
         putRankInfo();
     }
     const targetPart = mainParts[partIndex];
