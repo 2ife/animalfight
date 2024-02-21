@@ -2571,9 +2571,6 @@ const putMyMails = async () => {
       mailContainer.addEventListener("click", clickMailContainer);
       mailList.append(mailContainer);
     }
-    if (menuBtns[6].style.color === "blue" && myMailData.length === 0) {
-      menuBtns[6].style.color = "black";
-    }
   } catch (err: any) {
     stopLoading();
     reload = true;
@@ -2639,6 +2636,9 @@ const clickMailContainer = async (event: MouseEvent) => {
     myMailData.splice(targetMailIndex, 1);
     target.removeEventListener("click", clickMailContainer);
     target.remove();
+    if (menuBtns[6].style.color === "blue" && myMailData.length === 0) {
+      menuBtns[6].style.color = "black";
+    }
   } catch (err: any) {
     stopLoading();
     reload = true;
