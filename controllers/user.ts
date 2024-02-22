@@ -384,7 +384,10 @@ const getRankInfo: RequestHandler = async (req, res, next) => {
   try {
     const adminIdArr = getAdminIdArr();
     const topUsers = await User.findAll({
-      where: { loginId: { [Op.notIn]: adminIdArr } },
+      where: { loginId: { [Op.notIn]: adminIdArr },
+    lockMemo:null,
+    highestBattleGrade:{[Op.gte]:1}
+    },
       order: [["highestBattleGrade", "DESC"]],
       limit: 100,
     });

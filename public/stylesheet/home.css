@@ -1319,7 +1319,7 @@ main {
   flex-flow: row nowrap;
   justify-content: flex-start;
   align-items: center;
-  border: 2px black solid;
+  border: 1px black solid;
 }
 
 .rankContainer_rankValueContainer {
@@ -1330,7 +1330,7 @@ main {
   align-items: center;
   font-size: 120%;
   font-weight: 900;
-  border-right: 2px black solid;
+  border-right: 1px black solid;
 }
 
 .rankContainer_profileImg {
@@ -1378,7 +1378,7 @@ main {
 .rankContainer_watchBtn {
   width: 16%;
   height: 60%;
-  border: 2px black solid;
+  border: 1.5px black solid;
   border-radius: 5%;
   font-size: 90%;
 }

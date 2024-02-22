@@ -183,7 +183,9 @@ const checkLoginCode = async () => {
     const { newLoginCode } = data;
     localStorage.setItem("LOGIN_CODE", newLoginCode);
   } catch (err) {
-    console.log(err);
+    stopLoading()
+    reload=true
+    alertByModal('오류가 발생하여 재접속합니다!')
   }
 };
 const testSearchText = (

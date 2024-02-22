@@ -343,7 +343,10 @@ const getRankInfo = async (req, res, next) => {
     try {
         const adminIdArr = (0, common_1.getAdminIdArr)();
         const topUsers = await models_1.User.findAll({
-            where: { loginId: { [sequelize_1.Op.notIn]: adminIdArr } },
+            where: { loginId: { [sequelize_1.Op.notIn]: adminIdArr },
+                lockMemo: null,
+                highestBattleGrade: { [sequelize_1.Op.gte]: 1 }
+            },
             order: [["highestBattleGrade", "DESC"]],
             limit: 100,
         });
