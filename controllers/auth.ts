@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
 import { RequestHandler } from "express";
-import { User, sequelize } from "../models";
+import { Mail, User, sequelize } from "../models";
 import { ReqError, updateDailyWeeklyAchivement } from "./common";
 
 const testLoginInfo = (category: "nick" | "id" | "password", text: string) => {
@@ -158,6 +158,7 @@ const join: RequestHandler = async (req, res, next) => {
       await user.createAnimalsInfo({}, { transaction });
       await user.createAchivement({}, { transaction });
       await user.createPass({}, { transaction });
+      await Mail.create({content:'환영합니다!',giftInfo:'100/1000/0/10',expire:Date.now()+86400000,UserId:user.id},{transaction})
       await transaction.commit();
     } catch (err: any) {
       await transaction.rollback();
