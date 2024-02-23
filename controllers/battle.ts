@@ -1089,7 +1089,9 @@ const winBattle: RequestHandler = async (req, res, next) => {
       exp: number
     ): { level: number; exp: number } => {
       if (exp >= 2 ** (Math.ceil(level / 10) - 1) * level * 100) {
-        user.spirit++;
+        user.spirit += 3;
+        user.scroll += (4 + level) * 3;
+        user.gold += (level + 1) * 10;
         return tryLevelUp(
           level + 1,
           exp - 2 ** (Math.ceil(level / 10) - 1) * level * 100
@@ -1244,7 +1246,9 @@ const sweep: RequestHandler = async (req, res, next) => {
       exp: number
     ): { level: number; exp: number } => {
       if (exp >= 2 ** (Math.ceil(level / 10) - 1) * level * 100) {
-        user.spirit++;
+        user.spirit += 3;
+        user.scroll += (4 + level) * 3;
+        user.gold += (level + 1) * 10;
         return tryLevelUp(
           level + 1,
           exp - 2 ** (Math.ceil(level / 10) - 1) * level * 100
@@ -1278,11 +1282,11 @@ const sweep: RequestHandler = async (req, res, next) => {
       spirit: user.spirit,
     };
     const achivementData = {
-      dailyBattleWinCounter:achivement.dailyBattleWinCounter,
-      dailyBattleWinRewardOrNot:achivement.dailyBattleWinRewardOrNot,
+      dailyBattleWinCounter: achivement.dailyBattleWinCounter,
+      dailyBattleWinRewardOrNot: achivement.dailyBattleWinRewardOrNot,
       dailyTargetTime: achivement.dailyTargetTime,
-      weeklyBattleWinCounter:achivement.weeklyBattleWinCounter,
-      weeklyBattleWinRewardOrNot:achivement.weeklyBattleWinRewardOrNot,
+      weeklyBattleWinCounter: achivement.weeklyBattleWinCounter,
+      weeklyBattleWinRewardOrNot: achivement.weeklyBattleWinRewardOrNot,
       weeklyTargetTime: achivement.weeklyTargetTime,
     };
     const transaction = await sequelize.transaction();
