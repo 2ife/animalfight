@@ -2024,13 +2024,16 @@ const putMyMails = async () => {
                 updateImgSrc(mailRewardImg, ["gold", "jade", "scroll", "spirit"][index]);
                 const mailRewardAmountContainer = document.createElement("div");
                 mailRewardAmountContainer.classList.add("mailContainer_rewardAmountContainer");
-                mailRewardAmountContainer.innerText = formatNumber(giftAmounts);
+                mailRewardAmountContainer.innerText = [1, 3].includes(index) ? giftAmounts.toLocaleString('ko-KR') : formatNumber(giftAmounts);
                 mailRewardImgContainer.append(mailRewardImg, mailRewardAmountContainer);
                 mailContainer.append(mailRewardImgContainer);
             });
             mailContainer.addEventListener("click", clickMailContainer);
             mailList.append(mailContainer);
         }
+        if(menuBtns[6].style.color !== "blue" && myMailData.length > 0){
+            menuBtns[6].style.color = "blue";
+          }else
         if (menuBtns[6].style.color === "blue" && myMailData.length === 0) {
             menuBtns[6].style.color = "black";
         }
@@ -2183,7 +2186,7 @@ const putMyGoods = () => {
     myGoldValueContainer.innerText = formatNumber(gold);
     myJadeValueContainer.innerText = jade.toLocaleString("ko-KR");
     myScrollValueContainer.innerText = formatNumber(scroll);
-    mySpiritValueContainer.innerText = formatNumber(spirit);
+    mySpiritValueContainer.innerText = spirit.toLocaleString("ko-KR");
 };
 // menuBtnContainer func
 const clickMenuBtn = (partIndex) => () => {
@@ -2214,7 +2217,17 @@ const clickMenuBtn = (partIndex) => () => {
         });
     }
     putAnimalsInBattleZone(myUserData.arrangement);
-    if (partIndex === 7) {
+    if (partIndex === 6) {
+        let mailExist = mailList.childElementCount === 0 ? false : true;
+        while (mailExist) {
+            mailList.children[0].remove();
+            if (mailList.childElementCount === 0) {
+                mailExist = false;
+            }
+        }
+        putMyMails();
+    }
+    else if (partIndex === 7) {
         putRankInfo();
     }
     const targetPart = mainParts[partIndex];

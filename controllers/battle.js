@@ -770,8 +770,8 @@ const winBattle = async (req, res, next) => {
                     })
                         .forEach((skillTarget) => {
                         skillTarget.getDamage(this.typeNumber === 0
-                            ? 20 * this.attackDamage
-                            : 4 * this.attackDamage);
+                            ? 40 * this.attackDamage
+                            : 8 * this.attackDamage);
                     });
                 }
                 else if ([1, 3].includes(this.typeNumber)) {
