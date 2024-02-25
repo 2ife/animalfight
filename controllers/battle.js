@@ -936,8 +936,8 @@ const winBattle = async (req, res, next) => {
         if (randomForSpirit < greedsTotalAttackNumbers) {
             user.spirit += 1;
         }
-        user.gold += battleGrade * 10;
-        user.exp += battleGrade * 20;
+        user.gold += battleGrade * 10*Math.ceil(battleGrade / 20)
+        user.exp += battleGrade * 20*Math.ceil(battleGrade / 20)
         const tryLevelUp = (level, exp) => {
             if (exp >= 2 ** (Math.ceil(level / 10) - 1) * level * 100) {
                 user.spirit += 3;
@@ -1077,8 +1077,8 @@ const sweep = async (req, res, next) => {
             throw new common_1.ReqError(errorObj, errorObj.content);
         }
         user.scroll -= neededScrolls;
-        user.gold += 10 * currentGrade;
-        user.exp += 20 * currentGrade;
+        user.gold += currentGrade * 10*Math.ceil(currentGrade / 20)
+        user.exp += currentGrade * 20*Math.ceil(currentGrade / 20)
         const tryLevelUp = (level, exp) => {
             if (exp >= 2 ** (Math.ceil(level / 10) - 1) * level * 100) {
                 user.spirit += 3;
