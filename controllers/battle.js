@@ -7,6 +7,51 @@ exports.sweep = exports.winBattle = exports.giveUpBattle = exports.checkBeforeBa
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const models_1 = require("../models");
 const common_1 = require("./common");
+const getPigPoint = (arrangement, mysteriousCreatureEachUpgrade, monarchEachUpgrade) => {
+    let pigPoint = 0;
+    const arrangementInfoArr = arrangement.split('/');
+    for (const arrangementInfo of arrangementInfoArr) {
+        if (arrangementInfo === "0") {
+            continue;
+        }
+        const dividerIndex = arrangementInfo.indexOf("_");
+        const typeNumber = Number(arrangementInfo.slice(dividerIndex + 1));
+        if (typeNumber !== 10) {
+            continue;
+        }
+        const grade = Number(arrangementInfo.slice(0, dividerIndex));
+        if (grade === 0) {
+            continue;
+        }
+        const targetEachUpgrade = grade < 3
+            ? 0
+            : grade === 3
+                ? Number(mysteriousCreatureEachUpgrade.split("/")[typeNumber])
+                : Number(monarchEachUpgrade.split("/")[typeNumber]) * 2;
+        pigPoint += grade < 3 ? 3 ** (grade - 1) : 3 ** (grade - 1) + 0.1 * targetEachUpgrade;
+    }
+    return pigPoint;
+};
+const getGreedNumber = (arrangement) => {
+    let greedNumber = 0;
+    const arrangementInfoArr = arrangement.split('/');
+    for (const arrangementInfo of arrangementInfoArr) {
+        if (arrangementInfo === "0") {
+            continue;
+        }
+        const dividerIndex = arrangementInfo.indexOf("_");
+        const typeNumber = Number(arrangementInfo.slice(dividerIndex + 1));
+        if (typeNumber !== 10) {
+            continue;
+        }
+        const grade = Number(arrangementInfo.slice(0, dividerIndex));
+        if (grade !== 4) {
+            continue;
+        }
+        greedNumber += 1;
+    }
+    return greedNumber;
+};
 const startBattle = async (req, res, next) => {
     try {
         const user = res.locals.user;
@@ -273,8 +318,6 @@ const winBattle = async (req, res, next) => {
                 this.animalsArr = [];
                 this.attackObjectsArr = [];
                 this.tick = 0;
-                this.jadeIncrease = 0;
-                this.goldIncrease = 0;
                 this.star = 0;
             }
             startBattle(arrangement, animalsUpgradeInfo) {
@@ -904,16 +947,6 @@ const winBattle = async (req, res, next) => {
                         target.getDamage(2 * this.attackDamage);
                     }
                 }
-                else if (this.typeNumber === 10) {
-                    if (this.totalAttackNumbers % 3 !== 0)
-                        return;
-                    this.battle.goldIncrease += 2 * skillCoefficientArr[this.grade];
-                    if (this.totalAttackNumbers %
-                        (300 - (this.grade >= 3 ? this.eachUpgrade : 0)) !==
-                        0)
-                        return;
-                    this.battle.jadeIncrease += 2 * skillCoefficientArr[this.grade];
-                }
             }
         }
         user.scroll -= neededScrolls;
@@ -923,9 +956,6 @@ const winBattle = async (req, res, next) => {
             mysteriousCreatureEachUpgrade,
             monarchEachUpgrade,
         });
-        const { goldIncrease, jadeIncrease } = battle;
-        user.gold += goldIncrease;
-        user.jade += jadeIncrease;
         const greeds = battle.animalsArr.filter((animal) => {
             return animal.grade === 5 && animal.typeNumber === 10;
         });
@@ -936,8 +966,13 @@ const winBattle = async (req, res, next) => {
         if (randomForSpirit < greedsTotalAttackNumbers) {
             user.spirit += 1;
         }
-        user.gold += battleGrade * 10*Math.ceil(battleGrade / 20)
-        user.exp += battleGrade * 20*Math.ceil(battleGrade / 20)
+        const pigPoint = getPigPoint(arrangement, mysteriousCreatureEachUpgrade, monarchEachUpgrade);
+        user.gold += Math.round((battleGrade * 10 * Math.ceil(battleGrade / 20)) * (100 + pigPoint) / 100);
+        user.exp += battleGrade * 20 * Math.ceil(battleGrade / 20);
+        const greedNumber = getGreedNumber(arrangement);
+        if (greedNumber / 72 >= Math.random()) {
+            user.scroll += neededScrolls;
+        }
         const tryLevelUp = (level, exp) => {
             if (exp >= 2 ** (Math.ceil(level / 10) - 1) * level * 100) {
                 user.spirit += 3;
@@ -1077,8 +1112,16 @@ const sweep = async (req, res, next) => {
             throw new common_1.ReqError(errorObj, errorObj.content);
         }
         user.scroll -= neededScrolls;
-        user.gold += currentGrade * 10*Math.ceil(currentGrade / 20)
-        user.exp += currentGrade * 20*Math.ceil(currentGrade / 20)
+        const { arrangement } = user;
+        const animalsInfo = await user.getAnimalsInfo();
+        const { mysteriousCreatureEachUpgrade, monarchEachUpgrade } = animalsInfo;
+        const pigPoint = getPigPoint(arrangement, mysteriousCreatureEachUpgrade, monarchEachUpgrade);
+        user.gold += Math.round((currentGrade * 10 * Math.ceil(currentGrade / 20)) * (100 + pigPoint) / 100);
+        user.exp += currentGrade * 20 * Math.ceil(currentGrade / 20);
+        const greedNumber = getGreedNumber(arrangement);
+        if (greedNumber / 72 >= Math.random()) {
+            user.scroll += neededScrolls;
+        }
         const tryLevelUp = (level, exp) => {
             if (exp >= 2 ** (Math.ceil(level / 10) - 1) * level * 100) {
                 user.spirit += 3;

@@ -180,7 +180,7 @@ const animalSkillInfoList = [
     "10번째 공격마다 공격 대상 기준 넓은 범위 내에 있는 모든 적들에게 (공격력 * [10]%) 피해를 주고, [0.4]초동안 기절시킨다",
     "10번째 공격마다 공격 대상에게 (공격력 * [325]%) 피해를 주고, [0.75]초동안 기절시킨다.",
     "10번째 공격마다 공격 대상에게 (공격력 * [350]%) 피해를 주고, [0.5]초동안 기절시킨다.",
-    "3번째 공격마다 [2] 골드를 얻고, 300번째 공격마다 옥 [2]개를 얻는다. (전투 승리 한정 수령 / 영물 이상 등급: 옥 획득 필요 공격 개별 육성 * 1만큼 감소)",
+    "전투 승리 또는 소탕 시, 금을 (배치된 해당 동물 수 * [1]%) 더 획득한다. (영물 이상 등급: 추가 획득 금 개별 육성 * 0.1%(영물) / 0.2%(군주) 만큼 추가)",
 ];
 const monarchAnimalExtraSkillInfoList = [
     "해당 스킬 100번째 발동마다 (공격력 * 4,000%) 추가 피해를 준다.",
@@ -193,7 +193,7 @@ const monarchAnimalExtraSkillInfoList = [
     "해당 스킬 10번째 발동마다 기절 지속시간을 2초 증가시키고, (공격력 * 800%) 추가 피해를 준다.",
     "해당 스킬 2번째 발동마다 (공격력 * 1600%) 추가 피해를 준다.",
     "보스 공격 시마다 (공격력 * 200%) 추가 피해를 준다. (보스 저항 무시)",
-    "(총 공격횟수 * 0.01)% 확률로 영혼 1개를 얻는다. (전투 승리 한정 수령)",
+    "전투 승리 또는 소탕 시, (배치된 해당 동물 수 * 1.38%) 확률로 두루마리를 소모하지 않는다.",
 ];
 let battleGrade = 0;
 let myAnimalsArrangement = "";
@@ -298,8 +298,6 @@ class Battle {
         this.tick = 0;
         this.moveLog = [];
         this.battleInterval = 0;
-        this.jadeIncrease = 0;
-        this.goldIncrease = 0;
         this.star = 0;
     }
     startBattle(arrangement, animalsUpgradeInfo) {
@@ -1192,22 +1190,13 @@ class Animal {
                 }
             }
         }
-        else if (this.typeNumber === 10) {
-            if (this.totalAttackNumbers % 3 !== 0)
-                return;
-            const animalSkillImg = new AnimalSkillImg(this, target, this.battle.tick);
-            this.battle.animalSkillImgsArr.push(animalSkillImg);
-            this.battle.goldIncrease += 2 * skillCoefficientArr[this.grade];
-            if (this.totalAttackNumbers %
-                (300 - (this.grade >= 3 ? this.eachUpgrade : 0)) !==
-                0)
-                return;
-            this.battle.jadeIncrease += 2 * skillCoefficientArr[this.grade];
-        }
     }
 }
 const getAnimalSkillInfo = (grade, typeNumber) => {
     let animalSkillInfo = animalSkillInfoList[typeNumber].replace(/\[([0-9\.]+)\]/g, function (match, num) {
+        if (typeNumber === 10) {
+            return `${[0, 1, 3, 9, 27][grade] * Number(num)}`;
+        }
         return `${[0, 0.5, 1, 2, 4][grade] * Number(num)}`;
     });
     animalSkillInfo = `${animalSkillInfo}${grade === 4 ? `\n\n${monarchAnimalExtraSkillInfoList[typeNumber]}` : ""}`;
