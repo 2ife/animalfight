@@ -1504,13 +1504,15 @@ const getAnimalSkillInfo = (grade: number, typeNumber: number) => {
   let animalSkillInfo = animalSkillInfoList[typeNumber].replace(
     /\[([0-9\.]+)\]/g,
     function (match, num) {
-      if(typeNumber===10){
-      return `${[0, 1, 3, 9, 27][grade] * Number(num)}`;
+      if (typeNumber === 10) {
+        return `${[0, 1, 3, 9, 27][grade] * Number(num)}`;
       }
       return `${[0, 0.5, 1, 2, 4][grade] * Number(num)}`;
     }
   );
-  animalSkillInfo = `${animalSkillInfo}${grade === 4 ? `\n\n${monarchAnimalExtraSkillInfoList[typeNumber]}` : ""}`;
+  animalSkillInfo = `${animalSkillInfo}${
+    grade === 4 ? `\n\n${monarchAnimalExtraSkillInfoList[typeNumber]}` : ""
+  }`;
   return animalSkillInfo;
 };
 const clickBattleZone = (event: MouseEvent) => {
@@ -1540,6 +1542,11 @@ const clickBattleZone = (event: MouseEvent) => {
         "animals"
       );
       animalGrade.innerText = `[${animalGradeKorNameList[grade]}]`;
+      animalGrade.classList.remove("babyGradeSpan");
+      animalGrade.classList.remove("smallGradeSpan");
+      animalGrade.classList.remove("beastGradeSpan");
+      animalGrade.classList.remove("mysteriousCreatureGradeSpan");
+      animalGrade.classList.remove("monarchGradeSpan");
       animalGrade.classList.add(
         [
           "babyGradeSpan",

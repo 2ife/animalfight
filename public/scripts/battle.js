@@ -1223,6 +1223,11 @@ const clickBattleZone = (event) => {
             const { grade, typeNumber, firstAttackDamage, firstAttackSpeed } = targetAnimal;
             updateImgSrc(animalProfileImg, animalNameList[grade][typeNumber], "animals");
             animalGrade.innerText = `[${animalGradeKorNameList[grade]}]`;
+            animalGrade.classList.remove("babyGradeSpan");
+            animalGrade.classList.remove("smallGradeSpan");
+            animalGrade.classList.remove("beastGradeSpan");
+            animalGrade.classList.remove("mysteriousCreatureGradeSpan");
+            animalGrade.classList.remove("monarchGradeSpan");
             animalGrade.classList.add([
                 "babyGradeSpan",
                 "smallGradeSpan",

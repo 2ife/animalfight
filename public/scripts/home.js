@@ -657,7 +657,7 @@ const putMyUserData = () => {
     const expToLevelUp = 2 ** (Math.ceil(level / 10) - 1) * level * 100;
     const expPercent = ((exp / expToLevelUp) * 100).toFixed(2);
     expBar.style.width = `${expPercent}%`;
-    expInfoContainer.innerText = `${exp} (${expPercent}%)`;
+    expInfoContainer.innerText = `${exp.toLocaleString("ko-KR")} (${expPercent}%)`;
     const highestBattleGradeUnder100 = highestBattleGrade % 100;
     currentBattleGradeGroupIndex = permanentBattlePerfectWin + 1;
     let stars = 0;
@@ -921,7 +921,7 @@ const sweep = async () => {
         const expToLevelUp = 2 ** (Math.ceil(level / 10) - 1) * level * 100;
         const expPercent = ((exp / expToLevelUp) * 100).toFixed(2);
         expBar.style.width = `${expPercent}%`;
-        expInfoContainer.innerText = `${exp} (${expPercent}%)`;
+        expInfoContainer.innerText = `${exp.toLocaleString("ko-KR")} (${expPercent}%)`;
         putMyGoods();
         for (let i = 0; i < 4; i++) {
             passScrollRewardAmountContainers[i].innerText = formatNumber([10, 3, 6, 9][i] * (3 + level));
