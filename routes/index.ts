@@ -38,7 +38,7 @@ import {
   upgradeAnimal,
 } from "../controllers/animal";
 import { getMailInfo, checkAndReceiveMail } from "../controllers/mail";
-import { purchasePass, purchaseGoods, chargeJade } from "../controllers/shop";
+import { purchasePass, purchaseGoods, chargeJade,collectJade } from "../controllers/shop";
 import {
   startBattle,
   checkBeforeBattle,
@@ -189,6 +189,13 @@ router.post(
   isLoggedIn,
   blockWhenBattle,
   chargeJade
+);
+router.post(
+  "/shop/collectJade",
+  apiLimiter,
+  isLoggedIn,
+  blockWhenBattle,
+  collectJade
 );
 
 /* battleRouter */

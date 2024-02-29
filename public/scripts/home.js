@@ -110,6 +110,7 @@ const profileModalIdContainer = profileModal.querySelector("#profileSetter_idCon
 const profileModalPasswordContainer = profileModal.querySelector("#profileSetter_passwordContainer");
 const passwordChangeBtn = profileModal.querySelector("#passwordChangeBtn");
 const profileModalCashCodeContainer = profileModal.querySelector("#profileSetter_cashCodeContainer");
+const jadeCollectBtn = profileModal.querySelector('#jadeCollectBtn');
 // loadModal, alertModal
 const alertModal = document.querySelector(".alertModal");
 const OutOfAlertModal = document.querySelector(".OutOfAlertModal");
@@ -368,7 +369,15 @@ const alertChargeInfo = () => {
     const UTCYear = collectDate.getUTCFullYear();
     const UTCMonth = collectDate.getUTCMonth() + 1;
     const UTCDate = collectDate.getUTCDate();
-    alertByModal(`이전 옥 충전의 회수 작업이 아직 진행되지 않았습니다! ${UTCYear}. ${UTCMonth}. ${UTCDate}. 오후 1-3시에 ${(chargeCash / 10).toLocaleString("ko-KR")} 옥 회수할 예정으로, 옥 회수가 아닌 입금으로 진행하고 싶은 경우, 오후 1시 이전에 입금 부탁드립니다. 아직 입금을 진행하지 않은 경우, 문의메뉴에 있는 계좌로 ${chargeCash.toLocaleString("ko-KR")}원 입금 부탁드립니다. 입금하실 때, '홈-프로필 관리'의 캐시코드를 '받는 분 표시'란에 꼭 입력하셔야 합니다.`);
+    alertByModal(
+        `이전에 충전하신 옥이 아직 회수되지 않았습니다! '홈-프로필 관리'에서 옥 회수를 진행바랍니다. ${(
+          chargeCash / 10
+        ).toLocaleString(
+          "ko-KR"
+        )} 옥이 필요하며, 옥 회수가 어려울 시, ${UTCYear}. ${UTCMonth}. ${UTCDate}. 오후 1시까지 ${chargeCash.toLocaleString(
+          "ko-KR"
+        )}원 입금 부탁드립니다. 입금 계좌 및 입금 시 유의사항을 문의메뉴에서 꼭 확인하시고 입금 바랍니다. 입금 처리는 오후 3시 전후로 확인하여 진행하니 이 점 유의바랍니다.`
+      );
 };
 const checkLoginCode = async () => {
     try {
@@ -2343,6 +2352,42 @@ const clickUserInfoChangeBtn = (type) => async () => {
         alertByModal("오류가 발생하여 로그아웃됩니다!");
     }
 };
+const clickJadeCollectBtn = async () => {
+    if (loadInterval)
+        return;
+    try {
+        const { cashCode, chargeCash, jade } = myUserData;
+        if (!cashCode) {
+            return;
+        }
+        const neededJade = chargeCash / 10;
+        if (jade < neededJade) {
+            alertByModal(`옥이 부족합니다! 회수해야할 옥은 총 ${neededJade.toLocaleString('ko-KR')}개 입니다.`);
+            return;
+        }
+        showLoading();
+        const loginCode = localStorage.getItem("LOGIN_CODE");
+        const res = await axios.default.post("/shop/collectJade", {
+            loginCode,
+        });
+        stopLoading();
+        const { data } = res;
+        const { answer } = data;
+        if (answer === "error") {
+            throw new Error();
+        }
+        alertByModal("재접속합니다!");
+        loadInterval = 1;
+        setTimeout(() => {
+            location.reload();
+        }, 1000);
+    }
+    catch (err) {
+        stopLoading();
+        reload = true;
+        alertByModal("오류가 발생하여 로그아웃됩니다!");
+    }
+};
 // loadModal, alertModal
 const alertByModal = (msg) => {
     alertModal.innerText = msg;
@@ -2606,6 +2651,7 @@ profileModalAnimalImgs.forEach((profileModalAnimalImg) => {
 profileImgSetBtn.addEventListener("click", clickProfileImgSetBtn);
 nickChangeBtn.addEventListener("click", clickUserInfoChangeBtn("nick"));
 passwordChangeBtn.addEventListener("click", clickUserInfoChangeBtn("password"));
+jadeCollectBtn.addEventListener('click',clickJadeCollectBtn)
 alertModal.addEventListener("click", () => {
     alertModal.style.display = "none";
     OutOfAlertModal.style.display = "none";

@@ -221,4 +221,52 @@ const chargeJade: RequestHandler = async (req, res, next) => {
     next(err);
   }
 };
-export { purchasePass, purchaseGoods, chargeJade };
+const collectJade: RequestHandler = async (req, res, next) => {
+  try {
+    const user = res.locals.user as User;
+    const { cashCode, chargeCash, jade } = user;
+    if (!cashCode) {
+      const errorObj: errorObj = {
+        place: "controllers-shop-collectJade",
+        content: `no cashCode!`,
+        user: user.loginId,
+      };
+      throw new ReqError(errorObj, errorObj.content);
+    }
+    const neededJade = chargeCash / 10;
+    if (jade < neededJade) {
+      const errorObj: errorObj = {
+        place: "controllers-shop-collectJade",
+        content: `jade shortage! jade: ${jade} / neededJade: ${neededJade}`,
+        user: user.loginId,
+      };
+      throw new ReqError(errorObj, errorObj.content);
+    }
+    user.jade -= neededJade;
+    user.cashCode = null;
+    user.chargeCash = 0;
+    user.chargeTime = null;
+    const transaction = await sequelize.transaction();
+    try {
+      await user.save({ transaction });
+      await transaction.commit();
+    } catch (err: any) {
+      await transaction.rollback();
+      const errorObj: errorObj = {
+        place: "controllers-shop-collectJade",
+        content: `collectJade transaction error`,
+        user: user.loginId,
+      };
+      throw new ReqError(errorObj, err.message);
+    }
+    res.json({ answer: "collectJade success" });
+  } catch (err: any) {
+    if (!err.place) {
+      err.place = "controllers-shop-collectJade";
+      err.content = "collectJadeError";
+      err.user = null;
+    }
+    next(err);
+  }
+};
+export { purchasePass, purchaseGoods, chargeJade, collectJade };

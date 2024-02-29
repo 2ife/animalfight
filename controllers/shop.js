@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.chargeJade = exports.purchaseGoods = exports.purchasePass = void 0;
+exports.collectJade = exports.chargeJade = exports.purchaseGoods = exports.purchasePass = void 0;
 const models_1 = require("../models");
 const common_1 = require("./common");
 const purchasePass = async (req, res, next) => {
@@ -218,3 +218,54 @@ const chargeJade = async (req, res, next) => {
     }
 };
 exports.chargeJade = chargeJade;
+const collectJade = async (req, res, next) => {
+    try {
+        const user = res.locals.user;
+        const { cashCode, chargeCash, jade } = user;
+        if (!cashCode) {
+            const errorObj = {
+                place: "controllers-shop-collectJade",
+                content: `no cashCode!`,
+                user: user.loginId,
+            };
+            throw new common_1.ReqError(errorObj, errorObj.content);
+        }
+        const neededJade = chargeCash / 10;
+        if (jade < neededJade) {
+            const errorObj = {
+                place: "controllers-shop-collectJade",
+                content: `jade shortage! jade: ${jade} / neededJade: ${neededJade}`,
+                user: user.loginId,
+            };
+            throw new common_1.ReqError(errorObj, errorObj.content);
+        }
+        user.jade -= neededJade;
+        user.cashCode = null;
+        user.chargeCash = 0;
+        user.chargeTime = null;
+        const transaction = await models_1.sequelize.transaction();
+        try {
+            await user.save({ transaction });
+            await transaction.commit();
+        }
+        catch (err) {
+            await transaction.rollback();
+            const errorObj = {
+                place: "controllers-shop-collectJade",
+                content: `collectJade transaction error`,
+                user: user.loginId,
+            };
+            throw new common_1.ReqError(errorObj, err.message);
+        }
+        res.json({ answer: "collectJade success" });
+    }
+    catch (err) {
+        if (!err.place) {
+            err.place = "controllers-shop-collectJade";
+            err.content = "collectJadeError";
+            err.user = null;
+        }
+        next(err);
+    }
+};
+exports.collectJade = collectJade;

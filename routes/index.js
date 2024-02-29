@@ -47,6 +47,7 @@ router.post("/mail/checkAndReceiveMail", middlewares_1.apiLimiter, middlewares_1
 router.post("/shop/purchasePass", middlewares_1.apiLimiter, middlewares_1.isLoggedIn, middlewares_1.blockWhenBattle, shop_1.purchasePass);
 router.post("/shop/purchaseGoods", middlewares_1.apiLimiter, middlewares_1.isLoggedIn, middlewares_1.blockWhenBattle, shop_1.purchaseGoods);
 router.post("/shop/chargeJade", middlewares_1.apiLimiter, middlewares_1.isLoggedIn, middlewares_1.blockWhenBattle, shop_1.chargeJade);
+router.post("/shop/collectJade", middlewares_1.apiLimiter, middlewares_1.isLoggedIn, middlewares_1.blockWhenBattle, shop_1.collectJade);
 /* battleRouter */
 router.post("/battle/startBattle", middlewares_1.apiLimiter, middlewares_1.isLoggedIn, middlewares_1.blockWhenBattle, battle_1.startBattle);
 router.post("/battle/checkBeforeBattle", middlewares_1.apiLimiter, middlewares_1.isLoggedIn, middlewares_1.blockWhenBattle, battle_1.checkBeforeBattle);

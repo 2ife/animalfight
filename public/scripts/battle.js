@@ -1284,6 +1284,10 @@ speedControlBtn.addEventListener("click", () => {
             battle.controlSpeed(2);
             speedControlBtn.innerText = "⨉2";
         }
+        else if (battle.speed === 2) {
+            battle.controlSpeed(4);
+            speedControlBtn.innerText = "⨉4";
+        }
         else {
             battle.controlSpeed(1);
             speedControlBtn.innerText = "⨉1";

@@ -313,7 +313,7 @@ shopDetail:'매일 출석 시 영혼 3, 두루마리 90% 획득!'
 }]%}
 
 {% block styleSheet %}
-<link rel="stylesheet" type="text/css" href="/stylesheet/home.css?version=0.0.20">
+<link rel="stylesheet" type="text/css" href="/stylesheet/home.css?version=0.0.21">
 {% endblock %}
 
 {% block content %}
@@ -747,17 +747,14 @@ shopDetail:'매일 출석 시 영혼 3, 두루마리 90% 획득!'
           </div>
           <button class="jadeChargeExecuter_chargeBtn">충전</button>
           <div class="jadeChargeExecuter_detailContainer">
-            &nbsp;영업일 기준 7일 이후에 충전한 옥을 회수합니다. 회수가 어려울 시, 문의메뉴에 있는 계좌로 <span
-              class="jadeChargeExecuter_chargePriceContainer">0</span>원을 입금하셔야 하며,
-            입금하실 때, '홈-프로필 관리'의 캐시코드를 '받는 분 표시'란에 꼭 입력하셔야 합니다.
-            회수 및 입금이 정상적으로 진행되지 않을 시, 계정이 정지될 수 있으며,
-            회수 및 입금 관련 문제 발생 시, 문의 부탁드립니다.
+            &nbsp;충전한 옥은 영업일 기준 7일 이내로 회수해야합니다. 회수가 어려울 시, <span
+              class="jadeChargeExecuter_chargePriceContainer">0</span>원을 입금하셔야 하며, 입금은 문의메뉴에 있는 입금 안내에 따라 진행 바랍니다. (회수 → '홈-프로필 관리')
           </div>
         </div>
       </div>
     </div>
   </div>
-  <div style="display: none;"  id="mailPart" class="mainPart">
+  <div style="display: none;" id="mailPart" class="mainPart">
     <div class="mailListWrapper">
       <div class="mailList">
       </div>
@@ -807,7 +804,10 @@ shopDetail:'매일 출석 시 영혼 3, 두루마리 90% 획득!'
     문의사항은 영업일 오후 1~3시쯤 확인하며, 순차적 진행으로 인해 문의 진행 및 답변까지 다소 시간이 걸릴 수 있으며, 문의 내용에 따라 답변이 따로 없을 수도 있는 점 양해 부탁드립니다.
     <br>
     <br>
-  계좌: 현재는 테스트 기간으로 입금이 불가합니다.
+    입금: 입금하실 때, '홈-프로필 관리'에 있는 캐시코드를 '받는 분 표시'란에 꼭 입력하시고 아래 계좌로 입금해야 합니다. 회수 및 입금이 정상적으로 진행되지 않을 시, 계정이 정지될 수 있습니다.
+    <br>
+    <br>
+    계좌: 현재는 테스트 기간으로 입금이 불가하므로, 충전한 옥은 꼭 회수 바랍니다. (충전한 옥이 회수되지 않을 시, 계정이 정지될 수 있습니다.)
   </div>
   <div class="goodsContainer">
     <div class="goldContainer">
@@ -878,6 +878,7 @@ shopDetail:'매일 출석 시 영혼 3, 두루마리 90% 획득!'
   <div class="profileSetter">
     <div class="profileSetter_label">캐시코드</div>
     <input type="text" class="profileSetter_textContainer" id="profileSetter_cashCodeContainer" readonly value="">
+    <button id="jadeCollectBtn" class="profileSetter_changeBtn">옥 회수</button>
   </div>
 
 </div>
@@ -888,5 +889,5 @@ shopDetail:'매일 출석 시 영혼 3, 두루마리 90% 획득!'
 {% endblock %}
 
 {% block script %}
-<script src="/scripts/home.js?version=0.0.20"></script>
+<script src="/scripts/home.js?version=0.0.21"></script>
 {% endblock %}

@@ -342,7 +342,7 @@ class Battle {
   declare animalsArr: Animal[];
   declare attackObjectsArr: AttackObject[];
   declare animalSkillImgsArr: AnimalSkillImg[];
-  declare speed: 1 | 2;
+  declare speed: 1 | 2 | 4;
   declare hpVisible: Boolean;
   declare pauseOrNot: Boolean;
   declare tick: number;
@@ -796,7 +796,7 @@ class Battle {
       this.loseBattle();
     }
   }
-  controlSpeed(speed: 1 | 2) {
+  controlSpeed(speed: 1 | 2 | 4) {
     this.speed = speed;
     if (!this.pauseOrNot) {
       this.pauseBattle();
@@ -1606,6 +1606,9 @@ speedControlBtn.addEventListener("click", () => {
     if (battle.speed === 1) {
       battle.controlSpeed(2);
       speedControlBtn.innerText = "⨉2";
+    }else if (battle.speed === 2) {
+      battle.controlSpeed(4);
+      speedControlBtn.innerText = "⨉4";
     } else {
       battle.controlSpeed(1);
       speedControlBtn.innerText = "⨉1";
