@@ -994,13 +994,13 @@ const winBattle = async (req, res, next) => {
         if (battleGrade < highestBattleGrade &&
             battleGradeGroupIndex === highestBattleGradeGroupIndex &&
             battleGradeGroupIndex > achivement.permanentBattlePerfectWin) {
-            const gradeIndex = battleGrade - (1 % 100);
+            const gradeIndex = (battleGrade - 1) % 100;
             if (Number(battleInfo[gradeIndex]) < star) {
                 user.battleInfo = `${battleInfo.slice(0, gradeIndex)}${star}${battleInfo.slice(gradeIndex + 1)}`;
             }
         }
         else if (battleGrade === highestBattleGrade) {
-            const gradeIndex = battleGrade - (1 % 100);
+            const gradeIndex = (battleGrade - 1) % 100;
             const currentStar = Number(battleInfo[gradeIndex]);
             if (currentStar < star) {
                 user.jade += star === 2 ? 2 : currentStar === 2 ? 3 : 5;
